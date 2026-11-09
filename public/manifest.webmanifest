@@ -1,0 +1,11 @@
+{
+  "name": "Tramita",
+  "short_name": "Tramita",
+  "description": "Trámites de Hermosillo, claros y en un solo lugar.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#e96000",
+  "theme_color": "#e96000",
+  "lang": "es-MX",
+  "icons": [{ "src": "/icono.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}

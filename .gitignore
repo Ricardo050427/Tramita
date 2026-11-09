@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# datos crudos del catálogo: se regeneran con scripts/
+/data/listado.json
+/data/fichas.jsonl
+/data/extraccion.log

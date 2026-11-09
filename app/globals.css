@@ -1,26 +1,106 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --senal: #e96000;
+  --senal-oscura: #c24e00;
+  --tinta: #15120e;
+  --tinta-suave: #4f555d;
+  --piso: #e9ebee;
+  --panel: #ffffff;
+  --linea: #c9cdd3;
+  --bien: #0f6a45;
+  --error: #a8201a;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-senal: var(--senal);
+  --color-senal-oscura: var(--senal-oscura);
+  --color-tinta: var(--tinta);
+  --color-tinta-suave: var(--tinta-suave);
+  --color-piso: var(--piso);
+  --color-panel: var(--panel);
+  --color-linea: var(--linea);
+  --color-bien: var(--bien);
+  --color-error: var(--error);
+  --font-sans: var(--fuente-senal);
+  --ease-salida: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  -webkit-text-size-adjust: 100%;
+  scrollbar-color: var(--tinta-suave) var(--piso);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--piso);
+  color: var(--tinta);
+  font-family: var(--fuente-senal), system-ui, sans-serif;
+  font-variant-numeric: tabular-nums;
+  -webkit-tap-highlight-color: transparent;
+}
+
+::selection {
+  background: var(--tinta);
+  color: var(--senal);
+}
+
+textarea {
+  caret-color: var(--senal-oscura);
+}
+
+:focus-visible {
+  outline: 3px solid var(--tinta);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.bg-senal :focus-visible {
+  outline-color: var(--panel);
+}
+
+a {
+  text-underline-offset: 3px;
+}
+
+.fila-senal {
+  transition: background-color 160ms var(--ease-salida);
+}
+
+.fila-senal .flecha {
+  transition: transform 220ms var(--ease-salida);
+}
+
+@media (hover: hover) {
+  .fila-senal:hover {
+    background: var(--panel);
+  }
+
+  .fila-senal:hover .flecha {
+    transform: translateX(4px);
+  }
+}
+
+.fila-senal:active {
+  background: var(--senal);
+}
+
+.fila-senal:active .flecha {
+  transform: translateX(8px);
+}
+
+.sin-barra {
+  scrollbar-width: none;
+}
+
+.sin-barra::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 1ms !important;
+    animation-duration: 1ms !important;
+  }
 }
