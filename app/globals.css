@@ -58,6 +58,11 @@ textarea {
   outline-color: var(--panel);
 }
 
+/* El foco del campo de texto lo dibuja su contenedor. */
+textarea:focus-visible {
+  outline: none;
+}
+
 a {
   text-underline-offset: 3px;
 }
