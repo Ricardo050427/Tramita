@@ -112,6 +112,16 @@ const tramites = listado.map((t) => {
   };
 });
 
+// El catálogo manda varios trámites a páginas generales; estos enlaces van al servicio exacto.
+const enlacesDirectos = JSON.parse(readFileSync("data/enlaces-directos.json", "utf8"));
+for (const t of tramites) if (t.clave in enlacesDirectos) t.enLinea = enlacesDirectos[t.clave];
+const usosDeEnlace = new Map();
+for (const t of tramites) if (t.enLinea) usosDeEnlace.set(t.enLinea, (usosDeEnlace.get(t.enLinea) ?? 0) + 1);
+for (const t of tramites) {
+  // La ventanilla digital abre un solo formulario por enlace; las demás páginas compartidas reúnen varios trámites.
+  if (t.enLinea && !/ventanilladigital/.test(t.enLinea) && usosDeEnlace.get(t.enLinea) > 1) t.enLineaGeneral = true;
+}
+
 // Documentos revisados y requisitos que se consiguen con otro trámite del catálogo.
 const documentosRevisados = JSON.parse(readFileSync("data/documentos.json", "utf8"));
 const COMO_OBTENER = [

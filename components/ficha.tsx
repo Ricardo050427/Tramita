@@ -350,9 +350,14 @@ export function Ficha({
             rel="noreferrer"
             className="flex min-h-13 items-center justify-between rounded-[10px] bg-senal px-4 font-bold text-tinta transition-transform duration-150 active:scale-[0.98]"
           >
-            Hacer este trámite en línea
+            {tramite.enLineaGeneral ? "Ir al portal de este servicio" : "Hacer este trámite en línea"}
             <ExternalLink className="size-5" aria-hidden />
           </a>
+          {tramite.enLineaGeneral ? (
+            <p className="mt-2 text-[0.9375rem] leading-snug text-tinta-suave">
+              Esta página oficial reúne varios servicios. Busca ahí «{tramite.nombre}».
+            </p>
+          ) : null}
         </div>
       ) : null}
 

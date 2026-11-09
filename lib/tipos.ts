@@ -48,6 +48,7 @@ export type Tramite = {
   telefono: string;
   domicilio: string;
   enLinea: string;
+  enLineaGeneral?: boolean;
   oficinas?: Oficina[];
   documentos?: Documento[];
 };
