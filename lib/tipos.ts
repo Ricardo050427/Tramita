@@ -1,5 +1,18 @@
 export type Requisito = { titulo: string; detalle?: string };
 
+export type Oficina = {
+  nombre: string;
+  direccion: string;
+  colonia: string;
+  telefono: string;
+  horario: string;
+  lat: number;
+  lng: number;
+};
+
+export type TipoBloque = "resumen" | "camino" | "paso" | "alerta";
+export type Bloque = { tipo: TipoBloque; d: string };
+
 export type Tramite = {
   clave: string;
   nombre: string;
@@ -17,6 +30,7 @@ export type Tramite = {
   telefono: string;
   domicilio: string;
   enLinea: string;
+  oficinas?: Oficina[];
 };
 
 export type Categoria = {
@@ -39,6 +53,7 @@ export type Adjunto = { nombre: string; mime: string; datos: string };
 export type EventoChat =
   | { t: "fichas"; items: Tramite[] }
   | { t: "texto"; d: string }
+  | { t: "bloque"; bloque: Bloque }
   | { t: "sugerencias"; items: string[] }
   | { t: "aviso"; d: string }
   | { t: "fin" };

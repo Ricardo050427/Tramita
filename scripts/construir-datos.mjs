@@ -77,6 +77,17 @@ function costoDe(t) {
   return oracion([base, t.ComplementoCosto].filter(Boolean).join(". ")) || "No publicado";
 }
 
+const centros = JSON.parse(readFileSync("data/centros-tesoreria.json", "utf8"));
+const esTesoreriaEnKino = (t, f) => /TESORER/i.test(t.Dependencia) && /PUERTO VALLARTA/i.test((f?.domicilio ?? []).join(" "));
+
+// Solo acepta teléfonos completos: lada de 3 dígitos y número de 7.
+function telefonoDe(lineas = []) {
+  for (const m of limpio(lineas.join(" ")).matchAll(/\b(\d{3}) (\d+)\b/g)) {
+    if (m[2].length === 7) return `${m[1]} ${m[2].slice(0, 3)} ${m[2].slice(3)}`;
+  }
+  return "";
+}
+
 const tramites = listado.map((t) => {
   const f = fichas.get(t.Clave);
   return {
@@ -93,9 +104,11 @@ const tramites = listado.map((t) => {
     vigencia: oracion((f?.vigencia ?? []).join(" ")),
     obtienes: oracion((f?.documentoObtenido ?? []).join(" ")),
     horario: oracion((f?.horario ?? []).join(" ")),
-    telefono: /\d{3}\s?\d{3}\s?\d{4}/.exec(limpio((f?.telefonos ?? []).join(" ")))?.[0] ?? "",
+    telefono: telefonoDe(f?.telefonos),
     domicilio: titulo((f?.domicilio ?? [t.Ubicacion])[0]),
     enLinea: /^https?:\/\//.test(t.UrlRedirect) ? t.UrlRedirect : "",
+    // El catálogo da solo el centro de Bahía Kino a estos trámites; el portal lista los demás.
+    ...(esTesoreriaEnKino(t, f) ? { domicilio: "", horario: "", oficinas: centros } : {}),
   };
 });
 

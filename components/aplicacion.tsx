@@ -5,14 +5,16 @@ import { motion } from "motion/react";
 import { ArrowRight, Paperclip, RotateCcw, Volume2 } from "lucide-react";
 import { BarraPregunta } from "./barra-pregunta";
 import { Directorio } from "./directorio";
-import { Ficha, mensajeProgreso } from "./ficha";
+import { Bloques } from "./bloques";
+import { Ficha, FichaPlegada, leerMarcados, mensajeProgreso } from "./ficha";
 import { Encabezado } from "./senal";
-import type { Adjunto, Categoria, EntradaIndice, EventoChat, Tramite } from "@/lib/tipos";
+import type { Adjunto, Bloque, Categoria, EntradaIndice, EventoChat, Tramite } from "@/lib/tipos";
 
 type Mensaje = {
   id: string;
   rol: "usuario" | "tramita";
   texto: string;
+  bloques?: Bloque[];
   archivos?: string[];
   fichas?: Tramite[];
   sugerencias?: string[];
@@ -73,6 +75,7 @@ export function Aplicacion({ categorias, indice }: { categorias: Categoria[]; in
       ultimaPregunta.current = { texto, adjuntos };
       const idRespuesta = nuevoId();
       const historial = mensajes.filter((m) => !m.error && m.texto).slice(-6).map((m) => ({ rol: m.rol, texto: m.texto }));
+      const contexto = (mensajes.findLast((m) => m.fichas?.length)?.fichas ?? []).map((t) => ({ clave: t.clave, marcados: leerMarcados(t.clave) }));
 
       setMensajes((l) => [
         ...l,
@@ -86,7 +89,7 @@ export function Aplicacion({ categorias, indice }: { categorias: Categoria[]; in
         const res = await fetch("/api/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ pregunta: texto, adjuntos, historial }),
+          body: JSON.stringify({ pregunta: texto, adjuntos, historial, contexto }),
         });
         if (!res.ok || !res.body) {
           const json = await res.json().catch(() => null);
@@ -110,6 +113,8 @@ export function Aplicacion({ categorias, indice }: { categorias: Categoria[]; in
               setSenal(mensajeProgreso(e.items[0], e.items[0].requisitos.length));
             } else if (e.t === "texto") {
               actualizar(idRespuesta, (m) => ({ ...m, texto: m.texto + e.d }));
+            } else if (e.t === "bloque") {
+              actualizar(idRespuesta, (m) => ({ ...m, bloques: [...(m.bloques ?? []), e.bloque], texto: `${m.texto}${e.bloque.d} ` }));
             } else if (e.t === "sugerencias") {
               actualizar(idRespuesta, (m) => ({ ...m, sugerencias: e.items }));
             } else if (e.t === "aviso") {
@@ -193,7 +198,7 @@ export function Aplicacion({ categorias, indice }: { categorias: Categoria[]; in
 
                       {m.texto ? (
                         <div className={`px-1 text-[1.0625rem] leading-relaxed ${m.error ? "text-error" : ""}`}>
-                          {m.texto}
+                          {m.bloques?.length ? <Bloques bloques={m.bloques} /> : m.texto}
                           {!m.error && !(ocupado && m.id === ultima?.id) ? (
                             <button type="button" aria-label="Escuchar respuesta" onClick={() => escuchar(m.texto)} className="ml-1 inline-grid size-9 place-items-center align-middle">
                               <Volume2 className="size-5" aria-hidden />
@@ -224,11 +229,15 @@ export function Aplicacion({ categorias, indice }: { categorias: Categoria[]; in
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.36, delay: i * 0.06, ease: [0.16, 1, 0.3, 1] }}
                         >
-                          <Ficha
-                            tramite={t}
-                            compacta
-                            alProgreso={m.id === ultima?.id && i === 0 ? (faltan) => setSenal(mensajeProgreso(t, faltan)) : undefined}
-                          />
+                          {i === 0 ? (
+                            <Ficha
+                              tramite={t}
+                              compacta
+                              alProgreso={m.id === ultima?.id ? (faltan) => setSenal(mensajeProgreso(t, faltan)) : undefined}
+                            />
+                          ) : (
+                            <FichaPlegada tramite={t} />
+                          )}
                         </motion.div>
                       ))}
 
