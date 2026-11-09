@@ -190,7 +190,7 @@ export function BarraPregunta({
 
   return (
     <div
-      className="sticky bottom-0 z-20 bg-gradient-to-t from-piso from-70% to-transparent px-3 pt-3 pb-[max(env(safe-area-inset-bottom),0.75rem)]"
+      className="sticky bottom-0 z-20 border-t border-linea bg-panel px-3 pt-2.5 pb-[max(env(safe-area-inset-bottom),0.625rem)] shadow-[0_-10px_24px_-18px_rgb(21_18_14/0.35)]"
       onDragOver={(e) => e.preventDefault()}
       onDrop={(e) => {
         e.preventDefault();
@@ -227,7 +227,7 @@ export function BarraPregunta({
                 key={s}
                 type="button"
                 onClick={() => alEnviar(s, [])}
-                className="min-h-11 shrink-0 rounded-[10px] border border-tinta bg-panel px-3.5 font-medium transition-transform duration-150 active:scale-[0.96]"
+                className="min-h-10 shrink-0 rounded-[10px] bg-piso px-3.5 text-[0.9375rem] font-medium transition-transform duration-150 active:scale-[0.96]"
               >
                 {s}
               </button>
@@ -236,12 +236,12 @@ export function BarraPregunta({
         ) : null}
 
         {error ? (
-          <p role="alert" className="mb-2 rounded-[10px] bg-panel px-3.5 py-2.5 text-error">
+          <p role="alert" className="mb-2 px-1 text-[0.9375rem] leading-snug text-error">
             {error}
           </p>
         ) : null}
 
-        <div className="rounded-[16px] border-2 border-tinta bg-panel">
+        <div className="rounded-[14px] bg-piso transition-shadow duration-150 focus-within:shadow-[inset_0_0_0_2px_var(--senal-oscura)]">
           {adjuntos.length ? (
             <>
               <ul className="flex flex-wrap gap-2 px-3 pt-3">
@@ -251,7 +251,7 @@ export function BarraPregunta({
                     initial={{ scale: 0.85, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{ duration: 0.2, ease: salida }}
-                    className="flex max-w-full items-center gap-2 rounded-[8px] bg-piso py-1 pr-1 pl-2.5"
+                    className="flex max-w-full items-center gap-2 rounded-[8px] bg-panel py-1 pr-1 pl-2.5"
                   >
                     <FileText className="size-4 shrink-0" aria-hidden />
                     <span className="max-w-40 truncate text-sm">{a.nombre}</span>
@@ -267,8 +267,8 @@ export function BarraPregunta({
 
           {dictado.estado === "libre" ? (
             <div className="flex items-end gap-1 p-1.5">
-              <button type="button" aria-label="Adjuntar imagen o archivo" onClick={() => selector.current?.click()} className="grid size-11 shrink-0 place-items-center rounded-[10px] transition-transform duration-150 active:scale-90">
-                <Paperclip className="size-6" aria-hidden />
+              <button type="button" aria-label="Adjuntar imagen o archivo" onClick={() => selector.current?.click()} className="grid size-11 shrink-0 place-items-center rounded-[10px] text-tinta-suave transition-transform duration-150 active:scale-90">
+                <Paperclip className="size-[22px]" aria-hidden />
               </button>
               <input
                 ref={selector}
@@ -334,7 +334,7 @@ export function BarraPregunta({
                     exit={{ scale: 0.6, opacity: 0 }}
                     whileTap={{ scale: 0.9 }}
                     transition={{ duration: 0.16, ease: salida }}
-                    className="grid size-11 shrink-0 place-items-center rounded-[10px] bg-tinta text-panel disabled:opacity-50"
+                    className="grid size-11 shrink-0 place-items-center rounded-[10px] bg-senal text-tinta disabled:opacity-50"
                   >
                     <Mic className="size-6" aria-hidden />
                   </motion.button>

@@ -44,6 +44,8 @@ export type Tramite = {
   plazo: string;
   vigencia: string;
   obtienes: string;
+  sanciones: string;
+  fundamento: string;
   horario: string;
   telefono: string;
   domicilio: string;

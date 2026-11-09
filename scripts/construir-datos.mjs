@@ -103,6 +103,8 @@ const tramites = listado.map((t) => {
     plazo: oracion((f?.plazo ?? []).join(" ")),
     vigencia: oracion((f?.vigencia ?? []).join(" ")),
     obtienes: oracion((f?.documentoObtenido ?? []).join(" ")),
+    sanciones: oracion((f?.sanciones ?? []).join(" ")).slice(0, 400),
+    fundamento: oracion(t.FundamentoJuridico).slice(0, 300),
     horario: oracion((f?.horario ?? []).join(" ")),
     telefono: telefonoDe(f?.telefonos),
     domicilio: titulo((f?.domicilio ?? [t.Ubicacion])[0]),
