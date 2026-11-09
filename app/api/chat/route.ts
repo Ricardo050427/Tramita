@@ -25,6 +25,8 @@ const CATALOGO = tramites
 const PIDE_DOCUMENTO = /\b(formato|formatos|formulario|machote|plantilla|solicitud|documento|documentos|pdf|descarg\w*|imprimir|hoja)\b/i;
 const PIDE_DOCUMENTO_GLOBAL = new RegExp(PIDE_DOCUMENTO.source, "gi");
 const CONTENIDO = contenidoDocumentos as Record<string, string>;
+const FUGA_DE_AGUA = /\bfugas?\b/i;
+const ASUNTO_DE_COBRO = /recibo|cobr|cuenta|pag[oa]|aclara|medidor|inspecc/i;
 
 const INSTRUCCIONES_ELEGIR = `Eliges los trámites de Hermosillo que resuelven la situación de una persona.
 Responde solo con claves separadas por coma, máximo 2, la más útil primero. Sin ninguna otra palabra.
@@ -51,7 +53,7 @@ Reglas:
 - Copia horarios, montos y plazos tal como aparecen. No numeres las líneas.
 - No escribas direcciones ni teléfonos: la app los muestra con mapa debajo de tu respuesta.
 - Si "Pide un documento" es sí y hay "Formatos para llenar", la app ya se lo entrega en una tarjeta. Tu RESUMEN dice que ya lo tiene listo para descargar y lo nombra; los PASOS explican cómo llenarlo y qué hacer con él, usando su contenido. No repitas el proceso completo del trámite.
-- Solo si "Pide un documento" es sí y no hay "Formatos para llenar", el RESUMEN dice con tus palabras que no hallaste un formato público para ese trámite y nombra la dependencia donde pedirlo. Si hay una guía, agrega que la guía de abajo es informativa y trae los requisitos oficiales.
+- Solo si "Pide un documento" es sí y no hay "Formatos para llenar", el RESUMEN dice con tus palabras que no hallaste un formato público para ese trámite y nombra la dependencia donde pedirlo. Solo si recibes la línea "Guías informativas", agrega que la guía de abajo es informativa y trae los requisitos oficiales.
 - Si "Pide un documento" es no, no menciones si existe o no un formato público.
 - Una carta compromiso o guía solo se consulta: nunca digas que se llena, se firma o se entrega.
 - Si "Pide un documento" es no, no empieces diciendo que ya tiene un documento listo. Si hay un formato para llenar, menciónalo en el paso correspondiente: está en la sección Documentos para descargar de la ficha.
@@ -175,7 +177,11 @@ export async function POST(req: Request) {
       let redactado = false;
       let sugerido = false;
 
-      if (clave) {
+      // El catálogo no tiene trámite para reportar fugas: la respuesta no depende del modelo.
+      if (FUGA_DE_AGUA.test(pregunta) && !ASUNTO_DE_COBRO.test(pregunta) && !adjuntos.length) {
+        enviar({ t: "bloque", bloque: { tipo: "resumen", d: "El reporte de fugas no aparece en el catálogo de trámites. Llama a Agua de Hermosillo al 662 289 6000." } });
+        redactado = true;
+      } else if (clave) {
         const ia = new GoogleGenAI({ apiKey: clave });
 
         // Paso 1: entender la situación y elegir los trámites.
@@ -282,7 +288,10 @@ export async function POST(req: Request) {
                 caminos.push(m[2]);
                 return;
               }
-              enviar({ t: "bloque", bloque: { tipo: m[1].toLowerCase() as TipoBloque, d: m[2] } });
+              // Sin documentos entregados no existe ninguna guía a la que referirse.
+              const texto = entregados.length ? m[2] : m[2].split(/(?<=[.;])\s+/).filter((f) => !/gu[ií]a de abajo/i.test(f)).join(" ").replace(/;$/, ".");
+              if (!texto) return;
+              enviar({ t: "bloque", bloque: { tipo: m[1].toLowerCase() as TipoBloque, d: texto } });
               redactado = true;
             };
 

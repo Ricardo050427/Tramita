@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
-import { ArrowRight, Paperclip, RotateCcw, Volume2 } from "lucide-react";
+import { ArrowRight, ArrowUp, Paperclip, RotateCcw, Volume2 } from "lucide-react";
 import { BarraPregunta } from "./barra-pregunta";
 import { Directorio } from "./directorio";
 import { Bloques } from "./bloques";
@@ -112,7 +112,7 @@ export function Aplicacion({ categorias, indice }: { categorias: Categoria[]; in
             if (e.t === "fichas") {
               conFicha = true;
               actualizar(idRespuesta, (m) => ({ ...m, fichas: e.items }));
-              setSenal(mensajeProgreso(e.items[0], e.items[0].requisitos.length));
+              setSenal(mensajeProgreso(e.items[0], e.items[0].requisitos.length - leerMarcados(e.items[0].clave).length));
             } else if (e.t === "texto") {
               actualizar(idRespuesta, (m) => ({ ...m, texto: m.texto + e.d }));
             } else if (e.t === "documentos") {
@@ -151,6 +151,15 @@ export function Aplicacion({ categorias, indice }: { categorias: Categoria[]; in
 
   const enCharla = mensajes.length > 0;
   const ultima = mensajes.at(-1);
+  const claveVigente = ultima?.fichas?.[0]?.clave;
+  const primeraVista = new Map<string, string>();
+  const primeraCompleta = new Map<string, string>();
+  for (const m of mensajes) {
+    m.fichas?.forEach((t, i) => {
+      if (!primeraVista.has(t.clave)) primeraVista.set(t.clave, m.id);
+      if (i === 0 && !primeraCompleta.has(t.clave)) primeraCompleta.set(t.clave, m.id);
+    });
+  }
   const accion = enCharla ? (
     <button type="button" onClick={reiniciar} className="min-h-11 rounded-[8px] px-2 font-bold underline">
       Nueva pregunta
@@ -228,24 +237,40 @@ export function Aplicacion({ categorias, indice }: { categorias: Categoria[]; in
                         </button>
                       ) : null}
 
-                      {m.fichas?.map((t, i) => (
-                        <motion.div
-                          key={t.clave}
-                          initial={{ opacity: 0, y: 18 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.36, delay: i * 0.06, ease: [0.16, 1, 0.3, 1] }}
-                        >
-                          {i === 0 ? (
-                            <Ficha
-                              tramite={t}
-                              compacta
-                              alProgreso={m.id === ultima?.id ? (faltan) => setSenal(mensajeProgreso(t, faltan)) : undefined}
-                            />
-                          ) : (
-                            <FichaPlegada tramite={t} />
-                          )}
-                        </motion.div>
-                      ))}
+                      {m.fichas?.map((t, i) => {
+                        // Cada trámite se muestra completo una sola vez por conversación.
+                        if (i > 0 && primeraVista.get(t.clave) !== m.id) return null;
+                        const repetida = i === 0 && primeraCompleta.get(t.clave) !== m.id;
+                        return (
+                          <motion.div
+                            key={t.clave}
+                            id={i === 0 && !repetida ? `ficha-${t.clave}` : undefined}
+                            className="scroll-mt-36"
+                            initial={{ opacity: 0, y: 18 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.36, delay: i * 0.06, ease: [0.16, 1, 0.3, 1] }}
+                          >
+                            {repetida ? (
+                              <button
+                                type="button"
+                                onClick={() => document.getElementById(`ficha-${t.clave}`)?.scrollIntoView({ behavior: "smooth", block: "start" })}
+                                className="flex min-h-11 items-center gap-2 px-1 text-[0.9375rem] underline"
+                              >
+                                <ArrowUp className="size-4 shrink-0" aria-hidden />
+                                Ver la ficha y tu checklist de este trámite
+                              </button>
+                            ) : i === 0 ? (
+                              <Ficha
+                                tramite={t}
+                                compacta
+                                alProgreso={t.clave === claveVigente ? (faltan) => setSenal(mensajeProgreso(t, faltan)) : undefined}
+                              />
+                            ) : (
+                              <FichaPlegada tramite={t} />
+                            )}
+                          </motion.div>
+                        );
+                      })}
 
                       {m.sugerencias?.length && m.id === ultima?.id && !ocupado ? (
                         <ul className="border-t border-linea">
