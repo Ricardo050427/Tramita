@@ -2,7 +2,7 @@ import { GoogleGenAI, ThinkingLevel } from "@google/genai";
 
 export const maxDuration = 20;
 
-const MODELOS = ["gemini-3.1-flash-lite", "gemini-3.5-flash-lite"];
+const MODELOS = ["gemini-3.5-flash-lite", "gemini-3.1-flash-lite"];
 const ESPERA_MS = 8_000;
 const MAX_BASE64 = 4_200_000;
 
