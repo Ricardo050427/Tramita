@@ -1,11 +1,13 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowRight, ChevronDown, Clock, ExternalLink, LocateFixed, MapPin, Phone } from "lucide-react";
+import { ArrowRight, ChevronDown, Download, Clock, ExternalLink, LocateFixed, MapPin, Phone } from "lucide-react";
+import { ListaDocumentos, rutaDocumento } from "./documentos";
 import { Encabezado } from "./senal";
 import { estadoHorario } from "@/lib/horario";
-import type { Oficina, Tramite } from "@/lib/tipos";
+import type { Documento, Oficina, Requisito, Tramite } from "@/lib/tipos";
 
 const ALMACEN = "tramita:lista:";
 
@@ -228,6 +230,27 @@ export function mensajeProgreso(tramite: Tramite, faltan: number) {
   return `Te ${faltan === 1 ? "falta 1 requisito" : `faltan ${faltan} requisitos`}`;
 }
 
+function AyudaRequisito({ requisito, documentos }: { requisito: Requisito; documentos?: Documento[] }) {
+  const documento = documentos?.find((d) => d.id === requisito.documento);
+  if (!documento && !requisito.obtener) return null;
+  return (
+    <div className="mb-1 ml-10 flex flex-wrap gap-x-4">
+      {documento ? (
+        <a href={rutaDocumento(documento)} download className="flex min-h-11 items-center gap-1.5 font-bold underline">
+          <Download className="size-4 shrink-0" aria-hidden />
+          Descargar formato
+        </a>
+      ) : null}
+      {requisito.obtener ? (
+        <Link href={`/tramite/${requisito.obtener.clave}`} className="flex min-h-11 items-center gap-1.5 underline">
+          ¿No lo tienes? Cómo conseguirlo
+          <ArrowRight className="size-4 shrink-0" aria-hidden />
+        </Link>
+      ) : null}
+    </div>
+  );
+}
+
 export function Ficha({
   tramite,
   compacta,
@@ -272,6 +295,13 @@ export function Ficha({
         <Dato etiqueta="Obtienes" valor={tramite.obtienes === "Ninguno" ? "" : tramite.obtienes} />
       </dl>
 
+      {tramite.documentos?.length ? (
+        <section className="border-t border-tinta px-4 py-4">
+          <h3 className="text-lg font-bold">Documentos para descargar</h3>
+          <ListaDocumentos documentos={tramite.documentos} />
+        </section>
+      ) : null}
+
       <section className="border-t border-tinta px-4 pt-4 pb-2">
         <h3 className="text-lg font-bold">Qué necesitas</h3>
         {total ? (
@@ -293,6 +323,7 @@ export function Ficha({
                       {r.detalle ? <span className="mt-0.5 block text-[0.9375rem] leading-snug text-tinta-suave">{r.detalle}</span> : null}
                     </span>
                   </button>
+                  <AyudaRequisito requisito={r} documentos={tramite.documentos} />
                 </li>
               );
             })}

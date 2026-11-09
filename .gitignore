@@ -44,3 +44,8 @@ next-env.d.ts
 /data/listado.json
 /data/fichas.jsonl
 /data/extraccion.log
+/data/documentos-crudos.json
+/data/inventario.log
+/data/originales/
+/data/documentos-analizados.json
+/data/descarga.log

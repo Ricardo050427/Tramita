@@ -1,6 +1,7 @@
 import crudo from "@/data/tramites.json";
-import type { Categoria, EntradaIndice, Tramite } from "./tipos";
-import { normalizar } from "./buscar";
+import listaDocumentos from "@/data/documentos.json";
+import type { Categoria, Documento, EntradaIndice, Tramite } from "./tipos";
+import { buscar, normalizar } from "./buscar";
 
 export const tramites = crudo.tramites as Tramite[];
 export const categorias = crudo.categorias as Categoria[];
@@ -19,3 +20,12 @@ export const indice: EntradaIndice[] = tramites.map((t) => ({
   l: Boolean(t.enLinea),
   k: normalizar(`${t.categoria} ${t.dependencia} ${t.descripcion}`).slice(0, 220),
 }));
+
+export const documentos = listaDocumentos as Documento[];
+const indiceDocumentos: EntradaIndice[] = documentos.map((d) => ({ c: d.id, n: d.titulo, g: "", k: normalizar(d.titulo), l: false }));
+const documentoPorId = new Map(documentos.map((d) => [d.id, d]));
+
+export const buscarDocumentos = (consulta: string, limite = 3) =>
+  buscar(consulta, indiceDocumentos, limite)
+    .map((r) => documentoPorId.get(r.item.c))
+    .filter((d): d is Documento => Boolean(d));

@@ -112,6 +112,31 @@ const tramites = listado.map((t) => {
   };
 });
 
+// Documentos revisados y requisitos que se consiguen con otro trámite del catálogo.
+const documentosRevisados = JSON.parse(readFileSync("data/documentos.json", "utf8"));
+const COMO_OBTENER = [
+  [/no adeudo.{0,40}predial|predial.{0,40}no adeudo/i, "HMO-00035"],
+  [/no adeudo.{0,40}agua|agua.{0,40}no adeudo/i, "HMO-00018"],
+  [/no adeudo/i, "HMO-00033"],
+  [/licencia de uso de suelo/i, "HMO-00227"],
+  [/n[uú]mero oficial/i, "HMO-00211"],
+];
+for (const t of tramites) {
+  const docs = documentosRevisados.filter((d) => d.claves.includes(t.clave)).map(({ claves, ...d }) => d);
+  if (docs.length) t.documentos = docs;
+  const solicitud = docs.find((d) => d.tipo === "solicitud");
+  for (const r of t.requisitos) {
+    if (solicitud && /formato|solicitud/i.test(r.titulo) && !/no adeudo/i.test(r.titulo)) r.documento = solicitud.id;
+    // El comprobante de pago suele mencionar otros trámites sin que se obtenga con ellos.
+    const texto = /comprobante|pago|recibo/i.test(r.titulo) ? "" : `${r.titulo} ${(r.detalle ?? "").slice(0, 120)}`;
+    const clave = COMO_OBTENER.find(([re]) => re.test(texto))?.[1];
+    if (clave && clave !== t.clave) {
+      const destino = tramites.find((x) => x.clave === clave);
+      if (destino) r.obtener = { clave, nombre: destino.nombre };
+    }
+  }
+}
+
 const categorias = CATEGORIAS.map(([slug, nombre, icono]) => ({
   slug,
   nombre,

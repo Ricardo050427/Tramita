@@ -1,0 +1,850 @@
+[
+ {
+  "id": "7-licencia-de-construccion-solicitud-bae7e7",
+  "titulo": "Solicitud de licencia de construcción",
+  "tipo": "solicitud",
+  "claves": [
+   "HMO-00186",
+   "HMO-00163",
+   "HMO-00204",
+   "HMO-00203",
+   "HMO-00533"
+  ],
+  "archivo": "7-licencia-de-construccion-solicitud-bae7e7.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/desarrollo-urbano/7.-Licencia-de-construccion---Solicitud.drawio.pdf",
+  "formato": "PDF",
+  "pesoKB": 451,
+  "paginas": 4,
+  "revision": "Rev. 05",
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "8-permiso-de-construccion-solicitud-fec05c",
+  "titulo": "Solicitud de permiso de construcción",
+  "tipo": "solicitud",
+  "claves": [
+   "HMO-00531"
+  ],
+  "archivo": "8-permiso-de-construccion-solicitud-fec05c.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/desarrollo-urbano/8.-Permiso-de-Construccion---Solicitud.drawio.pdf",
+  "formato": "PDF",
+  "pesoKB": 401,
+  "paginas": 2,
+  "revision": "Rev. 05",
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "9-autorizacion-de-construccion-solicitud-5a2cb4",
+  "titulo": "Solicitud de autorización de construcción",
+  "tipo": "solicitud",
+  "claves": [
+   "HMO-00536",
+   "HMO-00202",
+   "HMO-00205"
+  ],
+  "archivo": "9-autorizacion-de-construccion-solicitud-5a2cb4.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/desarrollo-urbano/9.-Autorizacion-de-construccion---solicitud.drawio.pdf",
+  "formato": "PDF",
+  "pesoKB": 416,
+  "paginas": 3,
+  "revision": "Rev. 05",
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "4-1-ruptura-de-pavimentos-solictud-4320e4",
+  "titulo": "Solicitud de permiso para ruptura de pavimentos",
+  "tipo": "solicitud",
+  "claves": [
+   "HMO-00250"
+  ],
+  "archivo": "4-1-ruptura-de-pavimentos-solictud-4320e4.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/desarrollo-urbano/4.1-Ruptura-de-Pavimentos---Solictud.drawio.pdf",
+  "formato": "PDF",
+  "pesoKB": 391,
+  "paginas": 2,
+  "revision": "Rev. 05",
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "10-prorroga-de-licencia-de-construccion-solicitud-e8b30c",
+  "titulo": "Solicitud de prórroga de licencia de construcción",
+  "tipo": "solicitud",
+  "claves": [
+   "HMO-00219"
+  ],
+  "archivo": "10-prorroga-de-licencia-de-construccion-solicitud-e8b30c.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/desarrollo-urbano/10.-Prorroga-de-licencia-de-construccion---Solicitud.drawio.pdf",
+  "formato": "PDF",
+  "pesoKB": 384,
+  "paginas": 2,
+  "revision": "Rev. 05",
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "1-1-certificado-de-terminacion-de-obra-solicitud-121ec1",
+  "titulo": "Solicitud de certificado de terminación de obra",
+  "tipo": "solicitud",
+  "claves": [
+   "HMO-00214"
+  ],
+  "archivo": "1-1-certificado-de-terminacion-de-obra-solicitud-121ec1.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/desarrollo-urbano/1.1-Certificado-de-Terminacion-de-Obra---Solicitud.drawio.pdf",
+  "formato": "PDF",
+  "pesoKB": 384,
+  "paginas": 2,
+  "revision": "Rev. 05",
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "3-1-movimiento-de-tierras-solictud-fbb486",
+  "titulo": "Solicitud de permiso para movimiento de tierras, nivelación y trazo",
+  "tipo": "solicitud",
+  "claves": [
+   "HMO-00482"
+  ],
+  "archivo": "3-1-movimiento-de-tierras-solictud-fbb486.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/desarrollo-urbano/3.1-Movimiento-de-tierras---Solictud.drawio.pdf",
+  "formato": "PDF",
+  "pesoKB": 386,
+  "paginas": 2,
+  "revision": "Rev. 05",
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "3-autorizacion-de-numeros-oficiales-014207",
+  "titulo": "Solicitud de autorización de número oficial",
+  "tipo": "solicitud",
+  "claves": [
+   "HMO-00211"
+  ],
+  "archivo": "3-autorizacion-de-numeros-oficiales-014207.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/desarrollo-urbano/3.-Autorizacion-de-Numeros-Oficiales.drawio.pdf",
+  "formato": "PDF",
+  "pesoKB": 382,
+  "paginas": 2,
+  "revision": "Rev. 05",
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "4-autorizacion-de-numeros-adicionales-c3cda1",
+  "titulo": "Solicitud de autorización de números adicionales",
+  "tipo": "solicitud",
+  "claves": [
+   "HMO-00487"
+  ],
+  "archivo": "4-autorizacion-de-numeros-adicionales-c3cda1.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/desarrollo-urbano/4.-Autorizacion-de-Numeros-Adicionales.drawio.pdf",
+  "formato": "PDF",
+  "pesoKB": 445,
+  "paginas": 2,
+  "revision": "Rev. 05",
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "1-licencia-de-uso-de-suelo-solicitud-3a6b46",
+  "titulo": "Solicitud de licencia de uso de suelo",
+  "tipo": "solicitud",
+  "claves": [
+   "HMO-00227"
+  ],
+  "archivo": "1-licencia-de-uso-de-suelo-solicitud-3a6b46.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/desarrollo-urbano/1.-Licencia-de-uso-de-suelo---Solicitud.drawio.pdf",
+  "formato": "PDF",
+  "pesoKB": 391,
+  "paginas": 2,
+  "revision": "Rev. 05",
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "2-licencia-de-uso-de-suelo-especifico-solicitud-635ecf",
+  "titulo": "Solicitud de licencia de uso de suelo específico",
+  "tipo": "solicitud",
+  "claves": [
+   "HMO-00485"
+  ],
+  "archivo": "2-licencia-de-uso-de-suelo-especifico-solicitud-635ecf.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/desarrollo-urbano/2.-Licencia-de-uso-de-suelo-especifico---Solicitud.drawio.pdf",
+  "formato": "PDF",
+  "pesoKB": 390,
+  "paginas": 2,
+  "revision": "Rev. 05",
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "informativo-de-uso-de-suelo-e3e7e3",
+  "titulo": "Solicitud de informativo de uso de suelo",
+  "tipo": "solicitud",
+  "claves": [
+   "HMO-00529"
+  ],
+  "archivo": "informativo-de-uso-de-suelo-e3e7e3.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/desarrollo-urbano/Informativo-de-uso-de-suelo.pdf",
+  "formato": "PDF",
+  "pesoKB": 181,
+  "paginas": 2,
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "solicitud-informativo-uso-de-suelo-anuncios-cb5790",
+  "titulo": "Solicitud de informativo de uso de suelo para anuncios",
+  "tipo": "solicitud",
+  "claves": [],
+  "archivo": "solicitud-informativo-uso-de-suelo-anuncios-cb5790.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/desarrollo-urbano/SOLICITUD%20-%20INFORMATIVO%20USO%20DE%20SUELO%20ANUNCIOS.pdf",
+  "formato": "PDF",
+  "pesoKB": 150,
+  "paginas": 1,
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "2-licencia-de-funcionamiento-solicitud-2e233e",
+  "titulo": "Solicitud de licencia de funcionamiento",
+  "tipo": "solicitud",
+  "claves": [
+   "HMO-00420"
+  ],
+  "archivo": "2-licencia-de-funcionamiento-solicitud-2e233e.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/desarrollo-urbano/2.-Licencia-de-funcionamiento---Solicitud.drawio.pdf",
+  "formato": "PDF",
+  "pesoKB": 360,
+  "paginas": 2,
+  "revision": "Rev. 05",
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "1-cancelacion-de-licencia-de-funcionamiento-8e1033",
+  "titulo": "Solicitud de cancelación de licencia de funcionamiento",
+  "tipo": "solicitud",
+  "claves": [
+   "HMO-00534"
+  ],
+  "archivo": "1-cancelacion-de-licencia-de-funcionamiento-8e1033.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/desarrollo-urbano/1.-Cancelacion-de-licencia-de-funcionamiento.drawio.pdf",
+  "formato": "PDF",
+  "pesoKB": 348,
+  "paginas": 2,
+  "revision": "Rev. 05",
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "11-registro-de-director-responsable-de-obra-dro-fcb980",
+  "titulo": "Solicitud de registro de director responsable de obra (DRO)",
+  "tipo": "solicitud",
+  "claves": [
+   "HMO-00252"
+  ],
+  "archivo": "11-registro-de-director-responsable-de-obra-dro-fcb980.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/desarrollo-urbano/11.-Registro-de-director-responsable-de-obra-(DRO).drawio.pdf",
+  "formato": "PDF",
+  "pesoKB": 376,
+  "paginas": 2,
+  "revision": "Rev. 05",
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "12-renovacion-de-registro-de-dro-solicitud-2d5a5a",
+  "titulo": "Solicitud de renovación de registro de DRO",
+  "tipo": "solicitud",
+  "claves": [
+   "HMO-00526"
+  ],
+  "archivo": "12-renovacion-de-registro-de-dro-solicitud-2d5a5a.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/desarrollo-urbano/12.-Renovacion-de-registro-de-DRO---Solicitud.drawio.pdf",
+  "formato": "PDF",
+  "pesoKB": 373,
+  "paginas": 2,
+  "revision": "Rev. 05",
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "13-registro-de-topografos-solicitud-4cf257",
+  "titulo": "Solicitud de registro de topógrafos",
+  "tipo": "solicitud",
+  "claves": [
+   "HMO-00200"
+  ],
+  "archivo": "13-registro-de-topografos-solicitud-4cf257.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/catastro/13.%20Registro%20de%20top%C3%B3grafos%20-%20Solicitud.drawio.pdf",
+  "formato": "PDF",
+  "pesoKB": 467,
+  "paginas": 2,
+  "revision": "Rev. 05",
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "14-renovacion-de-registro-de-topografo-solicitud-449491",
+  "titulo": "Solicitud de renovación de registro de topógrafo",
+  "tipo": "solicitud",
+  "claves": [
+   "HMO-00200"
+  ],
+  "archivo": "14-renovacion-de-registro-de-topografo-solicitud-449491.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/catastro/14.%20Renovaci%C3%B3n%20de%20registro%20de%20top%C3%B3grafo%20-%20Solicitud.drawio.pdf",
+  "formato": "PDF",
+  "pesoKB": 465,
+  "paginas": 2,
+  "revision": "Rev. 05",
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "2-1-deslinde-solicitud-ea4a1f",
+  "titulo": "Solicitud de levantamiento y deslinde de terreno",
+  "tipo": "solicitud",
+  "claves": [
+   "HMO-00199"
+  ],
+  "archivo": "2-1-deslinde-solicitud-ea4a1f.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/catastro/2.1%20Deslinde%20-%20Solicitud.drawio.pdf",
+  "formato": "PDF",
+  "pesoKB": 474,
+  "paginas": 2,
+  "revision": "Rev. 05",
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "5-autorizacion-de-fusion-solicitud-e182cc",
+  "titulo": "Solicitud de autorización de fusión de predios",
+  "tipo": "solicitud",
+  "claves": [
+   "HMO-00483"
+  ],
+  "archivo": "5-autorizacion-de-fusion-solicitud-e182cc.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/catastro/5.%20Autorizaci%C3%B3n%20de%20fusi%C3%B3n%20-%20Solicitud.drawio.pdf",
+  "formato": "PDF",
+  "pesoKB": 478,
+  "paginas": 2,
+  "revision": "Rev. 05",
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "6-autorizacion-de-subdivision-solicitud-5ef62e",
+  "titulo": "Solicitud de autorización de subdivisión de predios",
+  "tipo": "solicitud",
+  "claves": [
+   "HMO-00484"
+  ],
+  "archivo": "6-autorizacion-de-subdivision-solicitud-5ef62e.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/catastro/6.%20Autorizaci%C3%B3n%20de%20Subdivisi%C3%B3n%20-%20Solicitud.drawio.pdf",
+  "formato": "PDF",
+  "pesoKB": 476,
+  "paginas": 2,
+  "revision": "Rev. 05",
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "15-licencia-de-anuncios-solicitud-839e02",
+  "titulo": "Solicitud de licencia de anuncios",
+  "tipo": "solicitud",
+  "claves": [
+   "HMO-00230"
+  ],
+  "archivo": "15-licencia-de-anuncios-solicitud-839e02.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/desarrollo-urbano/15.-Licencia-de-anuncios---Solicitud.drawio.pdf",
+  "formato": "PDF",
+  "pesoKB": 375,
+  "paginas": 2,
+  "revision": "Rev. 05",
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "16-renovacion-licencia-de-anuncios-solicitud-751632",
+  "titulo": "Solicitud de renovación de licencia de anuncios",
+  "tipo": "solicitud",
+  "claves": [],
+  "archivo": "16-renovacion-licencia-de-anuncios-solicitud-751632.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/desarrollo-urbano/16.-Renovacion-licencia-de-anuncios---Solicitud.drawio.pdf",
+  "formato": "PDF",
+  "pesoKB": 379,
+  "paginas": 2,
+  "revision": "Rev. 05",
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "17-permiso-de-anuncios-fa47a3",
+  "titulo": "Solicitud de permiso de anuncios",
+  "tipo": "solicitud",
+  "claves": [
+   "HMO-00495"
+  ],
+  "archivo": "17-permiso-de-anuncios-fa47a3.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/desarrollo-urbano/17.-Permiso-de-anuncios.drawio.pdf",
+  "formato": "PDF",
+  "pesoKB": 368,
+  "paginas": 2,
+  "revision": "Rev. 05",
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "renovacion-de-permiso-de-anuncios-2d2c0c",
+  "titulo": "Solicitud de renovación de permiso de anuncios",
+  "tipo": "solicitud",
+  "claves": [],
+  "archivo": "renovacion-de-permiso-de-anuncios-2d2c0c.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/desarrollo-urbano/Renovacion-de-permiso-de-anuncios.drawio.pdf",
+  "formato": "PDF",
+  "pesoKB": 361,
+  "paginas": 2,
+  "revision": "Rev. 05",
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "5-1-licencia-de-construccion-de-anuncios-rev-05-solicitud-631e85",
+  "titulo": "Solicitud de licencia de construcción de anuncios",
+  "tipo": "solicitud",
+  "claves": [
+   "HMO-00231"
+  ],
+  "archivo": "5-1-licencia-de-construccion-de-anuncios-rev-05-solicitud-631e85.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/desarrollo-urbano/5.1-Licencia-de-construccion-de-anuncios_REV-05--Solicitud.drawio.pdf",
+  "formato": "PDF",
+  "pesoKB": 374,
+  "paginas": 2,
+  "revision": "Rev. 05",
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "licencia-ambiental-integral-simplificada-f9e9a0",
+  "titulo": "Solicitud de licencia ambiental integral simplificada",
+  "tipo": "solicitud",
+  "claves": [
+   "HMO-00225"
+  ],
+  "archivo": "licencia-ambiental-integral-simplificada-f9e9a0.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/desarrollo-urbano/Licencia-ambiental-integral-simplificada.pdf",
+  "formato": "PDF",
+  "pesoKB": 394,
+  "paginas": 2,
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "1750193072-formato-licencia-ambiental-simplificada-2025-4ca232",
+  "titulo": "Formato editable de licencia ambiental integral simplificada 2025",
+  "tipo": "otro",
+  "claves": [
+   "HMO-00225"
+  ],
+  "archivo": "1750193072-formato-licencia-ambiental-simplificada-2025-4ca232.docx",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/desarrollo-urbano/1750193072_FORMATO_LICENCIA_AMBIENTAL_SIMPLIFICADA_2025.docx",
+  "formato": "Word",
+  "pesoKB": 31,
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "g-cidue-ime-2-3987c2",
+  "titulo": "Guía para la licencia ambiental integral simplificada",
+  "tipo": "guia",
+  "claves": [
+   "HMO-00225"
+  ],
+  "archivo": "g-cidue-ime-2-3987c2.pdf",
+  "url": "https://www.hermosillo.gob.mx/descargas/ecologia/licencia-ambiental/G-CIDUE-IME-2.pdf",
+  "formato": "PDF",
+  "pesoKB": 199,
+  "paginas": 2,
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "licencia-ambiental-integral-8e614e",
+  "titulo": "Solicitud de licencia ambiental integral",
+  "tipo": "solicitud",
+  "claves": [
+   "HMO-00436"
+  ],
+  "archivo": "licencia-ambiental-integral-8e614e.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/desarrollo-urbano/licencia-ambiental-integral.pdf",
+  "formato": "PDF",
+  "pesoKB": 367,
+  "paginas": 2,
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "formato-licencia-ambiental-integral-2025-933fef",
+  "titulo": "Formato editable de licencia ambiental integral 2025",
+  "tipo": "otro",
+  "claves": [
+   "HMO-00436"
+  ],
+  "archivo": "formato-licencia-ambiental-integral-2025-933fef.docx",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/desarrollo-urbano/FORMATO_LICENCIA_AMBIENTAL_INTEGRAL_2025.docx",
+  "formato": "Word",
+  "pesoKB": 21,
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "actualizacion-de-licencia-ambiental-d64b3d",
+  "titulo": "Solicitud de actualización de licencia ambiental integral",
+  "tipo": "solicitud",
+  "claves": [
+   "HMO-00438"
+  ],
+  "archivo": "actualizacion-de-licencia-ambiental-d64b3d.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/desarrollo-urbano/actualizacion-de-licencia-ambiental.pdf",
+  "formato": "PDF",
+  "pesoKB": 511,
+  "paginas": 2,
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "formato-actualizacion-de-licencia-ambiental-2025-f7074e",
+  "titulo": "Formato editable de actualización de licencia ambiental 2025",
+  "tipo": "otro",
+  "claves": [
+   "HMO-00438"
+  ],
+  "archivo": "formato-actualizacion-de-licencia-ambiental-2025-f7074e.docx",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/desarrollo-urbano/FORMATO_ACTUALIZACION_DE_LICENCIA_AMBIENTAL_2025.docx",
+  "formato": "Word",
+  "pesoKB": 28,
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "cedula-de-operacion-anual-3203d4",
+  "titulo": "Solicitud de cédula de operación anual",
+  "tipo": "solicitud",
+  "claves": [
+   "HMO-00439"
+  ],
+  "archivo": "cedula-de-operacion-anual-3203d4.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/desarrollo-urbano/Cedula-de-operacion-anual.pdf",
+  "formato": "PDF",
+  "pesoKB": 407,
+  "paginas": 2,
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "formato-para-la-solicitud-de-cedula-de-operacion-anual-b85567",
+  "titulo": "Formato editable de cédula de operación anual",
+  "tipo": "otro",
+  "claves": [
+   "HMO-00439"
+  ],
+  "archivo": "formato-para-la-solicitud-de-cedula-de-operacion-anual-b85567.docx",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/desarrollo-urbano/FORMATO_PARA_LA_SOLICITUD_DE_CEDULA_DE_OPERACION_ANUAL.docx",
+  "formato": "Word",
+  "pesoKB": 22,
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "solicitud-prestador-de-servicios-ambientales-2026-c13969",
+  "titulo": "Solicitud de registro de prestador de servicios ambientales 2026",
+  "tipo": "solicitud",
+  "claves": [
+   "HMO-00440"
+  ],
+  "archivo": "solicitud-prestador-de-servicios-ambientales-2026-c13969.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/desarrollo-urbano/SOLICITUD-PRESTADOR-DE-SERVICIOS-AMBIENTALES-2026.pdf",
+  "formato": "PDF",
+  "pesoKB": 48,
+  "paginas": 1,
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "solicitud-derechos-arco-hermosillo20-764f25",
+  "titulo": "Solicitud de derechos ARCO (datos personales)",
+  "tipo": "solicitud",
+  "claves": [
+   "HMO-00361"
+  ],
+  "archivo": "solicitud-derechos-arco-hermosillo20-764f25.pdf",
+  "url": "https://www.hermosillo.gob.mx/avisosdeprivacidad/archivos/Solicitud%20Derechos%20ARCO%20Hermosillo20.pdf",
+  "formato": "PDF",
+  "pesoKB": 922,
+  "paginas": 4,
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "traslado-de-dominio-017f76",
+  "titulo": "Carta compromiso de traslado de dominio (requisitos oficiales)",
+  "tipo": "guia",
+  "claves": [
+   "HMO-00512",
+   "HMO-00513",
+   "HMO-00515"
+  ],
+  "archivo": "traslado-de-dominio-017f76.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/direccion_de_catastro/pdf/2023/traslado_de_dominio.pdf",
+  "formato": "PDF",
+  "pesoKB": 573,
+  "paginas": 1,
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "expedicion-y-venta-de-cartografias-743fde",
+  "titulo": "Carta compromiso de expedición y venta de cartografías",
+  "tipo": "guia",
+  "claves": [
+   "HMO-00507"
+  ],
+  "archivo": "expedicion-y-venta-de-cartografias-743fde.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/direccion_de_catastro/pdf/2023/expedicion_y_venta_de_cartografias.pdf",
+  "formato": "PDF",
+  "pesoKB": 2471,
+  "paginas": 1,
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "impresion-venta-de-planos-y-productos-cartograficos-9fbeae",
+  "titulo": "Carta compromiso de impresión y venta de planos",
+  "tipo": "guia",
+  "claves": [
+   "HMO-00045",
+   "HMO-00508"
+  ],
+  "archivo": "impresion-venta-de-planos-y-productos-cartograficos-9fbeae.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/direccion_de_catastro/pdf/2023/impresion,_venta_de_planos_y_productos_cartograficos.pdf",
+  "formato": "PDF",
+  "pesoKB": 2471,
+  "paginas": 1,
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "certificacion-de-documentos-catastrales-aba899",
+  "titulo": "Carta compromiso de certificación de documentos catastrales",
+  "tipo": "guia",
+  "claves": [
+   "HMO-00030"
+  ],
+  "archivo": "certificacion-de-documentos-catastrales-aba899.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/direccion_de_catastro/pdf/2023/certificacion_de_documentos_catastrales.pdf",
+  "formato": "PDF",
+  "pesoKB": 611,
+  "paginas": 1,
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "expedicion-de-certificados-catastrales-02d19b",
+  "titulo": "Carta compromiso de certificados catastrales",
+  "tipo": "guia",
+  "claves": [
+   "HMO-00006"
+  ],
+  "archivo": "expedicion-de-certificados-catastrales-02d19b.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/direccion_de_catastro/pdf/2023/expedicion_de_certificados_catastrales.pdf",
+  "formato": "PDF",
+  "pesoKB": 611,
+  "paginas": 1,
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "expedicion-de-copias-simples-de-expediente-y-de-archivo-efc1db",
+  "titulo": "Carta compromiso de copias simples de expediente",
+  "tipo": "guia",
+  "claves": [
+   "HMO-00044"
+  ],
+  "archivo": "expedicion-de-copias-simples-de-expediente-y-de-archivo-efc1db.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/direccion_de_catastro/pdf/2023/expedicion_de_copias_simples_de_expediente_y_de_archivo.pdf",
+  "formato": "PDF",
+  "pesoKB": 610,
+  "paginas": 1,
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "inscripciones-catastrales-fce3f5",
+  "titulo": "Carta compromiso de inscripciones catastrales",
+  "tipo": "guia",
+  "claves": [
+   "HMO-00005"
+  ],
+  "archivo": "inscripciones-catastrales-fce3f5.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/direccion_de_catastro/pdf/2023/inscripciones_catastrales.pdf",
+  "formato": "PDF",
+  "pesoKB": 611,
+  "paginas": 1,
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "aclaracion-de-cobros-y-correccion-de-datos-1df531",
+  "titulo": "Carta compromiso de aclaración de cobros y corrección de datos",
+  "tipo": "guia",
+  "claves": [
+   "HMO-00034"
+  ],
+  "archivo": "aclaracion-de-cobros-y-correccion-de-datos-1df531.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/direccion_de_ingresos/pdf/2023/aclaracion_de_cobros_y_correccion_de_datos.pdf",
+  "formato": "PDF",
+  "pesoKB": 2506,
+  "paginas": 1,
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "certificado-de-no-adeudo-de-impuesto-predial-y-obra-publica-d93273",
+  "titulo": "Carta compromiso del certificado de no adeudo predial",
+  "tipo": "guia",
+  "claves": [
+   "HMO-00035"
+  ],
+  "archivo": "certificado-de-no-adeudo-de-impuesto-predial-y-obra-publica-d93273.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/direccion_de_ingresos/pdf/2023/certificado_de_no_adeudo_de_impuesto_predial_y_obra_publica.pdf",
+  "formato": "PDF",
+  "pesoKB": 2532,
+  "paginas": 1,
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "constancia-de-no-adeudo-municipal-1c24d3",
+  "titulo": "Carta compromiso de la constancia de no adeudo municipal",
+  "tipo": "guia",
+  "claves": [
+   "HMO-00033"
+  ],
+  "archivo": "constancia-de-no-adeudo-municipal-1c24d3.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/direccion_de_ingresos/pdf/2023/constancia_de_no_adeudo_municipal.pdf",
+  "formato": "PDF",
+  "pesoKB": 2520,
+  "paginas": 1,
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "certificado-de-no-adeudo-vehicular-1e14d5",
+  "titulo": "Carta compromiso del certificado de no adeudo vehicular",
+  "tipo": "guia",
+  "claves": [
+   "HMO-00041"
+  ],
+  "archivo": "certificado-de-no-adeudo-vehicular-1e14d5.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/direccion_de_ingresos/pdf/2023/certificado_de_no_adeudo_vehicular.pdf",
+  "formato": "PDF",
+  "pesoKB": 2533,
+  "paginas": 1,
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "convenio-de-impuesto-predial-6a01c7",
+  "titulo": "Carta compromiso del convenio de impuesto predial",
+  "tipo": "guia",
+  "claves": [
+   "HMO-00318"
+  ],
+  "archivo": "convenio-de-impuesto-predial-6a01c7.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/direccion_de_ingresos/pdf/2023/convenio_de_impuesto_predial.pdf",
+  "formato": "PDF",
+  "pesoKB": 2523,
+  "paginas": 1,
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "descuentos-a-grupos-vulnerables-eb9768",
+  "titulo": "Carta compromiso de descuentos a grupos vulnerables",
+  "tipo": "guia",
+  "claves": [
+   "HMO-00479"
+  ],
+  "archivo": "descuentos-a-grupos-vulnerables-eb9768.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/direccion_de_ingresos/pdf/2023/descuentos_a_grupos_vulnerables.pdf",
+  "formato": "PDF",
+  "pesoKB": 2510,
+  "paginas": 1,
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "emision-de-estado-de-cuenta-de-contribuciones-municipales-06db3e",
+  "titulo": "Carta compromiso del estado de cuenta de contribuciones",
+  "tipo": "guia",
+  "claves": [
+   "HMO-00007"
+  ],
+  "archivo": "emision-de-estado-de-cuenta-de-contribuciones-municipales-06db3e.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/direccion_de_ingresos/pdf/2023/emision_de_estado_de_cuenta_de_contribuciones_municipales.pdf",
+  "formato": "PDF",
+  "pesoKB": 2519,
+  "paginas": 1,
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "expedicion-de-copia-certificada-de-recibo-de-pago-13162e",
+  "titulo": "Carta compromiso de copia certificada de recibo",
+  "tipo": "guia",
+  "claves": [
+   "HMO-00039"
+  ],
+  "archivo": "expedicion-de-copia-certificada-de-recibo-de-pago-13162e.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/direccion_de_ingresos/pdf/2023/expedicion_de_copia_certificada_de_recibo_de_pago.pdf",
+  "formato": "PDF",
+  "pesoKB": 2519,
+  "paginas": 1,
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "permiso-para-la-venta-en-la-via-publica-891498",
+  "titulo": "Carta compromiso del permiso de venta en la vía pública",
+  "tipo": "guia",
+  "claves": [
+   "HMO-00518",
+   "HMO-00522"
+  ],
+  "archivo": "permiso-para-la-venta-en-la-via-publica-891498.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/direccion_de_inspeccion_y_vigilancia/pdf/permiso_para_la_venta_en_la_via_publica.pdf",
+  "formato": "PDF",
+  "pesoKB": 2505,
+  "paginas": 1,
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "expedicion-de-tarjeta-sanitaria-0408d3",
+  "titulo": "Carta compromiso de expedición de tarjeta sanitaria",
+  "tipo": "guia",
+  "claves": [],
+  "archivo": "expedicion-de-tarjeta-sanitaria-0408d3.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/direccion_de_inspeccion_y_vigilancia/pdf/expedicion_de_tarjeta_sanitaria.pdf",
+  "formato": "PDF",
+  "pesoKB": 2456,
+  "paginas": 1,
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "licencias-de-funcionamiento-03d8a5",
+  "titulo": "Carta compromiso de licencias de funcionamiento",
+  "tipo": "guia",
+  "claves": [
+   "HMO-00420"
+  ],
+  "archivo": "licencias-de-funcionamiento-03d8a5.pdf",
+  "url": "https://www.hermosillo.gob.mx/entidades/files/direccion_de_inspeccion_y_vigilancia/pdf/licencias_de_funcionamiento.pdf",
+  "formato": "PDF",
+  "pesoKB": 2455,
+  "paginas": 1,
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "requisitos-cartilla-f642bb",
+  "titulo": "Requisitos para tramitar la cartilla militar",
+  "tipo": "guia",
+  "claves": [],
+  "archivo": "requisitos-cartilla-f642bb.pdf",
+  "url": "https://www.hermosillo.gob.mx/descargas/requisitos-cartilla.pdf",
+  "formato": "PDF",
+  "pesoKB": 131,
+  "paginas": 1,
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "nis-y-nir-30c13b",
+  "titulo": "Guía para ubicar tu NIS y NIR de Agua de Hermosillo",
+  "tipo": "guia",
+  "claves": [
+   "HMO-00446",
+   "HMO-00450"
+  ],
+  "archivo": "nis-y-nir-30c13b.pdf",
+  "url": "",
+  "formato": "PDF",
+  "pesoKB": 191,
+  "paginas": 2,
+  "verificado": "2026-11-09"
+ },
+ {
+  "id": "cuotas-comudis-661f42",
+  "titulo": "Cuotas de consulta médica y terapias de rehabilitación (COMUDIS)",
+  "tipo": "guia",
+  "claves": [
+   "HMO-00117"
+  ],
+  "archivo": "cuotas-comudis-661f42.pdf",
+  "url": "",
+  "formato": "PDF",
+  "pesoKB": 109,
+  "paginas": 2,
+  "verificado": "2026-11-09"
+ }
+]

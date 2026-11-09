@@ -6,15 +6,17 @@ import { ArrowRight, Paperclip, RotateCcw, Volume2 } from "lucide-react";
 import { BarraPregunta } from "./barra-pregunta";
 import { Directorio } from "./directorio";
 import { Bloques } from "./bloques";
+import { TarjetaDocumentos } from "./documentos";
 import { Ficha, FichaPlegada, leerMarcados, mensajeProgreso } from "./ficha";
 import { Encabezado } from "./senal";
-import type { Adjunto, Bloque, Categoria, EntradaIndice, EventoChat, Tramite } from "@/lib/tipos";
+import type { Adjunto, Bloque, Categoria, Documento, EntradaIndice, EventoChat, Tramite } from "@/lib/tipos";
 
 type Mensaje = {
   id: string;
   rol: "usuario" | "tramita";
   texto: string;
   bloques?: Bloque[];
+  documentos?: Documento[];
   archivos?: string[];
   fichas?: Tramite[];
   sugerencias?: string[];
@@ -113,6 +115,8 @@ export function Aplicacion({ categorias, indice }: { categorias: Categoria[]; in
               setSenal(mensajeProgreso(e.items[0], e.items[0].requisitos.length));
             } else if (e.t === "texto") {
               actualizar(idRespuesta, (m) => ({ ...m, texto: m.texto + e.d }));
+            } else if (e.t === "documentos") {
+              actualizar(idRespuesta, (m) => ({ ...m, documentos: e.items }));
             } else if (e.t === "bloque") {
               actualizar(idRespuesta, (m) => ({ ...m, bloques: [...(m.bloques ?? []), e.bloque], texto: `${m.texto}${e.bloque.d} ` }));
             } else if (e.t === "sugerencias") {
@@ -195,6 +199,8 @@ export function Aplicacion({ categorias, indice }: { categorias: Categoria[]; in
                           Revisando las fichas oficiales
                         </p>
                       ) : null}
+
+                      {m.documentos?.length ? <TarjetaDocumentos documentos={m.documentos} /> : null}
 
                       {m.texto ? (
                         <div className={`px-1 text-[1.0625rem] leading-relaxed ${m.error ? "text-error" : ""}`}>

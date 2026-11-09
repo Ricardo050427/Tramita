@@ -1,4 +1,22 @@
-export type Requisito = { titulo: string; detalle?: string };
+export type Documento = {
+  id: string;
+  titulo: string;
+  tipo: "solicitud" | "guia" | "otro";
+  archivo: string;
+  url: string;
+  formato: string;
+  pesoKB: number;
+  paginas?: number;
+  revision?: string;
+  verificado: string;
+};
+
+export type Requisito = {
+  titulo: string;
+  detalle?: string;
+  documento?: string;
+  obtener?: { clave: string; nombre: string };
+};
 
 export type Oficina = {
   nombre: string;
@@ -31,6 +49,7 @@ export type Tramite = {
   domicilio: string;
   enLinea: string;
   oficinas?: Oficina[];
+  documentos?: Documento[];
 };
 
 export type Categoria = {
@@ -54,6 +73,7 @@ export type EventoChat =
   | { t: "fichas"; items: Tramite[] }
   | { t: "texto"; d: string }
   | { t: "bloque"; bloque: Bloque }
+  | { t: "documentos"; items: Documento[] }
   | { t: "sugerencias"; items: string[] }
   | { t: "aviso"; d: string }
   | { t: "fin" };
