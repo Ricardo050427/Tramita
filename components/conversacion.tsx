@@ -128,9 +128,9 @@ export function useConversacion({ almacen, claveFija, alSenal }: { almacen?: str
           for (const linea of lineas.filter(Boolean)) {
             const e = JSON.parse(linea) as EventoChat;
             if (e.t === "fichas") {
-              conFicha = true;
+              conFicha = e.items.length > 0;
               actualizar(idRespuesta, (m) => ({ ...m, fichas: e.items }));
-              alSenal?.(mensajeProgreso(e.items[0], e.items[0].requisitos.length - leerMarcados(e.items[0].clave).length));
+              if (conFicha) alSenal?.(mensajeProgreso(e.items[0], e.items[0].requisitos.length - leerMarcados(e.items[0].clave).length));
             } else if (e.t === "texto") {
               actualizar(idRespuesta, (m) => ({ ...m, texto: m.texto + e.d }));
             } else if (e.t === "plan") {
