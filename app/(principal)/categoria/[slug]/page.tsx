@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowRight } from "lucide-react";
@@ -18,14 +19,14 @@ export default async function PaginaCategoria({ params }: { params: Promise<{ sl
 
   return (
     <div className="min-h-dvh">
-      <Encabezado mensaje={categoria.nombre} volver="/" />
-      <main className="mx-auto max-w-3xl pb-16">
+      <Encabezado mensaje={categoria.nombre} volver="/tramites" />
+      <main className="mx-auto max-w-3xl">
         <p className="px-4 py-4 text-tinta-suave">
           {lista.length} {lista.length === 1 ? "trámite" : "trámites"} en el catálogo municipal
         </p>
         <ul className="border-t border-linea">
-          {lista.map((t) => (
-            <li key={t.clave} className="border-b border-linea">
+          {lista.map((t, i) => (
+            <li key={t.clave} style={{ "--fila": Math.min(i, 12) } as CSSProperties} className="entra-fila border-b border-linea">
               <Link href={`/tramite/${t.clave}`} className="fila-senal flex min-h-16 items-center gap-3 px-4 py-3">
                 <span className="min-w-0 flex-1">
                   <span className="block text-[1.0625rem] leading-snug font-medium">{t.nombre}</span>

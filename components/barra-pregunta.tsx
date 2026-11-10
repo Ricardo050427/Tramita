@@ -130,12 +130,10 @@ export function BarraPregunta({
   indice,
   ocupado,
   alEnviar,
-  sugerenciasIniciales,
 }: {
   indice: EntradaIndice[];
   ocupado: boolean;
   alEnviar: (texto: string, adjuntos: Adjunto[]) => void;
-  sugerenciasIniciales?: string[];
 }) {
   const [texto, setTexto] = useState("");
   const [adjuntos, setAdjuntos] = useState<Adjunto[]>([]);
@@ -190,14 +188,14 @@ export function BarraPregunta({
 
   return (
     <div
-      className="sticky bottom-0 z-20 border-t border-linea bg-panel px-3 pt-2.5 pb-[max(env(safe-area-inset-bottom),0.625rem)] shadow-[0_-10px_24px_-18px_rgb(21_18_14/0.35)]"
+      className="dock-pregunta pointer-events-none sticky z-20 bg-linear-to-t from-piso from-55% to-transparent px-3 pt-7 pb-1"
       onDragOver={(e) => e.preventDefault()}
       onDrop={(e) => {
         e.preventDefault();
         void agregarArchivos([...e.dataTransfer.files]);
       }}
     >
-      <div className="relative mx-auto max-w-2xl">
+      <div className="pointer-events-auto relative mx-auto max-w-2xl">
         <AnimatePresence>
           {verPrediccion ? (
             <motion.ul
@@ -220,28 +218,13 @@ export function BarraPregunta({
           ) : null}
         </AnimatePresence>
 
-        {sugerenciasIniciales?.length && !texto && !adjuntos.length && dictado.estado === "libre" ? (
-          <div className="sin-barra -mx-3 mb-2 flex gap-2 overflow-x-auto px-3">
-            {sugerenciasIniciales.map((s) => (
-              <button
-                key={s}
-                type="button"
-                onClick={() => alEnviar(s, [])}
-                className="min-h-10 shrink-0 rounded-[10px] bg-piso px-3.5 text-[0.9375rem] font-medium transition-transform duration-150 active:scale-[0.96]"
-              >
-                {s}
-              </button>
-            ))}
-          </div>
-        ) : null}
-
         {error ? (
           <p role="alert" className="mb-2 px-1 text-[0.9375rem] leading-snug text-error">
             {error}
           </p>
         ) : null}
 
-        <div className="rounded-[14px] bg-piso transition-shadow duration-150 focus-within:shadow-[inset_0_0_0_2px_var(--senal-oscura)]">
+        <div className="rounded-[16px] bg-panel shadow-[0_10px_26px_-12px_rgb(21_18_14/0.45)] transition-shadow duration-150 focus-within:shadow-[inset_0_0_0_2px_var(--senal-oscura),0_10px_26px_-12px_rgb(21_18_14/0.45)]">
           {adjuntos.length ? (
             <>
               <ul className="flex flex-wrap gap-2 px-3 pt-3">
@@ -251,7 +234,7 @@ export function BarraPregunta({
                     initial={{ scale: 0.85, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{ duration: 0.2, ease: salida }}
-                    className="flex max-w-full items-center gap-2 rounded-[8px] bg-panel py-1 pr-1 pl-2.5"
+                    className="flex max-w-full items-center gap-2 rounded-[8px] bg-piso py-1 pr-1 pl-2.5"
                   >
                     <FileText className="size-4 shrink-0" aria-hidden />
                     <span className="max-w-40 truncate text-sm">{a.nombre}</span>

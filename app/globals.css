@@ -10,6 +10,8 @@
   --linea: #c9cdd3;
   --bien: #0f6a45;
   --error: #a8201a;
+  --base-dock: max(env(safe-area-inset-bottom), 0.75rem);
+  --alto-dock: calc(var(--base-dock) + 4.625rem);
 }
 
 @theme inline {
@@ -91,6 +93,157 @@ a {
 
 .fila-senal:active .flecha {
   transform: translateX(8px);
+}
+
+/* Barra de secciones: flota sobre el contenido y se retira mientras se escribe en el teléfono. */
+.nav-flotante {
+  bottom: var(--base-dock);
+  transition: transform 240ms var(--ease-salida);
+}
+
+.dock-pregunta {
+  bottom: var(--alto-dock);
+  transition: bottom 240ms var(--ease-salida);
+}
+
+.dock-pregunta::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 100%;
+  height: var(--alto-dock);
+  background: var(--piso);
+}
+
+@media (hover: none) {
+  html:has(textarea:focus) {
+    --alto-dock: var(--base-dock);
+  }
+
+  html:has(textarea:focus) .nav-flotante {
+    transform: translateY(calc(100% + 2rem));
+  }
+}
+
+.nav-halo {
+  opacity: 0;
+  animation: nav-halo 480ms ease-out;
+}
+
+.nav-disco {
+  animation: nav-disco 480ms var(--ease-salida);
+}
+
+.nav-icono {
+  animation: nav-icono 480ms var(--ease-salida);
+}
+
+.nav-reposo {
+  animation: nav-reposo 240ms var(--ease-salida);
+}
+
+@keyframes nav-halo {
+  0% {
+    opacity: 0;
+    transform: scale(0.72);
+  }
+  14% {
+    opacity: 1;
+    transform: scale(0.92);
+  }
+  55% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.18);
+  }
+}
+
+@keyframes nav-disco {
+  0% {
+    transform: scale(0.06);
+  }
+  22% {
+    transform: scale(0.22);
+  }
+  68% {
+    transform: scale(1.13);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes nav-icono {
+  0%,
+  30% {
+    clip-path: circle(0% at 50% 50%);
+  }
+  100% {
+    clip-path: circle(75% at 50% 50%);
+  }
+}
+
+@keyframes nav-reposo {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+}
+
+/* Mosaicos del directorio: entran en ola, fila por fila. */
+.mosaico {
+  --acento: var(--senal);
+  animation: mosaico-entra 420ms var(--ease-salida) backwards;
+  animation-delay: calc(var(--fila, 0) * 55ms);
+  transition:
+    transform 140ms var(--ease-salida),
+    background-color 140ms var(--ease-salida);
+}
+
+.mosaico-icono {
+  transition: transform 220ms var(--ease-salida);
+}
+
+@media (hover: hover) {
+  .mosaico:hover .mosaico-icono {
+    transform: translateY(-3px);
+  }
+}
+
+.mosaico:active {
+  --acento: var(--panel);
+  background: var(--senal);
+  transform: scale(0.95);
+}
+
+.mosaico:active .mosaico-cuenta {
+  color: var(--tinta);
+}
+
+.mosaico-pregunta:active {
+  background: var(--senal-oscura);
+}
+
+@keyframes mosaico-entra {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.72);
+  }
+}
+
+.entra-fila {
+  animation: entra-fila 320ms var(--ease-salida) backwards;
+  animation-delay: calc(var(--fila, 0) * 35ms);
+}
+
+@keyframes entra-fila {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
 }
 
 .sin-barra {

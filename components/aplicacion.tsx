@@ -1,16 +1,15 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
 import { motion } from "motion/react";
 import { ArrowRight, ArrowUp, Paperclip, RotateCcw, Volume2 } from "lucide-react";
 import { BarraPregunta } from "./barra-pregunta";
-import { Directorio } from "./directorio";
 import { Bloques, FuentesCitadas } from "./bloques";
 import { TarjetaDocumentos } from "./documentos";
 import { diasRestantes, leerCaso, mensajePlan, TarjetaPlan } from "./plan";
 import { Ficha, FichaPlegada, leerMarcados, mensajeProgreso } from "./ficha";
 import { Encabezado } from "./senal";
-import type { Adjunto, Bloque, Categoria, Documento, EntradaIndice, EventoChat, FuenteCitada, Plan, Tramite } from "@/lib/tipos";
+import type { Adjunto, Bloque, Documento, EntradaIndice, EventoChat, FuenteCitada, Plan, Tramite } from "@/lib/tipos";
 
 type Mensaje = {
   id: string;
@@ -56,7 +55,7 @@ function escuchar(texto: string) {
   speechSynthesis.speak(voz);
 }
 
-export function Aplicacion({ categorias, indice }: { categorias: Categoria[]; indice: EntradaIndice[] }) {
+export function Aplicacion({ indice }: { indice: EntradaIndice[] }) {
   const [mensajes, setMensajes] = useState<Mensaje[]>([]);
   const [ocupado, setOcupado] = useState(false);
   const [senal, setSenal] = useState("¿Qué necesitas resolver?");
@@ -201,12 +200,7 @@ export function Aplicacion({ categorias, indice }: { categorias: Categoria[]; in
     <div className="flex min-h-dvh flex-col">
       <Encabezado mensaje={senal} grande={!enCharla} accion={accion} />
 
-      <div className="mx-auto flex w-full max-w-6xl flex-1 lg:grid lg:grid-cols-[23rem_minmax(0,1fr)] lg:gap-8 lg:px-4">
-        <aside className="hidden self-start py-6 lg:sticky lg:top-32 lg:block">
-          <Directorio categorias={categorias} />
-        </aside>
-
-        <div className="flex min-w-0 flex-1 flex-col">
+      <div className="flex w-full flex-1 flex-col">
           <main className="flex-1">
             {enCharla ? (
               <div className="mx-auto max-w-2xl space-y-5 px-3 py-5" role="log" aria-label="Conversación">
@@ -333,24 +327,26 @@ export function Aplicacion({ categorias, indice }: { categorias: Categoria[]; in
                 )}
               </div>
             ) : (
-              <div className="lg:hidden">
-                <Directorio categorias={categorias} />
+              <div className="mx-auto max-w-2xl px-3 pt-5 pb-3">
+                <p className="px-1 text-lg leading-snug text-pretty">Pregunta como en la ventanilla. Te digo qué llevar, cuánto cuesta y a dónde ir, con la ficha oficial a la vista.</p>
+                <h2 className="mt-5 px-1 font-bold">Lo más preguntado</h2>
+                <ul className="mt-1.5 border-t border-linea">
+                  {POPULARES.map((s, i) => (
+                    <li key={s} style={{ "--fila": i } as CSSProperties} className="entra-fila border-b border-linea">
+                      <button type="button" onClick={() => void preguntar(s, [])} className="fila-senal flex min-h-12 w-full items-center gap-3 px-1 py-2 text-left font-medium">
+                        <span className="flex-1">{s}</span>
+                        <ArrowRight className="flecha size-5 shrink-0" aria-hidden />
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-4 px-1 text-[0.8125rem] text-tinta-suave">Proyecto independiente de hackathon. No es un sitio oficial del Ayuntamiento de Hermosillo.</p>
               </div>
             )}
-            {!enCharla ? (
-              <div className="hidden px-3 py-10 lg:block">
-                <p className="mx-auto max-w-2xl text-xl leading-relaxed">
-                  Pregunta como le preguntarías a alguien en la ventanilla. Te digo qué llevar, cuánto cuesta y a dónde ir, con la ficha oficial del Ayuntamiento a la vista.
-                </p>
-              </div>
-            ) : null}
           </main>
 
-          <BarraPregunta indice={indice} ocupado={ocupado} alEnviar={(t, a) => void preguntar(t, a)} sugerenciasIniciales={enCharla ? undefined : POPULARES} />
-          <p className="px-4 pb-3 text-center text-[0.8125rem] text-tinta-suave">
-            Proyecto independiente de hackathon. No es un sitio oficial del Ayuntamiento de Hermosillo.
-          </p>
-        </div>
+          <BarraPregunta indice={indice} ocupado={ocupado} alEnviar={(t, a) => void preguntar(t, a)} />
+          <div className="h-(--alto-dock)" aria-hidden />
       </div>
     </div>
   );
