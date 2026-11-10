@@ -11,7 +11,7 @@
   --bien: #0f6a45;
   --error: #a8201a;
   --base-dock: max(env(safe-area-inset-bottom), 0.75rem);
-  --alto-dock: calc(var(--base-dock) + 4.625rem);
+  --alto-dock: calc(var(--base-dock) + 4.125rem);
 }
 
 @theme inline {
@@ -115,14 +115,23 @@ a {
   background: var(--piso);
 }
 
-@media (hover: none) {
-  html:has(textarea:focus) {
-    --alto-dock: var(--base-dock);
-  }
+html[data-teclado] {
+  --alto-dock: var(--base-dock);
+}
 
-  html:has(textarea:focus) .nav-flotante {
-    transform: translateY(calc(100% + 2rem));
-  }
+html[data-teclado] .nav-flotante {
+  transform: translateY(calc(100% + 2rem));
+}
+
+.disparador-chat {
+  bottom: calc(var(--alto-dock) + 0.25rem);
+  animation: entra-fila 360ms 120ms var(--ease-salida) backwards;
+}
+
+/* El panel de preguntas se apoya sobre el teclado cuando está abierto. */
+.hoja-chat {
+  bottom: var(--alto-teclado, 0px);
+  height: min(88dvh, calc(100dvh - var(--alto-teclado, 0px) - 1.5rem));
 }
 
 .nav-halo {

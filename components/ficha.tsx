@@ -374,7 +374,7 @@ export function Ficha({
   );
 }
 
-export function VistaTramite({ tramite }: { tramite: Tramite }) {
+export function VistaTramite({ tramite, children }: { tramite: Tramite; children?: React.ReactNode }) {
   const [mensaje, setMensaje] = useState(() => mensajeProgreso(tramite, tramite.requisitos.length));
   const alProgreso = useCallback((faltan: number) => setMensaje(mensajeProgreso(tramite, faltan)), [tramite]);
 
@@ -390,6 +390,7 @@ export function VistaTramite({ tramite }: { tramite: Tramite }) {
           </section>
         ) : null}
       </main>
+      {children}
     </div>
   );
 }

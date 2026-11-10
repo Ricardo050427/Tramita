@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { VistaTramite } from "@/components/ficha";
+import { PreguntarTramite } from "@/components/preguntar-tramite";
 import { tramitePorClave, tramites } from "@/lib/datos";
 
 export const instant = false;
@@ -12,5 +13,9 @@ export default async function PaginaTramite({ params }: { params: Promise<{ clav
   const { clave } = await params;
   const tramite = tramitePorClave(clave);
   if (!tramite) notFound();
-  return <VistaTramite tramite={tramite} />;
+  return (
+    <VistaTramite tramite={tramite}>
+      <PreguntarTramite tramite={tramite} />
+    </VistaTramite>
+  );
 }

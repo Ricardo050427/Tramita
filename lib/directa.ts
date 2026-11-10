@@ -87,13 +87,13 @@ function bloquesDe(intencion: Intencion, t: Tramite, metros?: number): Bloque[] 
       ];
     }
     case "plazo":
-      return [resumen(t.plazo && !/^indefinido/i.test(t.plazo) ? `Plazo de respuesta: ${primeraFrase(t.plazo, 200)}` : `La ficha no indica un plazo de respuesta. Pregunta en ${t.dependencia}.`)];
+      return [resumen(t.plazo && !/^indefinido/i.test(t.plazo) ? `Plazo de respuesta: ${primeraFrase(t.plazo, 480)}` : `La ficha no indica un plazo de respuesta. Pregunta en ${t.dependencia}.`)];
     case "vigencia":
-      return [resumen(t.vigencia && !/^indefinido/i.test(t.vigencia) ? `Vigencia: ${primeraFrase(t.vigencia, 200)}` : "La ficha no indica que venza: su vigencia es indefinida.")];
+      return [resumen(t.vigencia && !/^indefinido/i.test(t.vigencia) ? `Vigencia: ${primeraFrase(t.vigencia, 480)}` : "La ficha no indica que venza: su vigencia es indefinida.")];
     case "enLinea":
       return [resumen(t.enLinea ? "Sí. En la ficha está el botón para hacerlo en línea." : `No aparece disponible en línea. Se hace en ${t.dependencia}.`)];
     case "obtienes":
-      return [resumen(t.obtienes && !/^ninguno/i.test(t.obtienes) ? `Al terminar obtienes: ${primeraFrase(t.obtienes, 200)}` : "La ficha no indica un documento final.")];
+      return [resumen(t.obtienes && !/^ninguno/i.test(t.obtienes) ? `Al terminar obtienes: ${primeraFrase(t.obtienes, 480)}` : "La ficha no indica un documento final.")];
     case "formato": {
       const formatos = t.documentos?.filter((d) => d.tipo !== "guia") ?? [];
       if (formatos.some((d) => esLlenable(d.id))) return [resumen("Aquí está el formato oficial. Puedes descargarlo o llenarlo aquí mismo contestando unas preguntas; tus datos no pasan por la IA.")];

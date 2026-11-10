@@ -130,10 +130,13 @@ export function BarraPregunta({
   indice,
   ocupado,
   alEnviar,
+  embebida,
 }: {
   indice: EntradaIndice[];
   ocupado: boolean;
   alEnviar: (texto: string, adjuntos: Adjunto[]) => void;
+  /** Dentro de un panel propio, en lugar de flotar sobre la barra de secciones. */
+  embebida?: boolean;
 }) {
   const [texto, setTexto] = useState("");
   const [adjuntos, setAdjuntos] = useState<Adjunto[]>([]);
@@ -188,7 +191,7 @@ export function BarraPregunta({
 
   return (
     <div
-      className="dock-pregunta pointer-events-none sticky z-20 bg-linear-to-t from-piso from-55% to-transparent px-3 pt-7 pb-1"
+      className={embebida ? "shrink-0 px-3 pt-2 pb-[max(env(safe-area-inset-bottom),0.75rem)]" : "dock-pregunta pointer-events-none sticky z-20 bg-linear-to-t from-piso from-55% to-transparent px-3 pt-7 pb-1"}
       onDragOver={(e) => e.preventDefault()}
       onDrop={(e) => {
         e.preventDefault();
@@ -224,7 +227,7 @@ export function BarraPregunta({
           </p>
         ) : null}
 
-        <div className="rounded-[16px] bg-panel shadow-[0_10px_26px_-12px_rgb(21_18_14/0.45)] transition-shadow duration-150 focus-within:shadow-[inset_0_0_0_2px_var(--senal-oscura),0_10px_26px_-12px_rgb(21_18_14/0.45)]">
+        <div className="rounded-[16px] bg-panel shadow-[0_6px_20px_-10px_rgb(21_18_14/0.3)] transition-shadow duration-150 focus-within:shadow-[inset_0_0_0_1.5px_var(--tinta),0_6px_20px_-10px_rgb(21_18_14/0.3)]">
           {adjuntos.length ? (
             <>
               <ul className="flex flex-wrap gap-2 px-3 pt-3">
@@ -251,7 +254,7 @@ export function BarraPregunta({
           {dictado.estado === "libre" ? (
             <div className="flex items-end gap-1 p-1.5">
               <button type="button" aria-label="Adjuntar imagen o archivo" onClick={() => selector.current?.click()} className="grid size-11 shrink-0 place-items-center rounded-[10px] text-tinta-suave transition-transform duration-150 active:scale-90">
-                <Paperclip className="size-[22px]" aria-hidden />
+                <Paperclip className="size-5" aria-hidden />
               </button>
               <input
                 ref={selector}
@@ -301,9 +304,9 @@ export function BarraPregunta({
                     exit={{ scale: 0.6, opacity: 0 }}
                     whileTap={{ scale: 0.9 }}
                     transition={{ duration: 0.16, ease: salida }}
-                    className="grid size-11 shrink-0 place-items-center rounded-[10px] bg-senal disabled:opacity-50"
+                    className="grid size-11 shrink-0 place-items-center rounded-full bg-senal disabled:opacity-50"
                   >
-                    <ArrowUp className="size-6" strokeWidth={2.75} aria-hidden />
+                    <ArrowUp className="size-[1.375rem]" strokeWidth={2.5} aria-hidden />
                   </motion.button>
                 ) : (
                   <motion.button
@@ -317,9 +320,9 @@ export function BarraPregunta({
                     exit={{ scale: 0.6, opacity: 0 }}
                     whileTap={{ scale: 0.9 }}
                     transition={{ duration: 0.16, ease: salida }}
-                    className="grid size-11 shrink-0 place-items-center rounded-[10px] bg-senal text-tinta disabled:opacity-50"
+                    className="grid size-11 shrink-0 place-items-center rounded-full bg-senal text-tinta disabled:opacity-50"
                   >
-                    <Mic className="size-6" aria-hidden />
+                    <Mic className="size-[1.375rem]" aria-hidden />
                   </motion.button>
                 )}
               </AnimatePresence>

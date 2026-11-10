@@ -156,7 +156,7 @@ const fechaHermosillo = () =>
 const aTramites = (claves: string[]) => claves.map(tramitePorClave).filter((t): t is Tramite => Boolean(t));
 
 function respuestaLocal(pregunta: string, enviar: (e: EventoChat) => void, hayAdjuntos: boolean, yaHayFichas: boolean) {
-  enviar({ t: "aviso", d: "La IA no está disponible en este momento. Te muestro lo que encontré directo en el catálogo." });
+  enviar({ t: "aviso", d: "La respuesta tardó demasiado. Esto es lo que encontré en el catálogo." });
   if (yaHayFichas) {
     enviar({ t: "texto", d: "Esta es la ficha oficial de lo que buscas." });
     return;

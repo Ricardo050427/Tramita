@@ -15,7 +15,7 @@ export function Senal({ texto, grande }: { texto: string; grande?: boolean }) {
       style={{ perspective: 600 }}
       className={
         grande
-          ? "text-[clamp(2.75rem,12.5vw,5.25rem)] leading-[0.98] font-bold tracking-[-0.025em] text-balance"
+          ? "text-[clamp(2.125rem,9.5vw,3.75rem)] leading-[1.02] font-bold tracking-[-0.02em] text-balance"
           : "text-2xl leading-tight font-bold tracking-[-0.015em] text-balance"
       }
     >
@@ -78,7 +78,7 @@ export function Encabezado({
           )}
           {accion}
         </div>
-        <div className={grande ? "pt-7 pb-3" : "pt-1"}>
+        <div className={grande ? "pt-4 pb-1" : "pt-1"}>
           <Senal texto={mensaje} grande={grande} />
         </div>
       </div>
