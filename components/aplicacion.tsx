@@ -32,10 +32,8 @@ function Bienvenida({ alPreguntar, atento }: { alPreguntar: (texto: string) => v
           clearTimeout(espera.current);
           espera.current = setTimeout(() => setContento(false), 1300);
         }}
-        initial={{ scale: 0, opacity: 0, y: 24 }}
-        animate={{ scale: 1, opacity: 1, y: 0 }}
         whileTap={{ scale: 0.92 }}
-        transition={{ type: "spring", stiffness: 320, damping: 15 }}
+        transition={{ duration: 0.15 }}
         className="rounded-full"
       >
         <Sagui estado={contento ? "feliz" : "saluda"} vez={vez} atento={atento && !contento} mirar className="size-32" />
