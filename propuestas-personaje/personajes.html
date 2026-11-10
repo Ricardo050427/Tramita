@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<title>Personajes de Tramita</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root { --senal:#E96000; --oscura:#C24E00; --tinta:#15120E; --suave:#4F555D; --piso:#E9EBEE; --panel:#FFFFFF; --linea:#C9CDD3; }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { overflow: hidden; background: var(--piso); color: var(--tinta); font-family: "Fira Sans", system-ui, sans-serif; font-variant-numeric: tabular-nums; }
+  svg { display: block; overflow: visible; }
+
+  /* Video */
+  .video { position: relative; width: 1080px; height: 1080px; background: var(--piso); overflow: hidden; }
+  .video .nombre { position: absolute; left: 64px; top: 56px; font-size: 54px; font-weight: 700; letter-spacing: -.02em; }
+  .video .marca { position: absolute; right: 64px; top: 70px; font-size: 26px; font-weight: 500; color: var(--suave); }
+  .video .lienzo { position: absolute; left: 0; right: 0; top: 130px; height: 780px; display: grid; place-items: center; }
+  .estados { position: absolute; left: 0; right: 0; bottom: 64px; display: flex; justify-content: center; gap: 12px; }
+  .estados span { padding: 14px 28px; border-radius: 999px; font-size: 30px; font-weight: 500; background: var(--panel); color: var(--suave); }
+  .estados span.activo { background: var(--tinta); color: var(--panel); font-weight: 700; }
+
+  /* Comparativo */
+  .todos { position: relative; width: 1920px; height: 1080px; background: var(--piso); padding: 56px 64px; overflow: hidden; }
+  .todos h1 { font-size: 56px; letter-spacing: -.02em; }
+  .todos .tres { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 36px; }
+  .todos .caja { background: var(--panel); border-radius: 20px; height: 720px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding-top: 8px; }
+  .todos .caja b { font-size: 46px; letter-spacing: -.02em; }
+  .todos .caja p { font-size: 26px; color: var(--suave); margin-top: 4px; }
+  .todos .estados { bottom: 44px; }
+
+  /* Lámina */
+  .lamina { width: 1920px; overflow: hidden; padding: 64px; display: grid; grid-template-columns: 620px minmax(0, 1fr); gap: 32px; background: var(--piso); }
+  .lamina h1 { font-size: 104px; line-height: 1; letter-spacing: -.03em; }
+  .lamina .lema { font-size: 34px; line-height: 1.2; margin-top: 16px; font-weight: 500; }
+  .lamina .tarjeta { background: var(--panel); border-radius: 20px; padding: 28px; }
+  .lamina .izq { display: flex; flex-direction: column; }
+  .lamina .heroe { background: var(--panel); border-radius: 20px; display: grid; place-items: center; flex: 1; min-height: 640px; margin-top: 32px; }
+  .lamina h2 { font-size: 28px; margin-bottom: 18px; }
+  .lamina ul.por { list-style: none; padding: 0; margin-top: 24px; font-size: 26px; line-height: 1.28; color: var(--suave); }
+  .lamina ul.por li { margin-top: 12px; }
+  .lamina .fila { display: grid; gap: 16px; }
+  .lamina .derecha { display: grid; gap: 24px; align-content: start; }
+  .pose { text-align: center; font-size: 24px; font-weight: 500; }
+  .pose svg { margin: 0 auto 6px; }
+  .tile { border-radius: 14px; height: 230px; display: grid; place-items: center; position: relative; }
+  .tile i { position: absolute; left: 14px; bottom: 10px; font-style: normal; font-size: 20px; font-weight: 500; }
+  .tamanos { display: flex; align-items: end; justify-content: center; gap: 22px; }
+  .abajo { display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: 24px; }
+  .arma { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+  .telefono { background: var(--tinta); border-radius: 44px; padding: 10px; height: 560px; }
+  .pantalla { position: relative; background: #fff; border-radius: 36px; height: 100%; overflow: hidden; }
+  .saludo { position: absolute; left: 0; right: 0; top: 112px; text-align: center; }
+  .saludo svg { margin: 0 auto; }
+  .saludo p { font-size: 26px; font-weight: 700; letter-spacing: -.01em; margin-top: 10px; line-height: 1.12; padding: 0 28px; }
+  .capsula { position: absolute; left: 14px; right: 14px; bottom: 92px; height: 58px; border-radius: 18px; background: var(--piso); display: flex; align-items: center; padding: 0 8px 0 18px; font-size: 17px; color: var(--suave); justify-content: space-between; }
+  .capsula u { width: 42px; height: 42px; border-radius: 50%; background: var(--senal); display: block; }
+  .pildora { position: absolute; left: 34px; right: 34px; bottom: 22px; height: 54px; border-radius: 999px; background: #fff; box-shadow: 0 8px 24px -8px rgb(21 18 14 / .32); display: flex; align-items: center; justify-content: space-around; font-size: 13px; color: var(--suave); }
+  .pildora b { width: 40px; height: 40px; border-radius: 50%; background: var(--senal); }
+  .pix { image-rendering: pixelated; }
+</style>
+</head>
+<body>
+<div id="raiz"></div>
+<script>
+const C = { senal: "#E96000", oscura: "#C24E00", tinta: "#15120E", suave: "#4F555D", piso: "#E9EBEE", panel: "#FFFFFF" };
+
+// ---- Utilidades de movimiento ----
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const lerp = (a, b, x) => a + (b - a) * x;
+const salida = (x) => 1 - Math.pow(1 - x, 3);
+const suave = (x) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+const rebote = (x) => { const c = 1.9; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
+const lineal = (x) => x;
+/** Valor en el tiempo t a partir de claves [tiempo, valor, curva]. La curva se aplica al tramo que termina en esa clave. */
+function kf(t, claves) {
+  if (t <= claves[0][0]) return claves[0][1];
+  for (let i = 1; i < claves.length; i++) {
+    const [t1, v1, f = suave] = claves[i];
+    const [t0, v0] = claves[i - 1];
+    if (t <= t1) return lerp(v0, v1, f(clamp((t - t0) / (t1 - t0))));
+  }
+  return claves[claves.length - 1][1];
+}
+const rot = ([x, y], [cx, cy], g) => { const a = (g * Math.PI) / 180, c = Math.cos(a), s = Math.sin(a), dx = x - cx, dy = y - cy; return [cx + dx * c - dy * s, cy + dx * s + dy * c]; };
+const mezcla = (a, b, x) => [lerp(a[0], b[0], x), lerp(a[1], b[1], x)];
+const f1 = (n) => (Math.round(n * 100) / 100).toString();
+
+// ---- Tiempo de la coreografía (10 s) ----
+const ACTOS = [["Saluda", 1.0, 3.05], ["Piensa", 3.05, 5.7], ["Te indica", 5.7, 7.7], ["¡Listo!", 7.7, 10]];
+const DURACION = 10;
+const PARPADEOS = [0.75, 2.75, 3.25, 5.85, 7.55, 9.55];
+function parpadeo(t) { let v = 1; for (const b of PARPADEOS) { const d = Math.abs(t - b); if (d < 0.09) v = Math.min(v, d / 0.09); } return v; }
+
+/** Pose común: entrada, respiración, salto de alegría y hacia dónde mira. */
+function poseBase(t) {
+  const resp = Math.sin((t / 1.7) * 2 * Math.PI);
+  const ent = kf(t, [[0, 0], [0.5, 1, rebote]]);
+  const salto = kf(t, [[8.02, 0], [8.34, -46, salida], [8.62, 0, (x) => x * x], [8.82, 0], [9.02, -18, salida], [9.22, 0, (x) => x * x]]);
+  const sy = kf(t, [[7.8, 1], [8.02, 0.84], [8.14, 1.12, salida], [8.5, 1], [8.62, 1], [8.7, 0.88, salida], [8.84, 1.04], [9.02, 1], [9.22, 1], [9.28, 0.94], [9.5, 1]]);
+  const sx = 2 - sy > 1 ? 1 + (1 - sy) * 0.75 : 1 - (sy - 1) * 0.6;
+  const inclina = kf(t, [[1.0, 0], [1.25, -3], [2.8, -3], [3.05, 0], [3.3, 3.5], [3.8, -3.5], [4.3, 3.5], [4.8, -3.5], [5.3, 2], [5.7, 0], [6.0, 6.5, rebote], [7.4, 6.5], [7.7, 0]]);
+  const miraX = kf(t, [[0.6, 0], [1.0, 0], [3.05, 0], [3.3, -5], [3.8, 5], [4.3, -5], [4.8, 5], [5.3, 0], [5.7, 0], [5.95, 6], [7.5, 6], [7.75, 0]]);
+  const miraY = kf(t, [[3.05, 0], [3.3, -4], [5.3, -4], [5.7, 0]]);
+  const feliz = kf(t, [[7.95, 0], [8.05, 1], [9.5, 1], [9.7, 0]]);
+  const abierta = kf(t, [[1.0, 0], [1.2, 0.9], [2.8, 0.9], [3.0, 0], [7.95, 0], [8.05, 1], [9.5, 1], [9.7, 0]]);
+  const sonrisa = kf(t, [[3.05, 1], [3.3, 0.25], [5.3, 0.25], [5.7, 1]]);
+  return {
+    ent, salto, inclina, sx: sx - resp * 0.009, sy: sy + resp * 0.012,
+    ojo: { abre: parpadeo(t), x: miraX, y: miraY, feliz },
+    boca: { sonrisa, abierta },
+    t,
+  };
+}
+
+// ---- Cara: dos puntos y una sonrisa, igual en los tres ----
+function cara({ x = 100, y, sep = 21, r = 8, bocaY = 20 }, p, tinta, fondoBoca) {
+  const { abre, x: mx, y: my, feliz } = p.ojo;
+  let s = "";
+  for (const lado of [-1, 1]) {
+    const ex = x + lado * sep + mx, ey = y + my;
+    if (feliz > 0.5) s += `<path d="M${f1(ex - r - 1)} ${f1(ey + 3)} Q${f1(ex)} ${f1(ey - r - 7)} ${f1(ex + r + 1)} ${f1(ey + 3)}" fill="none" stroke="${tinta}" stroke-width="5.5" stroke-linecap="round"/>`;
+    else s += `<ellipse cx="${f1(ex)}" cy="${f1(ey)}" rx="${r}" ry="${f1(Math.max(1.2, (r + 2.2) * abre))}" fill="${tinta}"/>`;
+  }
+  const by = y + bocaY + my * 0.4, bx = x + mx * 0.7, a = p.boca.abierta;
+  if (a > 0.05) s += `<path d="M${f1(bx - 11)} ${f1(by - 1)} Q${f1(bx)} ${f1(by - 1 + 2)} ${f1(bx + 11)} ${f1(by - 1)} Q${f1(bx + 10)} ${f1(by + 6 + 10 * a)} ${f1(bx)} ${f1(by + 6 + 10 * a)} Q${f1(bx - 10)} ${f1(by + 6 + 10 * a)} ${f1(bx - 11)} ${f1(by - 1)}Z" fill="${tinta}"/>`;
+  else s += `<path d="M${f1(bx - 10)} ${f1(by)} Q${f1(bx)} ${f1(by + 13 * p.boca.sonrisa)} ${f1(bx + 10)} ${f1(by)}" fill="none" stroke="${tinta}" stroke-width="5" stroke-linecap="round"/>`;
+  return s;
+}
+
+// ---- Los tres personajes. Cada uno define su silueta y sus rasgos. ----
+const P = {
+  sagui: {
+    nombre: "Sagui",
+    lema: "Saguaro y guía. El vecino del desierto que te señala por dónde ir.",
+    por: ["Es de aquí: nadie más en México puede usar un saguaro con tanta razón.", "Sus brazos hacen el trabajo: saluda, duda y señala sin necesidad de texto.", "Son solo tres trazos gruesos con punta redonda."],
+    pose(t) {
+      const b = poseBase(t);
+      const onda = Math.sin(((t - 1.15) / 0.36) * Math.PI) * 26;
+      const saludo = kf(t, [[1.0, 0], [1.25, 1, salida], [2.8, 1], [3.05, 0]]);
+      const duda = kf(t, [[3.05, 0], [3.3, 1], [5.3, 1], [5.7, 0]]);
+      const senala = kf(t, [[5.7, 0], [6.0, 1, rebote], [7.4, 1], [7.7, 0]]);
+      const arriba = kf(t, [[7.95, 0], [8.14, 1, rebote], [9.45, 1], [9.75, 0]]);
+      const entrada = kf(t, [[0.1, 0], [0.6, 1, rebote]]);
+      const balanceo = Math.sin(((t - 3.3) / 0.5) * Math.PI);
+      // Brazo izquierdo (hombro, codo, mano)
+      const hi = [100, 122];
+      let ci = [42, 122], mi = [42, 88];
+      ci = mezcla([74, 140], ci, entrada); mi = mezcla([70, 150], mi, entrada);
+      if (duda) { mi = [mi[0], mi[1] + 9 * balanceo * duda]; ci = [ci[0], ci[1] + 6 * balanceo * duda]; }
+      if (arriba) { mi = mezcla(mi, [36, 60], arriba); ci = mezcla(ci, [40, 110], arriba); }
+      // Brazo derecho
+      const hd = [100, 102];
+      let cd = [158, 102], md = [158, 60];
+      cd = mezcla([126, 120], cd, entrada); md = mezcla([130, 130], md, entrada);
+      if (saludo) {
+        md = mezcla(md, rot([164, 44], [158, 96], onda), saludo);
+        cd = mezcla(cd, [156, 100], saludo);
+      }
+      if (duda) { md = [md[0], md[1] - 9 * balanceo * duda]; cd = [cd[0], cd[1] - 6 * balanceo * duda]; }
+      if (senala) { cd = mezcla(cd, [148, 92], senala); md = mezcla(md, [192, 88], senala); }
+      if (arriba) { md = mezcla(md, [164, 42], arriba); cd = mezcla(cd, [160, 92], arriba); }
+      const puntos = kf(t, [[3.3, 0], [3.5, 1], [5.2, 1], [5.5, 0]]);
+      return { ...b, hi, ci, mi, hd, cd, md, puntos };
+    },
+    silueta: (p) => [
+      { d: `M${p.hi} Q${p.ci} ${p.mi}`, ancho: 25 },
+      { d: `M${p.hd} Q${p.cd} ${p.md}`, ancho: 25 },
+      { d: "M100 142 L100 60", ancho: 60 },
+    ],
+    rasgos(p, c) {
+      let s = cara({ y: 76, sep: 15, r: 6.5, bocaY: 16 }, p, c.rasgo);
+      return s;
+    },
+    extra(p, c) {
+      if (!p.puntos) return "";
+      let s = "";
+      [0, 1, 2].forEach((i) => {
+        const k = 0.5 + 0.5 * Math.sin((p.t * 2 * Math.PI) / 0.9 - i * 0.9);
+        s += `<circle cx="${130 + i * 15}" cy="${f1(30 - k * 7)}" r="5" fill="${c.linea}" opacity="${f1(p.puntos * (0.45 + 0.55 * k))}"/>`;
+      });
+      return s;
+    },
+  },
+
+  folio: {
+    nombre: "Folio",
+    lema: "La hoja que ya se sabe todos los requisitos.",
+    por: ["Se entiende de inmediato: un trámite es papel, y aquí el papel te ayuda.", "Su esquina doblada funciona como oreja y como mano.", "Mientras busca, se escribe solo: la espera se vuelve parte del personaje."],
+    pose(t) {
+      const b = poseBase(t);
+      const onda = 0.5 + 0.5 * Math.sin(((t - 1.15) / 0.3) * Math.PI);
+      const saludo = kf(t, [[1.0, 0], [1.25, 1, salida], [2.8, 1], [3.05, 0]]);
+      const oreja = Math.max(saludo * onda, kf(t, [[5.7, 0], [6.0, 1, rebote], [7.4, 1], [7.7, 0]]) * 0.85, kf(t, [[7.95, 0], [8.14, 0.9, rebote], [9.45, 0.9], [9.75, 0]]));
+      const lineas = kf(t, [[3.1, 1], [3.3, 0, lineal], [3.5, 0], [5.3, 1, lineal]]);
+      const curva = b.inclina * 1.3 + kf(t, [[7.95, 0], [8.34, 0], [8.7, 0]]) + Math.sin((t * 2 * Math.PI) / 1.7) * 1.1;
+      return { ...b, oreja, lineas, curva, inclina: b.inclina * 0.45 };
+    },
+    silueta(p) {
+      const x0 = 42, x1 = 158, y0 = 30, y1 = 172, f = 36, r = 15, b = p.curva;
+      const tl = x0 + b, tr = x1 + b, m = -b * 0.35;
+      const d = `M${f1(tl + r)} ${y0} L${f1(tr - f)} ${y0} L${f1(tr)} ${y0 + f} C${f1(tr + m)} 100 ${f1(x1 + m)} 130 ${x1} ${y1 - r} Q${x1} ${y1} ${x1 - r} ${y1} L${x0 + r} ${y1} Q${x0} ${y1} ${x0} ${y1 - r} C${f1(x0 + m)} 130 ${f1(tl + m)} 100 ${f1(tl)} ${y0 + r} Q${f1(tl)} ${y0} ${f1(tl + r)} ${y0}Z`;
+      return [{ d, relleno: true }];
+    },
+    rasgos(p, c) {
+      const b = p.curva;
+      let s = "";
+      // Esquina doblada
+      const f = 36, tr = 158 + b, y0 = 30;
+      const dobl = [tr - f, y0 + f], alza = [tr + 3, y0 - 3];
+      const punta = mezcla(dobl, alza, p.oreja);
+      s += `<path d="M${f1(tr - f)} ${y0} L${f1(punta[0])} ${f1(punta[1])} L${f1(tr)} ${y0 + f}Z" fill="${c.pliegue}" stroke="${c.pliegue}" stroke-width="9" stroke-linejoin="round"/>`;
+      s += cara({ x: 100 + b * 0.55, y: 78, bocaY: 19 }, p, c.rasgo);
+      // Renglones
+      const largos = [64, 46];
+      largos.forEach((w, i) => {
+        const y = 134 + i * 16, x = 100 + b * 0.05 - 32;
+        const av = clamp(p.lineas * largos.length - i);
+        if (av > 0) s += `<path d="M${f1(x)} ${y} L${f1(x + w * av)} ${y}" stroke="${c.rasgo}" stroke-width="7" stroke-linecap="round" fill="none"/>`;
+      });
+      return s;
+    },
+    extra: () => "",
+  },
+
+  rumbo: {
+    nombre: "Rumbo",
+    lema: "La flecha de Tramita cobró vida. Es tu brújula en la ventanilla.",
+    por: ["Es tu logo con cara: la marca y el personaje son lo mismo.", "Su flecha gira como brújula: mientras busca, es una animación de carga con personalidad.", "Un cuadrado, dos puntos y una flecha caben hasta en un icono de 16 píxeles."],
+    pose(t) {
+      const b = poseBase(t);
+      const saludoV = Math.sin(((t - 1.15) / 0.3) * Math.PI) * 26;
+      const saludo = kf(t, [[1.0, 0], [1.25, 1, salida], [2.8, 1], [3.05, 0]]);
+      const giro = kf(t, [[3.2, 0], [5.3, 1080, (x) => x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2]]);
+      const senala = kf(t, [[5.7, 0], [6.0, 1, rebote], [7.4, 1], [7.7, 0]]);
+      const arriba = kf(t, [[7.95, 0], [8.14, 1, rebote], [9.45, 1], [9.75, 0]]);
+      const nace = kf(t, [[0.15, 0], [0.75, 1, rebote]]);
+      const viento = Math.sin((t * 2 * Math.PI) / 2.3) * 3;
+      const angulo = 40 + viento + saludo * saludoV + giro + senala * 50 + arriba * -40;
+      return { ...b, angulo, largo: nace };
+    },
+    silueta(p) {
+      return [{ d: "M72 62 L128 62 Q162 62 162 96 L162 138 Q162 172 128 172 L72 172 Q38 172 38 138 L38 96 Q38 62 72 62Z", relleno: true }];
+    },
+    flecha(p, color) {
+      const piv = [100, 56], L = 56 * p.largo;
+      const punta = [piv[0], piv[1] - L];
+      const a = rot(punta, piv, p.angulo);
+      const iz = rot([punta[0] - 19, punta[1] + 19 ], piv, p.angulo);
+      const de = rot([punta[0] + 19, punta[1] + 19 ], piv, p.angulo);
+      return `<path d="M${f1(piv[0])} ${f1(piv[1])} L${f1(a[0])} ${f1(a[1])} M${f1(iz[0])} ${f1(iz[1])} L${f1(a[0])} ${f1(a[1])} L${f1(de[0])} ${f1(de[1])}" fill="none" stroke="${color}" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>`;
+    },
+    rasgos(p, c) { return cara({ y: 106, bocaY: 21 }, p, c.rasgo); },
+    atras(p, c) { return P.rumbo.flecha(p, c.flecha); },
+    extra: () => "",
+  },
+};
+
+// ---- Estilos: de la misma definición salen todas las versiones ----
+const ESTILOS = {
+  color:   { cuerpo: C.senal, rasgo: C.tinta, pliegue: C.oscura, flecha: C.tinta, linea: C.tinta },
+  noche:   { cuerpo: C.panel, rasgo: C.tinta, pliegue: "#C9CDD3", flecha: C.panel, linea: C.panel },
+  naranja: { cuerpo: C.tinta, rasgo: C.senal, pliegue: "#3a342c", flecha: C.tinta, linea: C.tinta },
+  tinta:   { cuerpo: C.tinta, rasgo: C.panel, pliegue: C.panel, flecha: C.tinta, linea: C.tinta },
+};
+
+function capa(formas, color, extra = 0) {
+  return formas.map((f) => f.relleno
+    ? `<path d="${f.d}" fill="${color}" stroke="${color}" stroke-width="${extra}" stroke-linejoin="round"/>`
+    : `<path d="${f.d}" fill="none" stroke="${color}" stroke-width="${f.ancho + extra}" stroke-linecap="round" stroke-linejoin="round"/>`).join("");
+}
+
+/** Dibuja un personaje con una pose y un estilo. `contorno` y `calca` usan la misma silueta engrosada. */
+function dibuja(id, pose, { estilo = "color", contorno = false, calca = false, sombra = false } = {}) {
+  const def = P[id], c = { ...ESTILOS[estilo] };
+  const sil = def.silueta(pose);
+  let cuerpo = "";
+  let atras = def.atras ? def.atras(pose, c) : "";
+  if (contorno) {
+    c.rasgo = C.tinta; c.pliegue = "#fff"; c.flecha = C.tinta; c.cuerpo = "#fff";
+    atras = def.atras ? def.atras(pose, c) : "";
+    cuerpo = capa(sil, C.tinta, 7) + capa(sil, "#fff", 0);
+  } else if (calca) {
+    const trazo = def.atras ? `<g stroke-width="26">${def.atras(pose, { ...c, flecha: "#fff" }).replace('stroke-width="13"', 'stroke-width="30"')}</g>` : "";
+    cuerpo = trazo + capa(sil, "#fff", 22) + capa(sil, c.cuerpo, 0);
+  } else {
+    cuerpo = capa(sil, c.cuerpo, 0);
+  }
+  const raiz = 172, e = pose.ent;
+  const tf = `translate(100 ${f1(raiz + pose.salto)}) rotate(${f1(pose.inclina)}) scale(${f1(pose.sx * e)} ${f1(pose.sy * e)}) translate(-100 ${-raiz})`;
+  let s = "";
+  if (sombra) {
+    const k = 1 + pose.salto / 90, r = 58 * k * e;
+    s += `<ellipse cx="100" cy="179" rx="${f1(Math.max(0, r))}" ry="${f1(Math.max(0, 6.5 * k * e))}" fill="${C.tinta}" opacity=".14"/>`;
+  }
+  s += `<g transform="${tf}">${atras}${cuerpo}${def.rasgos(pose, c)}${def.extra(pose, c)}</g>`;
+  return s;
+}
+
+function destello(t, color) {
+  const av = clamp((t - 8.16) / 0.5);
+  if (av <= 0 || av >= 1) return "";
+  let s = "";
+  for (let i = 0; i < 9; i++) {
+    const g = -160 + (i * 140) / 8, a = (g * Math.PI) / 180;
+    const r0 = 100 + 18 * salida(av), r1 = r0 + 22 * (1 - av);
+    s += `<path d="M${f1(100 + Math.cos(a) * r0)} ${f1(96 + Math.sin(a) * r0)} L${f1(100 + Math.cos(a) * r1)} ${f1(96 + Math.sin(a) * r1)}" stroke="${color}" stroke-width="6" stroke-linecap="round" opacity="${f1(1 - av * 0.7)}"/>`;
+  }
+  return s;
+}
+
+function destino(t) {
+  const a = kf(t, [[5.75, 0], [6.1, 1, rebote], [7.4, 1], [7.65, 0]]);
+  if (a <= 0) return "";
+  const pulso = (t * 1.4) % 1;
+  return `<circle cx="224" cy="88" r="${f1(11 + 16 * pulso)}" fill="none" stroke="${C.senal}" stroke-width="3" opacity="${f1((1 - pulso) * a)}"/><circle cx="224" cy="88" r="${f1(11 * a)}" fill="${C.senal}"/>`;
+}
+
+function escena(id, t, ancho) {
+  const vista = "-44 -36 288 232";
+  const alto = (ancho * 232) / 288;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vista}" width="${ancho}" height="${f1(alto)}">${destino(t)}${destello(t, C.senal)}${dibuja(id, P[id].pose(t), { sombra: true })}</svg>`;
+}
+
+const estados = (t) => `<div class="estados">${ACTOS.map(([n, a, b]) => `<span class="${t >= a && t < b ? "activo" : ""}">${n}</span>`).join("")}</div>`;
+
+// ---- Modos de la página ----
+const raiz = document.getElementById("raiz");
+window.cuadro = function (modo, id, t) {
+  if (modo === "video") {
+    raiz.innerHTML = `<div class="video"><div class="nombre">${P[id].nombre}</div><div class="marca">Propuesta para Tramita</div><div class="lienzo">${escena(id, t, 950)}</div>${estados(t)}</div>`;
+  } else if (modo === "todos") {
+    raiz.innerHTML = `<div class="todos"><h1>Tres propuestas de personaje</h1><div class="tres">${Object.keys(P).map((k) => `<div class="caja">${escena(k, t, 590)}<b style="margin-top:24px">${P[k].nombre}</b></div>`).join("")}</div>${estados(t)}</div>`;
+  }
+  return true;
+};
+
+function poseSvg(id, t, ancho, op = {}) {
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-14 -24 228 216" width="${ancho}" height="${f1((ancho * 216) / 228)}">${dibuja(id, P[id].pose(t), op)}</svg>`;
+}
+
+/** Reduce el personaje a una cuadrícula de una tinta para probar que aguanta el pixel art. */
+async function aPixeles(id, celdas, tam) {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-14 -24 228 216" width="${celdas}" height="${Math.round((celdas * 216) / 228)}">${dibuja(id, P[id].pose(0.62), { estilo: "color" })}</svg>`;
+  const img = new Image();
+  img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
+  await img.decode();
+  const c = document.createElement("canvas"); c.width = img.width; c.height = img.height;
+  const x = c.getContext("2d"); x.drawImage(img, 0, 0);
+  const d = x.getImageData(0, 0, c.width, c.height);
+  for (let i = 0; i < d.data.length; i += 4) {
+    const a = d.data[i + 3], osc = d.data[i] < 120;
+    const col = a < 110 ? [0, 0, 0, 0] : osc ? [21, 18, 14, 255] : [233, 96, 0, 255];
+    d.data.set(col, i);
+  }
+  x.putImageData(d, 0, 0);
+  c.className = "pix"; c.style.width = tam + "px"; c.style.height = Math.round((tam * c.height) / c.width) + "px";
+  return c;
+}
+
+const ARMA = {
+  sagui: (t) => [
+    `<path d="M100 142 L100 60" stroke="${t}" stroke-width="60" stroke-linecap="round" fill="none"/>`,
+    `<path d="M100 142 L100 60" stroke="${t}" stroke-width="60" stroke-linecap="round" fill="none"/><path d="M100 122 Q42 122 42 88" stroke="${t}" stroke-width="25" stroke-linecap="round" fill="none"/><path d="M100 102 Q158 102 158 60" stroke="${t}" stroke-width="25" stroke-linecap="round" fill="none"/>`,
+  ],
+  folio: (t) => [
+    `<path d="M57 30 L122 30 L158 66 L158 157 Q158 172 143 172 L57 172 Q42 172 42 157 L42 45 Q42 30 57 30Z" fill="${t}"/>`,
+    `<path d="M57 30 L122 30 L158 66 L158 157 Q158 172 143 172 L57 172 Q42 172 42 157 L42 45 Q42 30 57 30Z" fill="${t}"/><path d="M122 30 L122 66 L158 66Z" fill="${C.oscura}" stroke="${C.oscura}" stroke-width="9" stroke-linejoin="round"/>`,
+  ],
+  rumbo: (t) => [
+    `<path d="M72 62 L128 62 Q162 62 162 96 L162 138 Q162 172 128 172 L72 172 Q38 172 38 138 L38 96 Q38 62 72 62Z" fill="${t}"/>`,
+    `<path d="M72 62 L128 62 Q162 62 162 96 L162 138 Q162 172 128 172 L72 172 Q38 172 38 138 L38 96 Q38 62 72 62Z" fill="${t}"/><path d="M100 56 L136 13 M112 9 L136 13 L138 37" fill="none" stroke="${C.tinta}" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>`,
+  ],
+};
+
+window.lamina = async function (id) {
+  const def = P[id], T0 = 0.62;
+  const tile = (bg, op, et, colorEt = C.tinta) => `<div class="tile" style="background:${bg}">${poseSvg(id, T0, 176, op)}<i style="color:${colorEt}">${et}</i></div>`;
+  const pasos = ARMA[id](C.senal).map((a) => `<div class="pose"><svg viewBox="-14 -24 228 216" width="170" height="161">${a}</svg></div>`).join("");
+  raiz.innerHTML = `<div class="lamina">
+    <div class="izq">
+      <h1>${def.nombre}</h1>
+      <p class="lema">${def.lema}</p>
+      <div class="heroe">${poseSvg(id, 1.55, 580, { sombra: true })}</div>
+      <ul class="por">${def.por.map((x) => `<li>${x}</li>`).join("")}</ul>
+    </div>
+    <div class="derecha">
+      <div class="tarjeta"><h2>Tiene vida propia</h2><div class="fila" style="grid-template-columns:repeat(5,1fr)">
+        ${[[0.62, "Tranquilo"], [1.55, "Saluda"], [4.1, "Piensa"], [6.7, "Te indica"], [8.34, "¡Listo!"]].map(([t, n]) => `<div class="pose">${poseSvg(id, t, 200)}${n}</div>`).join("")}
+      </div></div>
+      <div class="tarjeta"><h2>Se reproduce de cualquier forma</h2><div class="fila" style="grid-template-columns:repeat(4,1fr)">
+        ${tile(C.piso, { estilo: "color" }, "Color")}
+        ${tile(C.senal, { estilo: "naranja" }, "Sobre naranja")}
+        ${tile(C.tinta, { estilo: "noche" }, "Sobre negro", "#fff")}
+        ${tile("#fff;border:2px solid #C9CDD3", { estilo: "tinta" }, "Sello a una tinta")}
+        ${tile("#fff;border:2px solid #C9CDD3", { contorno: true }, "Solo línea")}
+        ${tile(C.senal + "33", { calca: true }, "Calcomanía")}
+        <div class="tile" style="background:${C.piso}"><div id="px"></div><i>Pixel art</i></div>
+        <div class="tile" style="background:${C.piso}"><div class="tamanos">${[64, 32, 20].map((n) => poseSvg(id, T0, n)).join("")}</div><i>Icono: 64, 32 y 20 px</i></div>
+      </div></div>
+      <div class="abajo">
+        <div class="tarjeta" style="display:flex;flex-direction:column;justify-content:center"><h2>Se arma en tres pasos</h2><div class="arma">${pasos}<div class="pose">${poseSvg(id, T0, 170)}</div></div>
+          <p style="font-size:26px;line-height:1.3;color:${C.suave};margin-top:28px">Cualquiera lo puede dibujar: forma básica, su detalle y la cara, que es igual en todas sus versiones.</p></div>
+        <div class="telefono"><div class="pantalla">
+          <div class="saludo">${poseSvg(id, T0, 150)}<p>¿Qué trámite resolvemos hoy?</p></div>
+          <div class="capsula">Escribe o dicta tu pregunta<u></u></div>
+          <div class="pildora"><b></b><span>Trámites</span><span>Mis trámites</span></div>
+        </div></div>
+      </div>
+    </div>
+  </div>`;
+  document.getElementById("px").appendChild(await aPixeles(id, 22, 180));
+  await document.fonts.ready;
+  return raiz.firstChild.getBoundingClientRect().height;
+};
+
+window.comparar = async function () {
+  raiz.innerHTML = `<div class="todos" style="height:auto;padding-bottom:64px"><h1>Tres propuestas de personaje para Tramita</h1><div class="tres">${Object.keys(P).map((k) => `<div class="caja" style="height:auto;padding:36px 28px">
+    ${poseSvg(k, 1.55, 420, { sombra: true })}
+    <b style="margin-top:8px;font-size:60px">${P[k].nombre}</b>
+    <p style="text-align:center;font-size:29px;line-height:1.22;margin-top:8px;color:${C.tinta}">${P[k].lema}</p>
+    <div style="display:flex;gap:12px;margin-top:26px;align-items:center">
+      <div style="background:${C.senal};border-radius:14px;padding:8px">${poseSvg(k, 0.62, 100, { estilo: "naranja" })}</div>
+      <div style="background:${C.tinta};border-radius:14px;padding:8px">${poseSvg(k, 0.62, 100, { estilo: "noche" })}</div>
+      <div style="border:2px solid #C9CDD3;border-radius:14px;padding:6px">${poseSvg(k, 0.62, 100, { contorno: true })}</div>
+      <div style="border:2px solid #C9CDD3;border-radius:14px;padding:6px;">${poseSvg(k, 0.62, 100, { estilo: "tinta" })}</div>
+    </div>
+  </div>`).join("")}</div></div>`;
+  await document.fonts.ready;
+  return raiz.firstChild.getBoundingClientRect().height;
+};
+window.DURACION = DURACION;
+window.IDS = Object.keys(P);
+</script>
+</body>
+</html>
