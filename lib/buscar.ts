@@ -28,6 +28,8 @@ export const SINONIMOS: Record<string, string[]> = {
   negocio: ["licencia", "comercio", "funcionamiento"],
   abrir: ["funcionamiento"],
   vender: ["comercio", "publica"],
+  tacos: ["comercio", "publica"],
+  puesto: ["comercio", "publica"],
   calle: ["publica", "comercio"],
   taqueria: ["funcionamiento", "licencia"],
   papeleria: ["funcionamiento", "licencia"],
@@ -59,6 +61,8 @@ export const SINONIMOS: Record<string, string[]> = {
   arbol: ["poda", "derribo"],
 };
 
+const TRAMITE_SECUNDARIO = /renov|cancel|prorrog|actualiz|modific|reposic|multiclave|espectaculo/;
+
 export function palabrasClave(consulta: string) {
   return normalizar(consulta)
     .split(" ")
@@ -87,7 +91,9 @@ export function buscar(consulta: string, indice: EntradaIndice[], limite = 6) {
       if (mejor) cubiertas++;
       puntos += mejor;
     }
-    return { item, puntos: puntos + (cubiertas === palabras.length ? 3 : 0) };
+    // Quien inicia algo no busca renovarlo: estos trámites solo ganan si se piden por su nombre.
+    const secundario = TRAMITE_SECUNDARIO.test(normalizar(item.n)) && !TRAMITE_SECUNDARIO.test(normalizar(consulta));
+    return { item, puntos: puntos + (cubiertas === palabras.length ? 3 : 0) - (secundario ? 5 : 0) };
   });
 
   return resultados

@@ -445,7 +445,11 @@ export async function POST(req: Request) {
         }
 
         if (!redactado && fichas.length) {
-          enviar({ t: "bloque", bloque: { tipo: "resumen", d: "Esta es la ficha oficial de lo que buscas. Revisa requisitos, costo y lugar abajo." } });
+          // Sin respuesta de la IA a tiempo, lo calculado por la app sigue siendo útil.
+          const texto = plan
+            ? `Tu ruta tiene ${plan.pasos.length} pasos, en el orden en que se exigen. Empieza por: ${plan.pasos[0].nombre}.`
+            : "Esta es la ficha oficial de lo que buscas. Revisa requisitos, costo y lugar abajo.";
+          enviar({ t: "bloque", bloque: { tipo: "resumen", d: texto } });
           redactado = true;
         }
       }
