@@ -123,7 +123,8 @@ html[data-teclado] .nav-flotante {
   transform: translateY(calc(100% + 2rem));
 }
 
-.disparador-chat {
+.disparador-chat,
+.aviso-flotante {
   bottom: calc(var(--alto-dock) + 0.25rem);
   animation: entra-fila 360ms 120ms var(--ease-salida) backwards;
 }
@@ -195,6 +196,16 @@ html[data-teclado] .nav-flotante {
   }
 }
 
+.nav-cuenta {
+  animation: nav-cuenta 320ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes nav-cuenta {
+  from {
+    transform: scale(0.4);
+  }
+}
+
 @keyframes nav-reposo {
   from {
     opacity: 0;
@@ -240,6 +251,16 @@ html[data-teclado] .nav-flotante {
   from {
     opacity: 0;
     transform: translateY(6px) scale(0.72);
+  }
+}
+
+.avance-barra {
+  animation: avance-barra 520ms 120ms var(--ease-salida) backwards;
+}
+
+@keyframes avance-barra {
+  from {
+    transform: scaleX(0);
   }
 }
 

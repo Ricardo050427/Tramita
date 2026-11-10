@@ -3,13 +3,15 @@
 import { useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutGrid, MessageCircleQuestionMark, type LucideIcon } from "lucide-react";
+import { FolderOpen, LayoutGrid, MessageCircleQuestionMark, type LucideIcon } from "lucide-react";
+import { useMisTramites } from "@/lib/mis-tramites";
 
 const ALTO_MINIMO_TECLADO = 120;
 
 const SECCIONES: { ruta: string; nombre: string; Icono: LucideIcon }[] = [
   { ruta: "/", nombre: "Preguntar", Icono: MessageCircleQuestionMark },
   { ruta: "/tramites", nombre: "Trámites", Icono: LayoutGrid },
+  { ruta: "/mis-tramites", nombre: "Mis trámites", Icono: FolderOpen },
 ];
 
 // Se guía por el teclado real, no por el foco: en Android el teclado se puede cerrar con el campo aún activo.
@@ -56,10 +58,11 @@ function Activa({ Icono, nombre }: { Icono: LucideIcon; nombre: string }) {
 export function Navegacion() {
   const ruta = usePathname();
   useTeclado();
-  const seccion = ruta === "/" ? "/" : "/tramites";
+  const seccion = ruta === "/" || ruta === "/mis-tramites" ? ruta : "/tramites";
+  const enCurso = Object.values(useMisTramites()).filter((s) => !s.terminado).length;
 
   return (
-    <nav aria-label="Secciones" className="nav-flotante fixed inset-x-0 z-40 mx-auto h-14 w-[min(16rem,calc(100%-3rem))] rounded-full bg-panel shadow-[0_8px_24px_-8px_rgb(21_18_14/0.32)]">
+    <nav aria-label="Secciones" className="nav-flotante fixed inset-x-0 z-40 mx-auto h-14 w-[min(20rem,calc(100%-2rem))] rounded-full bg-panel shadow-[0_8px_24px_-8px_rgb(21_18_14/0.32)]">
       <ul className="flex h-full items-center px-1.5">
         {SECCIONES.map(({ ruta: destino, nombre, Icono }) => {
           const activa = seccion === destino;
@@ -74,8 +77,14 @@ export function Navegacion() {
                 {activa ? (
                   <Activa key={destino} Icono={Icono} nombre={nombre} />
                 ) : (
-                  <span className="nav-reposo flex flex-col items-center gap-0.5">
+                  <span className="nav-reposo relative flex flex-col items-center gap-0.5">
                     <Icono className="size-[1.375rem]" strokeWidth={1.9} aria-hidden />
+                    {destino === "/mis-tramites" && enCurso ? (
+                      <span key={enCurso} className="nav-cuenta absolute -top-1 left-1/2 ml-1.5 grid h-4 min-w-4 place-items-center rounded-full bg-senal px-1 text-[0.6875rem] leading-none font-bold text-tinta">
+                        {enCurso}
+                        <span className="sr-only"> en curso</span>
+                      </span>
+                    ) : null}
                     <span className="text-xs leading-none font-medium">{nombre}</span>
                   </span>
                 )}

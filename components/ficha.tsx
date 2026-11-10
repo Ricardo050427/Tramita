@@ -3,10 +3,11 @@
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowRight, ChevronDown, Download, Clock, ExternalLink, LocateFixed, MapPin, Phone } from "lucide-react";
+import { ArrowRight, Bookmark, ChevronDown, Download, Clock, ExternalLink, LocateFixed, MapPin, Phone } from "lucide-react";
 import { ListaDocumentos, rutaDocumento } from "./documentos";
 import { Encabezado } from "./senal";
 import { estadoHorario } from "@/lib/horario";
+import { datosDe, dejarDeSeguir, seguir, useMisTramites } from "@/lib/mis-tramites";
 import type { Documento, Oficina, Requisito, Tramite } from "@/lib/tipos";
 
 const ALMACEN = "tramita:lista:";
@@ -263,6 +264,7 @@ export function Ficha({
   const [marcados, setMarcados] = useState<number[]>([]);
   const [verTodos, setVerTodos] = useState(!compacta);
   const total = tramite.requisitos.length;
+  const guardado = Boolean(useMisTramites()[tramite.clave]);
 
   useEffect(() => {
     const guardados = leerMarcados(tramite.clave);
@@ -278,6 +280,7 @@ export function Ficha({
     try {
       localStorage.setItem(ALMACEN + tramite.clave, JSON.stringify(siguiente));
     } catch {}
+    if (siguiente.length) seguir(datosDe(tramite));
   }
 
   const visibles = verTodos ? tramite.requisitos : tramite.requisitos.slice(0, 5);
@@ -287,6 +290,17 @@ export function Ficha({
       <div className="px-4 pt-4 pb-3">
         <h2 className="text-[1.375rem] leading-tight font-bold tracking-[-0.01em] text-balance">{tramite.nombre}</h2>
         <p className="mt-1 text-tinta-suave">{tramite.dependencia}</p>
+        <button
+          type="button"
+          aria-pressed={guardado}
+          onClick={() => (guardado ? dejarDeSeguir(tramite.clave) : seguir(datosDe(tramite)))}
+          className={`mt-3 flex min-h-11 items-center gap-2 rounded-full px-4 text-[0.9375rem] font-bold transition-[background-color,color,transform] duration-150 active:scale-[0.97] ${guardado ? "bg-tinta text-panel" : "bg-piso text-tinta"}`}
+        >
+          <motion.span key={String(guardado)} initial={{ scale: 0.6 }} animate={{ scale: 1 }} transition={{ duration: 0.28, ease: [0.34, 1.56, 0.64, 1] }}>
+            <Bookmark className={`size-[1.125rem] ${guardado ? "fill-senal text-senal" : ""}`} aria-hidden />
+          </motion.span>
+          {guardado ? "En Mis trámites" : "Guardar en Mis trámites"}
+        </button>
       </div>
 
       <dl className="px-4">

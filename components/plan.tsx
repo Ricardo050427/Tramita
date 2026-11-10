@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion } from "motion/react";
 import { Check } from "lucide-react";
+import { alternarPaso } from "@/lib/mis-tramites";
 import type { PasoPlan, Plan } from "@/lib/tipos";
 
 const CASO = "tramita:caso";
@@ -26,7 +27,7 @@ function costoVisible(p: PasoPlan) {
 }
 
 /** Días que le quedan a un documento marcado; null si no caduca o no se sabe. */
-export function diasRestantes(p: PasoPlan, fecha: string) {
+export function diasRestantes(p: Pick<PasoPlan, "vigencia">, fecha: string) {
   const inicio = new Date(fecha);
   if (p.vigencia === "mes") {
     const fin = new Date(inicio.getFullYear(), inicio.getMonth() + 1, 0, 23, 59);
@@ -36,7 +37,7 @@ export function diasRestantes(p: PasoPlan, fecha: string) {
   return Math.ceil((inicio.getTime() + p.vigencia * DIA_MS - Date.now()) / DIA_MS);
 }
 
-function avisoVigencia(dias: number | null) {
+export function avisoVigencia(dias: number | null) {
   if (dias === null) return null;
   if (dias < 0) return { texto: "Ya venció, tendrás que renovarlo", urgente: true };
   if (dias === 0) return { texto: "Vence hoy", urgente: true };
@@ -58,8 +59,9 @@ export function TarjetaPlan({ plan, alCambiar }: { plan: Plan; alCambiar?: (mens
     alCambiar?.(mensajePlan(plan, guardado));
   }, [plan, alCambiar]);
 
-  function alternar(clave: string) {
+  function alternar(paso: PasoPlan) {
     navigator.vibrate?.(8);
+    const { clave } = paso;
     const siguiente = { ...caso };
     if (siguiente[clave]) delete siguiente[clave];
     else siguiente[clave] = new Date().toISOString();
@@ -68,6 +70,7 @@ export function TarjetaPlan({ plan, alCambiar }: { plan: Plan; alCambiar?: (mens
     try {
       localStorage.setItem(CASO, JSON.stringify(siguiente));
     } catch {}
+    alternarPaso(paso, siguiente[clave] ?? null);
   }
 
   const hechos = plan.pasos.filter((p) => caso[p.clave]).length;
@@ -111,7 +114,7 @@ export function TarjetaPlan({ plan, alCambiar }: { plan: Plan; alCambiar?: (mens
                   </p>
                 ) : null}
                 {aviso ? <p className={`text-[0.9375rem] leading-snug font-medium ${aviso.urgente ? "text-error" : "text-bien"}`}>{aviso.texto}</p> : null}
-                <button type="button" aria-pressed={Boolean(fecha)} onClick={() => alternar(p.clave)} className="mt-0.5 min-h-11 font-bold underline">
+                <button type="button" aria-pressed={Boolean(fecha)} onClick={() => alternar(p)} className="mt-0.5 min-h-11 font-bold underline">
                   {fecha ? "Desmarcar" : "Ya lo tengo"}
                 </button>
               </div>
