@@ -6,6 +6,7 @@ import { motion } from "motion/react";
 import { Check, ChevronRight, RotateCcw, Trash2 } from "lucide-react";
 import { leerMarcados } from "./ficha";
 import { avisoVigencia, diasRestantes } from "./plan";
+import { Sagui } from "./sagui";
 import { Encabezado } from "./senal";
 import { dejarDeSeguir, reabrir, restaurar, terminar, useMisTramites, type Seguimiento } from "@/lib/mis-tramites";
 
@@ -99,7 +100,8 @@ function Tarjeta({ s, indice, alQuitar }: { s: Seguimiento; indice: number; alQu
 function Vacio() {
   return (
     <div className="px-1 pt-3">
-      <h2 className="text-xl font-bold">Todavía no sigues ningún trámite</h2>
+      <Sagui estado="saluda" className="-ml-2 size-24" />
+      <h2 className="mt-1 text-xl font-bold">Todavía no sigues ningún trámite</h2>
       <p className="mt-1.5 leading-snug text-pretty text-tinta-suave">Guarda uno desde su ficha o empieza a marcar sus requisitos. Aquí verás lo que llevas y lo que te falta.</p>
       <Link href="/tramites" className="mt-5 flex min-h-12 w-fit items-center gap-2 rounded-full bg-senal px-5 font-bold text-tinta transition-transform duration-150 active:scale-[0.97]">
         Ver trámites

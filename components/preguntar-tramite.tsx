@@ -5,6 +5,7 @@ import { AnimatePresence, motion, useDragControls, useReducedMotion } from "moti
 import { ChevronRight, MessageCircleQuestionMark, X } from "lucide-react";
 import { BarraPregunta } from "./barra-pregunta";
 import { Mensajes, useConversacion } from "./conversacion";
+import { Sagui } from "./sagui";
 import type { EntradaIndice, Tramite } from "@/lib/tipos";
 
 const SIN_INDICE: EntradaIndice[] = [];
@@ -116,7 +117,10 @@ export function PreguntarTramite({ tramite }: { tramite: Tramite }) {
                   <Mensajes mensajes={mensajes} ocupado={ocupado} alPreguntar={(t, a) => void preguntar(t, a)} alReintentar={reintentar} ocultarFicha={tramite.clave} />
                 ) : (
                   <div className="px-3 py-4">
-                    <p className="px-1 text-tinta-suave">Te contesto con la ficha oficial de este trámite.</p>
+                    <div className="flex items-center gap-3 px-1">
+                      <Sagui estado="saluda" className="size-16 shrink-0" />
+                      <p className="leading-snug text-tinta-suave">Te contesto con la ficha oficial de este trámite.</p>
+                    </div>
                     <ul className="mt-3 divide-y divide-linea/70 overflow-hidden rounded-[14px] bg-panel">
                       {preguntasDe(tramite).map((p, i) => (
                         <li key={p} style={{ "--fila": i } as CSSProperties} className="entra-fila">

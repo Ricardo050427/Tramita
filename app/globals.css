@@ -276,6 +276,55 @@ html[data-teclado] .nav-flotante {
   }
 }
 
+/* Sagui respira, parpadea y piensa. */
+.sagui {
+  overflow: visible;
+}
+
+.sagui-cuerpo {
+  transform-origin: 100px 172px;
+  animation: sagui-respira 3.2s ease-in-out infinite;
+}
+
+.sagui-ojos {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: sagui-parpadea 4.6s infinite;
+}
+
+.sagui-punto {
+  animation: sagui-punto 0.9s ease-in-out infinite;
+}
+
+@keyframes sagui-respira {
+  50% {
+    transform: scale(1.018, 0.982);
+  }
+}
+
+@keyframes sagui-parpadea {
+  0%,
+  93%,
+  100% {
+    transform: scaleY(1);
+  }
+  96% {
+    transform: scaleY(0.12);
+  }
+}
+
+@keyframes sagui-punto {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-6px);
+  }
+}
+
 .sin-barra {
   scrollbar-width: none;
 }
@@ -285,6 +334,12 @@ html[data-teclado] .nav-flotante {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .sagui-cuerpo,
+  .sagui-ojos,
+  .sagui-punto {
+    animation: none !important;
+  }
+
   *,
   *::before,
   *::after {

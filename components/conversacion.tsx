@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { ArrowRight, ArrowUp, Paperclip, RotateCcw, Volume2 } from "lucide-react";
+import { Sagui } from "./sagui";
 import { Bloques, FuentesCitadas } from "./bloques";
 import { TarjetaDocumentos } from "./documentos";
 import { diasRestantes, leerCaso, mensajePlan, TarjetaPlan } from "./plan";
@@ -235,10 +236,8 @@ export function Mensajes({
             {m.aviso ? <p className="rounded-[10px] bg-panel px-3.5 py-2.5 text-[0.9375rem]">{m.aviso}</p> : null}
 
             {!m.texto && !m.fichas && ocupado && m.id === ultima?.id ? (
-              <p className="flex items-center gap-2 px-1 font-medium">
-                <motion.span animate={{ x: [0, 8, 0] }} transition={{ repeat: Infinity, duration: 0.9, ease: "easeInOut" }}>
-                  <ArrowRight className="size-5" aria-hidden />
-                </motion.span>
+              <p className="flex items-center gap-2 font-medium" role="status">
+                <Sagui estado="piensa" className="size-12 shrink-0" />
                 Revisando las fichas oficiales
               </p>
             ) : null}

@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, type CSSProperties } from "react";
-import { ChevronRight } from "lucide-react";
+import { useState } from "react";
+import { motion } from "motion/react";
 import { BarraPregunta } from "./barra-pregunta";
 import { Mensajes, useConversacion } from "./conversacion";
-import { Encabezado } from "./senal";
+import { Sagui } from "./sagui";
+import { Encabezado, Marca } from "./senal";
 import type { EntradaIndice } from "@/lib/tipos";
 
 const POPULARES = [
@@ -14,6 +15,42 @@ const POPULARES = [
   "Quiero cambiar de nombre mi recibo de agua",
 ];
 const SENAL_INICIAL = "¿Qué necesitas resolver?";
+const salida = [0.16, 1, 0.3, 1] as const;
+
+function Bienvenida({ alPreguntar }: { alPreguntar: (texto: string) => void }) {
+  const [vez, setVez] = useState(0);
+  return (
+    <div className="mx-auto flex h-full max-w-md flex-col items-center justify-center px-5 py-6 text-center">
+      <motion.button
+        type="button"
+        aria-label="Saludar a Sagui"
+        onClick={() => setVez((v) => v + 1)}
+        initial={{ scale: 0.6, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        whileTap={{ scale: 0.92 }}
+        transition={{ duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }}
+        className="rounded-full"
+      >
+        <Sagui estado="saluda" vez={vez} className="size-32" />
+      </motion.button>
+      <motion.h1 initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.12, ease: salida }} className="mt-2 text-[1.75rem] leading-[1.1] font-bold tracking-[-0.02em] text-balance">
+        ¿Qué trámite resolvemos hoy?
+      </motion.h1>
+      <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.18, ease: salida }} className="mt-2 leading-snug text-pretty text-tinta-suave">
+        Soy Sagui. Pregúntame como en la ventanilla y te digo qué llevar, cuánto cuesta y a dónde ir.
+      </motion.p>
+      <ul className="mt-6 flex flex-wrap justify-center gap-2">
+        {POPULARES.map((s, i) => (
+          <motion.li key={s} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.36, delay: 0.24 + i * 0.05, ease: salida }}>
+            <button type="button" onClick={() => alPreguntar(s)} className="min-h-11 rounded-full bg-panel px-4 py-2 text-left text-[0.9375rem] leading-snug font-medium transition-[transform,background-color] duration-150 active:scale-[0.96] active:bg-senal">
+              {s}
+            </button>
+          </motion.li>
+        ))}
+      </ul>
+    </div>
+  );
+}
 
 export function Aplicacion({ indice }: { indice: EntradaIndice[] }) {
   const [senal, setSenal] = useState(SENAL_INICIAL);
@@ -35,28 +72,22 @@ export function Aplicacion({ indice }: { indice: EntradaIndice[] }) {
 
   return (
     <div className="flex min-h-dvh flex-col">
-      <Encabezado mensaje={senal} grande={!enCharla} accion={accion} />
+      {enCharla ? (
+        <Encabezado mensaje={senal} accion={accion} />
+      ) : (
+        <header className="mx-auto flex w-full max-w-5xl px-4 pt-[max(env(safe-area-inset-top),0.75rem)]">
+          <div className="flex h-11 items-center">
+            <Marca />
+          </div>
+        </header>
+      )}
 
       <div className="flex w-full flex-1 flex-col">
         <main className="flex-1">
           {enCharla ? (
             <Mensajes mensajes={mensajes} ocupado={ocupado} alPreguntar={(t, a) => void preguntar(t, a)} alReintentar={reintentar} alSenal={setSenal} />
           ) : (
-            <div className="mx-auto max-w-2xl px-3 pt-4 pb-3">
-              <p className="px-1 leading-snug text-pretty text-tinta-suave">Pregunta como en la ventanilla. Te digo qué llevar, cuánto cuesta y a dónde ir, con la ficha oficial a la vista.</p>
-              <h2 className="mt-6 px-1 text-[0.9375rem] font-bold">Lo más preguntado</h2>
-              <ul className="mt-2 divide-y divide-linea/70 overflow-hidden rounded-[14px] bg-panel">
-                {POPULARES.map((s, i) => (
-                  <li key={s} style={{ "--fila": i } as CSSProperties} className="entra-fila">
-                    <button type="button" onClick={() => void preguntar(s, [])} className="fila-senal flex min-h-[3.25rem] w-full items-center gap-3 px-4 py-2.5 text-left leading-snug font-medium">
-                      <span className="flex-1">{s}</span>
-                      <ChevronRight className="flecha size-5 shrink-0 text-tinta-suave" aria-hidden />
-                    </button>
-                  </li>
-                ))}
-              </ul>
-              <p className="mt-3 px-1 text-[0.8125rem] leading-snug text-tinta-suave">Proyecto independiente de hackathon. No es un sitio oficial del Ayuntamiento de Hermosillo.</p>
-            </div>
+            <Bienvenida alPreguntar={(t) => void preguntar(t, [])} />
           )}
         </main>
 
