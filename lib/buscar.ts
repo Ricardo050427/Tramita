@@ -15,7 +15,7 @@ const VACIAS = new Set(
 );
 
 // Palabras que usa la gente frente a las que usa el catálogo.
-const SINONIMOS: Record<string, string[]> = {
+export const SINONIMOS: Record<string, string[]> = {
   recibo: ["agua", "aclaracion"],
   fuga: ["agua", "inspeccion", "drenaje"],
   lampara: ["alumbrado", "luminaria"],
@@ -23,9 +23,22 @@ const SINONIMOS: Record<string, string[]> = {
   poste: ["alumbrado"],
   luz: ["alumbrado"],
   basura: ["recoleccion", "limpia"],
-  casa: ["predial", "vivienda"],
+  casa: ["predial", "vivienda", "habitacional"],
   terreno: ["predial", "predio"],
   negocio: ["licencia", "comercio", "funcionamiento"],
+  abrir: ["funcionamiento"],
+  vender: ["comercio", "publica"],
+  calle: ["publica", "comercio"],
+  taqueria: ["funcionamiento", "licencia"],
+  papeleria: ["funcionamiento", "licencia"],
+  tienda: ["funcionamiento", "licencia"],
+  restaurante: ["funcionamiento", "licencia"],
+  cafeteria: ["funcionamiento", "licencia"],
+  local: ["funcionamiento", "licencia"],
+  cuarto: ["ampliacion", "habitacional", "construccion"],
+  recamara: ["ampliacion", "habitacional", "construccion"],
+  departamento: ["ampliacion", "habitacional", "construccion"],
+  ampliar: ["ampliacion", "habitacional", "construccion"],
   perro: ["animal", "vacunacion", "mascota"],
   gato: ["animal", "mascota"],
   mascota: ["animal", "vacunacion"],

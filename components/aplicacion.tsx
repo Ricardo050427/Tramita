@@ -5,11 +5,12 @@ import { motion } from "motion/react";
 import { ArrowRight, ArrowUp, Paperclip, RotateCcw, Volume2 } from "lucide-react";
 import { BarraPregunta } from "./barra-pregunta";
 import { Directorio } from "./directorio";
-import { Bloques } from "./bloques";
+import { Bloques, FuentesCitadas } from "./bloques";
 import { TarjetaDocumentos } from "./documentos";
+import { diasRestantes, leerCaso, mensajePlan, TarjetaPlan } from "./plan";
 import { Ficha, FichaPlegada, leerMarcados, mensajeProgreso } from "./ficha";
 import { Encabezado } from "./senal";
-import type { Adjunto, Bloque, Categoria, Documento, EntradaIndice, EventoChat, Tramite } from "@/lib/tipos";
+import type { Adjunto, Bloque, Categoria, Documento, EntradaIndice, EventoChat, FuenteCitada, Plan, Tramite } from "@/lib/tipos";
 
 type Mensaje = {
   id: string;
@@ -17,6 +18,8 @@ type Mensaje = {
   texto: string;
   bloques?: Bloque[];
   documentos?: Documento[];
+  fuentes?: FuenteCitada[];
+  plan?: Plan;
   archivos?: string[];
   fichas?: Tramite[];
   sugerencias?: string[];
@@ -32,6 +35,19 @@ const POPULARES = [
   "Quiero cambiar de nombre mi recibo de agua",
 ];
 const nuevoId = () => Math.random().toString(36).slice(2);
+
+// Lo que la persona ya marcó en su ruta, con la vigencia que le queda.
+function resumenCaso(mensajes: Mensaje[]) {
+  const pasos = new Map(mensajes.flatMap((m) => m.plan?.pasos ?? []).map((p) => [p.clave, p]));
+  return Object.entries(leerCaso()).map(([clave, fecha]) => {
+    const paso = pasos.get(clave);
+    return {
+      clave,
+      dias: Math.floor((Date.now() - new Date(fecha).getTime()) / 86_400_000),
+      restan: paso ? diasRestantes(paso, fecha) : null,
+    };
+  });
+}
 
 function escuchar(texto: string) {
   const voz = new SpeechSynthesisUtterance(texto);
@@ -99,7 +115,7 @@ export function Aplicacion({ categorias, indice }: { categorias: Categoria[]; in
         const res = await fetch("/api/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ pregunta: texto, adjuntos, historial, contexto }),
+          body: JSON.stringify({ pregunta: texto, adjuntos, historial, contexto, caso: resumenCaso(mensajes) }),
         });
         if (!res.ok || !res.body) {
           const json = await res.json().catch(() => null);
@@ -123,6 +139,11 @@ export function Aplicacion({ categorias, indice }: { categorias: Categoria[]; in
               setSenal(mensajeProgreso(e.items[0], e.items[0].requisitos.length - leerMarcados(e.items[0].clave).length));
             } else if (e.t === "texto") {
               actualizar(idRespuesta, (m) => ({ ...m, texto: m.texto + e.d }));
+            } else if (e.t === "plan") {
+              actualizar(idRespuesta, (m) => ({ ...m, plan: e.plan }));
+              setSenal(mensajePlan(e.plan, leerCaso()));
+            } else if (e.t === "fuentes") {
+              actualizar(idRespuesta, (m) => ({ ...m, fuentes: e.items }));
             } else if (e.t === "documentos") {
               actualizar(idRespuesta, (m) => ({ ...m, documentos: e.items }));
             } else if (e.t === "bloque") {
@@ -162,7 +183,9 @@ export function Aplicacion({ categorias, indice }: { categorias: Categoria[]; in
   const claveVigente = ultima?.fichas?.[0]?.clave;
   const primeraVista = new Map<string, string>();
   const primeraCompleta = new Map<string, string>();
+  const primerPlan = new Map<string, string>();
   for (const m of mensajes) {
+    if (m.plan && !primerPlan.has(m.plan.clave)) primerPlan.set(m.plan.clave, m.id);
     m.fichas?.forEach((t, i) => {
       if (!primeraVista.has(t.clave)) primeraVista.set(t.clave, m.id);
       if (i === 0 && !primeraCompleta.has(t.clave)) primeraCompleta.set(t.clave, m.id);
@@ -220,6 +243,10 @@ export function Aplicacion({ categorias, indice }: { categorias: Categoria[]; in
 
                       {m.documentos?.length ? <TarjetaDocumentos documentos={m.documentos} /> : null}
 
+                      {m.plan && primerPlan.get(m.plan.clave) === m.id ? (
+                        <TarjetaPlan plan={m.plan} alCambiar={m.id === ultima?.id ? setSenal : undefined} />
+                      ) : null}
+
                       {m.texto ? (
                         <div className={`px-1 text-[1.0625rem] leading-relaxed ${m.error ? "text-error" : ""}`}>
                           {m.bloques?.length ? <Bloques bloques={m.bloques} /> : m.texto}
@@ -230,6 +257,8 @@ export function Aplicacion({ categorias, indice }: { categorias: Categoria[]; in
                           ) : null}
                         </div>
                       ) : null}
+
+                      {m.fuentes?.length ? <FuentesCitadas fuentes={m.fuentes} /> : null}
 
                       {m.error && ultimaPregunta.current && m.id === ultima?.id ? (
                         <button

@@ -1,8 +1,8 @@
 "use client";
 
 import { motion } from "motion/react";
-import { Info, Signpost } from "lucide-react";
-import type { Bloque } from "@/lib/tipos";
+import { ExternalLink, Info, Signpost } from "lucide-react";
+import type { Bloque, FuenteCitada } from "@/lib/tipos";
 
 const entrada = {
   initial: { opacity: 0, y: 8 },
@@ -56,5 +56,26 @@ export function Bloques({ bloques }: { bloques: Bloque[] }) {
         );
       })}
     </div>
+  );
+}
+
+export function FuentesCitadas({ fuentes }: { fuentes: FuenteCitada[] }) {
+  return (
+    <motion.aside {...entrada} className="px-1" aria-label="Fuentes oficiales">
+      <h3 className="text-sm font-bold text-tinta-suave">Fuentes oficiales</h3>
+      <ul className="mt-0.5">
+        {fuentes.map((f) => (
+          <li key={`${f.fuente}-${f.cita}`}>
+            <a href={f.url} target="_blank" rel="noreferrer" className="flex min-h-9 items-center gap-1.5 text-[0.9375rem] leading-snug underline">
+              <span>
+                {f.fuente}
+                {f.cita ? `, ${f.cita}` : ""}
+              </span>
+              <ExternalLink className="size-3.5 shrink-0" aria-hidden />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </motion.aside>
   );
 }

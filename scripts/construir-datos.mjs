@@ -130,7 +130,7 @@ const COMO_OBTENER = [
   [/no adeudo.{0,40}predial|predial.{0,40}no adeudo/i, "HMO-00035"],
   [/no adeudo.{0,40}agua|agua.{0,40}no adeudo/i, "HMO-00018"],
   [/no adeudo/i, "HMO-00033"],
-  [/licencia de uso de suelo/i, "HMO-00227"],
+  [/licencia (de )?uso de suelo/i, "HMO-00227"],
   [/n[uú]mero oficial/i, "HMO-00211"],
 ];
 for (const t of tramites) {

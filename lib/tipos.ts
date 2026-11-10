@@ -30,6 +30,27 @@ export type Oficina = {
 
 export type TipoBloque = "resumen" | "camino" | "paso" | "alerta";
 export type Bloque = { tipo: TipoBloque; d: string };
+export type PasoPlan = {
+  clave: string;
+  nombre: string;
+  dependencia: string;
+  costo: string;
+  plazo: string;
+  estimado: { min: number; max: number } | null;
+  vigencia: number | "mes" | null;
+  requeridoPor?: string;
+};
+
+export type Plan = {
+  meta: string;
+  clave: string;
+  pasos: PasoPlan[];
+  metros?: number;
+  total: { min: number; max: number };
+  sinCalcular: number;
+};
+
+export type FuenteCitada = { fuente: string; cita: string; url: string };
 
 export type Tramite = {
   clave: string;
@@ -77,6 +98,8 @@ export type EventoChat =
   | { t: "texto"; d: string }
   | { t: "bloque"; bloque: Bloque }
   | { t: "documentos"; items: Documento[] }
+  | { t: "fuentes"; items: FuenteCitada[] }
+  | { t: "plan"; plan: Plan }
   | { t: "sugerencias"; items: string[] }
   | { t: "aviso"; d: string }
   | { t: "fin" };

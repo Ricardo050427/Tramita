@@ -49,3 +49,5 @@ next-env.d.ts
 /data/originales/
 /data/documentos-analizados.json
 /data/descarga.log
+/data/conocimiento-crudo.json
+/data/conocimiento.log
