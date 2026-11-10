@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { motion } from "motion/react";
 import { BarraPregunta } from "./barra-pregunta";
 import { Mensajes, useConversacion } from "./conversacion";
@@ -17,21 +17,28 @@ const POPULARES = [
 const SENAL_INICIAL = "¿Qué necesitas resolver?";
 const salida = [0.16, 1, 0.3, 1] as const;
 
-function Bienvenida({ alPreguntar }: { alPreguntar: (texto: string) => void }) {
+function Bienvenida({ alPreguntar, atento }: { alPreguntar: (texto: string) => void; atento: boolean }) {
   const [vez, setVez] = useState(0);
+  const [contento, setContento] = useState(false);
+  const espera = useRef<ReturnType<typeof setTimeout>>(undefined);
   return (
     <div className="mx-auto flex h-full max-w-md flex-col items-center justify-center px-5 py-6 text-center">
       <motion.button
         type="button"
         aria-label="Saludar a Sagui"
-        onClick={() => setVez((v) => v + 1)}
-        initial={{ scale: 0.6, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
+        onClick={() => {
+          setVez((v) => v + 1);
+          setContento(true);
+          clearTimeout(espera.current);
+          espera.current = setTimeout(() => setContento(false), 1300);
+        }}
+        initial={{ scale: 0, opacity: 0, y: 24 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
         whileTap={{ scale: 0.92 }}
-        transition={{ duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }}
+        transition={{ type: "spring", stiffness: 320, damping: 15 }}
         className="rounded-full"
       >
-        <Sagui estado="saluda" vez={vez} className="size-32" />
+        <Sagui estado={contento ? "feliz" : "saluda"} vez={vez} atento={atento && !contento} mirar className="size-32" />
       </motion.button>
       <motion.h1 initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.12, ease: salida }} className="mt-2 text-[1.75rem] leading-[1.1] font-bold tracking-[-0.02em] text-balance">
         ¿Qué trámite resolvemos hoy?
@@ -54,6 +61,7 @@ function Bienvenida({ alPreguntar }: { alPreguntar: (texto: string) => void }) {
 
 export function Aplicacion({ indice }: { indice: EntradaIndice[] }) {
   const [senal, setSenal] = useState(SENAL_INICIAL);
+  const [escribiendo, setEscribiendo] = useState(false);
   const { mensajes, ocupado, preguntar, reintentar, reiniciar } = useConversacion({ almacen: "tramita:historial", alSenal: setSenal });
   const enCharla = mensajes.length > 0;
 
@@ -71,7 +79,13 @@ export function Aplicacion({ indice }: { indice: EntradaIndice[] }) {
   ) : undefined;
 
   return (
-    <div className="flex min-h-dvh flex-col">
+    <div
+      className="flex min-h-dvh flex-col"
+      onFocus={(e) => setEscribiendo(e.target instanceof HTMLTextAreaElement)}
+      onBlur={(e) => {
+        if (e.target instanceof HTMLTextAreaElement) setEscribiendo(false);
+      }}
+    >
       {enCharla ? (
         <Encabezado mensaje={senal} accion={accion} />
       ) : (
@@ -87,7 +101,7 @@ export function Aplicacion({ indice }: { indice: EntradaIndice[] }) {
           {enCharla ? (
             <Mensajes mensajes={mensajes} ocupado={ocupado} alPreguntar={(t, a) => void preguntar(t, a)} alReintentar={reintentar} alSenal={setSenal} />
           ) : (
-            <Bienvenida alPreguntar={(t) => void preguntar(t, [])} />
+            <Bienvenida alPreguntar={(t) => void preguntar(t, [])} atento={escribiendo} />
           )}
         </main>
 

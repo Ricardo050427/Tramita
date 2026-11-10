@@ -283,13 +283,13 @@ html[data-teclado] .nav-flotante {
 
 .sagui-cuerpo {
   transform-origin: 100px 172px;
-  animation: sagui-respira 3.2s ease-in-out infinite;
+  animation: sagui-respira 3s ease-in-out infinite;
 }
 
 .sagui-ojos {
   transform-box: fill-box;
   transform-origin: center;
-  animation: sagui-parpadea 4.6s infinite;
+  animation: sagui-parpadea 5.4s infinite;
 }
 
 .sagui-punto {
@@ -298,17 +298,24 @@ html[data-teclado] .nav-flotante {
 
 @keyframes sagui-respira {
   50% {
-    transform: scale(1.018, 0.982);
+    transform: scale(0.975, 1.03);
   }
 }
 
+/* Un parpadeo y, al rato, uno doble. */
 @keyframes sagui-parpadea {
   0%,
-  93%,
+  27%,
+  33%,
+  84%,
+  88%,
+  92%,
   100% {
     transform: scaleY(1);
   }
-  96% {
+  30%,
+  86%,
+  90% {
     transform: scaleY(0.12);
   }
 }
