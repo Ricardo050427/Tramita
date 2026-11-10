@@ -44,7 +44,6 @@ export function Aplicacion({ categorias, indice }: { categorias: Categoria[]; in
   const [mensajes, setMensajes] = useState<Mensaje[]>([]);
   const [ocupado, setOcupado] = useState(false);
   const [senal, setSenal] = useState("¿Qué necesitas resolver?");
-  const fin = useRef<HTMLDivElement>(null);
   const ultimaPregunta = useRef<{ texto: string; adjuntos: Adjunto[] } | null>(null);
 
   useEffect(() => {
@@ -64,9 +63,18 @@ export function Aplicacion({ categorias, indice }: { categorias: Categoria[]; in
     } catch {}
   }, [mensajes, ocupado]);
 
+  // Al preguntar, la pregunta sube bajo la banda y la pantalla ya no se mueve: la respuesta se lee de arriba abajo.
+  const preguntas = mensajes.filter((m) => m.rol === "usuario");
+  const idUltimaPregunta = preguntas.at(-1)?.id;
+  const esPrimera = preguntas.length === 1;
   useEffect(() => {
-    fin.current?.scrollIntoView({ behavior: "smooth", block: "end" });
-  }, [mensajes.length, ocupado]);
+    if (!idUltimaPregunta) return;
+    const espera = setTimeout(
+      () => document.getElementById(`m-${idUltimaPregunta}`)?.scrollIntoView({ behavior: "smooth", block: "start" }),
+      esPrimera ? 360 : 60, // la primera vez la banda grande termina de encogerse
+    );
+    return () => clearTimeout(espera);
+  }, [idUltimaPregunta, esPrimera]);
 
   const actualizar = useCallback((id: string, cambio: (m: Mensaje) => Mensaje) => {
     setMensajes((lista) => lista.map((m) => (m.id === id ? cambio(m) : m)));
@@ -183,10 +191,11 @@ export function Aplicacion({ categorias, indice }: { categorias: Categoria[]; in
                   m.rol === "usuario" ? (
                     <motion.div
                       key={m.id}
+                      id={`m-${m.id}`}
                       initial={{ opacity: 0, y: 14 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-                      className="ml-auto w-fit max-w-[85%] rounded-[12px] bg-tinta px-4 py-2.5 text-panel"
+                      className="ml-auto w-fit max-w-[85%] scroll-mt-36 rounded-[12px] bg-tinta px-4 py-2.5 text-panel"
                     >
                       {m.texto}
                       {m.archivos?.map((a) => (
@@ -197,7 +206,7 @@ export function Aplicacion({ categorias, indice }: { categorias: Categoria[]; in
                       ))}
                     </motion.div>
                   ) : (
-                    <div key={m.id} className="space-y-3">
+                    <div key={m.id} className={`space-y-3 ${m.id === ultima?.id ? "min-h-[62dvh]" : ""}`}>
                       {m.aviso ? <p className="rounded-[10px] bg-panel px-3.5 py-2.5 text-[0.9375rem]">{m.aviso}</p> : null}
 
                       {!m.texto && !m.fichas && ocupado && m.id === ultima?.id ? (
@@ -293,7 +302,6 @@ export function Aplicacion({ categorias, indice }: { categorias: Categoria[]; in
                     </div>
                   ),
                 )}
-                <div ref={fin} />
               </div>
             ) : (
               <div className="lg:hidden">
