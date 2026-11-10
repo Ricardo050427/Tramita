@@ -1,7 +1,9 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "motion/react";
-import { Download, ExternalLink, FileText } from "lucide-react";
+import { Download, ExternalLink, FileText, PencilLine } from "lucide-react";
+import { esLlenable } from "@/lib/llenado";
 import type { Documento } from "@/lib/tipos";
 
 export const rutaDocumento = (d: Documento) => (d.archivo ? `/documentos/${d.archivo}` : d.url);
@@ -23,11 +25,20 @@ function FilaDocumento({ documento: d }: { documento: Documento }) {
           <p className="mt-0.5 text-sm text-tinta-suave">{descripcion(d)}</p>
         </div>
       </div>
-      <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1">
+      <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-2">
+        {esLlenable(d.id) ? (
+          <Link
+            href={`/llenar/${d.id}`}
+            className="flex min-h-11 items-center gap-2 rounded-[10px] bg-senal px-4 font-bold text-tinta transition-transform duration-150 active:scale-[0.97]"
+          >
+            <PencilLine className="size-5" aria-hidden />
+            Llenar conmigo
+          </Link>
+        ) : null}
         <a
           href={rutaDocumento(d)}
           download={d.archivo || undefined}
-          className="flex min-h-11 items-center gap-2 rounded-[10px] bg-senal px-4 font-bold text-tinta transition-transform duration-150 active:scale-[0.97]"
+          className={`flex min-h-11 items-center gap-2 rounded-[10px] px-4 font-bold text-tinta transition-transform duration-150 active:scale-[0.97] ${esLlenable(d.id) ? "border-2 border-tinta" : "bg-senal"}`}
         >
           <Download className="size-5" aria-hidden />
           Descargar

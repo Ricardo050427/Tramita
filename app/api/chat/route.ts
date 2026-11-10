@@ -3,6 +3,8 @@ import { buscar, normalizar } from "@/lib/buscar";
 import contenidoDocumentos from "@/data/documentos-contenido.json";
 import { buscarDocumentos, indice, tramitePorClave, tramites } from "@/lib/datos";
 import { buscarConocimiento, type Fragmento } from "@/lib/conocimiento";
+import { getCache } from "@vercel/functions";
+import { responderDirecto } from "@/lib/directa";
 import { estadoHorario } from "@/lib/horario";
 import { armarPlan, estimarCosto, planEnTexto } from "@/lib/plan";
 import { crearVerificador } from "@/lib/verificar";
@@ -34,6 +36,9 @@ const INTENCION_PLAN = /\b(quiero|voy a|vamos a|planeo|pienso)\s+(abrir|poner|co
 const PREGUNTA_LEGAL = /multa|sanci[oó]n|infracci[oó]n|recargo|\bley\b|reglamento|art[ií]culo|derecho|obligaci[oó]n/i;
 const PREGUNTA_DE_COSTO = /cu[aá]nto (me )?(cuesta|cobran|sale|va a costar)|\bprecio\b|\bcosto\b/i;
 const METROS_EN_TEXTO = /(\d+(?:[.,]\d+)?)\s*(?:m2|m²|metros)/i;
+const VERSION_MEMORIA = "v1"; // cambiarla descarta las respuestas guardadas tras actualizar datos o instrucciones
+const HORAS_MEMORIA = 12;
+const DEPENDE_DEL_MOMENTO = /\bhoy\b|\bahora\b|ya cerr|cierra/i;
 const SIN_SANCION = /^(no aplica|n\/a|ninguna?|)\.?$/i;
 
 // Todo lo que se sabe de cada trámite, para buscar lo que no aparece en su nombre.
@@ -207,19 +212,45 @@ export async function POST(req: Request) {
   const codificador = new TextEncoder();
   const flujo = new ReadableStream({
     async start(control) {
-      const enviar = (e: EventoChat) => control.enqueue(codificador.encode(JSON.stringify(e) + "\n"));
       control.enqueue(codificador.encode("\n")); // abre la respuesta sin esperar al modelo
+      const emitidos: EventoChat[] = [];
+      const enviar = (e: EventoChat) => {
+        emitidos.push(e);
+        control.enqueue(codificador.encode(JSON.stringify(e) + "\n"));
+      };
+
+      // Una pregunta idéntica y sin contexto no vuelve a gastar llamadas de IA.
+      const llaveMemoria = !historial.length && !adjuntos.length && !enPantalla.length && !casoPersona.length && pregunta ? `${VERSION_MEMORIA}:${normalizar(pregunta)}` : "";
+      if (llaveMemoria) {
+        const guardados = (await getCache({ namespace: "tramita" }).get(llaveMemoria).catch(() => null)) as EventoChat[] | null;
+        if (guardados?.length) {
+          for (const e of guardados) control.enqueue(codificador.encode(JSON.stringify(e) + "\n"));
+          control.close();
+          return;
+        }
+      }
+      let respuestaCompletaIA = false;
 
       const clave = process.env.GEMINI_API_KEY;
       let fichas: Tramite[] = [];
       let redactado = false;
       let sugerido = false;
+      let directa: ReturnType<typeof responderDirecto> = null;
       const inicio = Date.now();
       const restante = () => LIMITE_TOTAL_MS - (Date.now() - inicio);
 
       // El catálogo no tiene trámite para reportar fugas: la respuesta no depende del modelo.
       if (FUGA_DE_AGUA.test(pregunta) && !ASUNTO_DE_COBRO.test(pregunta) && !adjuntos.length) {
         enviar({ t: "bloque", bloque: { tipo: "resumen", d: "El reporte de fugas no aparece en el catálogo de trámites. Llama a Agua de Hermosillo al 662 289 6000." } });
+        redactado = true;
+      } else if ((directa = !adjuntos.length ? responderDirecto(pregunta, enPantalla.map((e) => e.t), Number(METROS_EN_TEXTO.exec(pregunta)?.[1].replace(",", ".")) || undefined) : null)) {
+        // Lo que ya está en la ficha se contesta al instante, sin gastar llamadas.
+        fichas = [directa.tramite];
+        enviar({ t: "fichas", items: fichas });
+        if (directa.documentos.length) enviar({ t: "documentos", items: directa.documentos });
+        directa.bloques.forEach((bloque) => enviar({ t: "bloque", bloque }));
+        enviar({ t: "sugerencias", items: directa.sugerencias });
+        sugerido = true;
         redactado = true;
       } else if (clave) {
         const ia = new GoogleGenAI({ apiKey: clave });
@@ -444,6 +475,8 @@ export async function POST(req: Request) {
           }
         }
 
+        respuestaCompletaIA = redactado && !emitidos.some((e) => e.t === "aviso");
+
         if (!redactado && fichas.length) {
           // Sin respuesta de la IA a tiempo, lo calculado por la app sigue siendo útil.
           const texto = plan
@@ -458,6 +491,11 @@ export async function POST(req: Request) {
       if (!sugerido) enviar({ t: "sugerencias", items: fichas.length ? SUGERENCIAS_CON_FICHA : SUGERENCIAS_GENERALES });
       enviar({ t: "fin" });
       control.close();
+
+      const texto = emitidos.flatMap((e) => (e.t === "bloque" ? [e.bloque.d] : [])).join(" ");
+      if (llaveMemoria && respuestaCompletaIA && !DEPENDE_DEL_MOMENTO.test(texto)) {
+        await getCache({ namespace: "tramita" }).set(llaveMemoria, emitidos, { ttl: HORAS_MEMORIA * 3600, tags: ["respuestas"], name: "respuesta-tramita" }).catch(() => undefined);
+      }
     },
   });
 
