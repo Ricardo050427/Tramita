@@ -1,5 +1,5 @@
 import type { NextRequest } from "next/server";
-import listado from "@/data/listado.json";
+import catalogo from "@/data/catalogo-oficial.json";
 
 // El catálogo municipal no tiene una dirección por trámite: su botón «Ver más» envía un formulario con los datos
 // de la ficha. Esta página arma ese mismo formulario y lo envía, para abrir la ficha oficial exacta.
@@ -76,9 +76,9 @@ function pagina(campos: Campos | null, nombre: string) {
 
 export async function GET(_req: NextRequest, ctx: RouteContext<"/fuente/[clave]">) {
   const { clave } = await ctx.params;
-  const guardado = listado.find((t) => t.Clave === clave);
+  const guardado = (catalogo as Record<string, Campos>)[clave];
   // Si el catálogo no responde, se usa la copia del día en que se consultó; si la clave no existe, se abre el catálogo.
-  const campos = guardado ? ((await camposVigentes(clave, guardado.Nombre)) ?? (guardado as Campos)) : null;
+  const campos = guardado ? ((await camposVigentes(clave, guardado.Nombre)) ?? guardado) : null;
   return new Response(pagina(campos, guardado?.Nombre ?? ""), {
     headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store", "X-Robots-Tag": "noindex" },
   });

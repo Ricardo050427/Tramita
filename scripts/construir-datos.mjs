@@ -157,6 +157,8 @@ const categorias = CATEGORIAS.map(([slug, nombre, icono]) => ({
 }));
 
 writeFileSync("data/tramites.json", JSON.stringify({ tramites, categorias }));
+// Los campos del formulario «Ver más» de cada trámite, tal cual: con ellos /fuente/[clave] abre la ficha oficial.
+writeFileSync("data/catalogo-oficial.json", JSON.stringify(Object.fromEntries(listado.map((t) => [t.Clave, t]))));
 const conRequisitos = tramites.filter((t) => t.requisitos.length).length;
 console.log(`${tramites.length} trámites, ${fichas.size} fichas, ${conRequisitos} con requisitos`);
 console.log(JSON.stringify(tramites.find((t) => t.clave === "HMO-00061"), null, 1));
