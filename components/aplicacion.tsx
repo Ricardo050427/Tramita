@@ -6,17 +6,18 @@ import { motion } from "motion/react";
 import { ShieldCheck } from "lucide-react";
 import { BarraPregunta } from "./barra-pregunta";
 import { Mensajes, useConversacion } from "./conversacion";
+import { EscenaCerro } from "./escena-cerro";
 import { BotonPreferencias } from "./preferencias";
 import { Sagui } from "./sagui";
 import { Encabezado, Marca } from "./senal";
 import { PERFILES, usePreferencias } from "@/lib/preferencias";
 import type { EntradaIndice } from "@/lib/tipos";
 
+// Etiqueta corta en el botón y la pregunta completa que recibe Sagui.
 const POPULARES = [
-  "¿Cómo pido la tarifa social del agua?",
-  "Se fundió una lámpara de mi calle",
-  "Necesito mi constancia de no adeudo",
-  "Me pidieron $500 para agilizar mi licencia de negocio",
+  { etiqueta: "Tarifa social del agua", pregunta: "¿Cómo pido la tarifa social del agua?" },
+  { etiqueta: "Constancia de no adeudo", pregunta: "Necesito mi constancia de no adeudo" },
+  { etiqueta: "Me pidieron $500 para agilizar", pregunta: "Me pidieron $500 para agilizar mi licencia de negocio" },
 ];
 const SENAL_INICIAL = "¿Qué necesitas resolver?";
 const salida = [0.16, 1, 0.3, 1] as const;
@@ -26,9 +27,51 @@ function Bienvenida({ alPreguntar, atento }: { alPreguntar: (texto: string) => v
   const [contento, setContento] = useState(false);
   const espera = useRef<ReturnType<typeof setTimeout>>(undefined);
   const { perfil } = usePreferencias();
-  const sugerencias = PERFILES.find((p) => p.id === perfil)?.sugerencias ?? POPULARES;
+  const delPerfil = PERFILES.find((p) => p.id === perfil)?.sugerencias.slice(0, 3).map((s) => ({ etiqueta: s, pregunta: s }));
+  const sugerencias = delPerfil ?? POPULARES;
   return (
-    <div className="mx-auto flex h-full max-w-md flex-col items-center justify-center px-5 py-6 text-center">
+    <>
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.05, ease: salida }}
+        className="escena-inicio pointer-events-none fixed inset-x-0 z-0"
+        aria-hidden
+      >
+        <EscenaCerro className="block size-full" />
+      </motion.div>
+
+      <div className="relative z-10 mx-auto flex max-w-md flex-col items-center px-4 pt-[clamp(1.25rem,4dvh,2rem)] text-center min-[70rem]:max-w-3xl min-[70rem]:pt-[11vh]">
+        <motion.h1
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.08, ease: salida }}
+          className="max-w-[13ch] text-[1.875rem] leading-[1.08] font-bold tracking-[-0.02em] text-balance min-[70rem]:max-w-none min-[70rem]:text-[2.75rem]"
+        >
+          ¿Qué trámite resolvemos hoy?
+        </motion.h1>
+        <ul className="mt-6 flex flex-wrap justify-center gap-2">
+          {sugerencias.map((s, i) => (
+            <motion.li key={s.pregunta} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.36, delay: 0.16 + i * 0.05, ease: salida }}>
+              <button
+                type="button"
+                onClick={() => alPreguntar(s.pregunta)}
+                className="min-h-11 rounded-full border border-calido-linea bg-calido px-4 py-2 text-left text-[0.9375rem] leading-snug font-medium transition-[transform,background-color,border-color] duration-150 active:scale-[0.96] active:border-senal active:bg-senal"
+              >
+                {s.etiqueta}
+              </button>
+            </motion.li>
+          ))}
+        </ul>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4, delay: 0.4, ease: salida }}>
+          <Link href="/vigila#verificar" className="mt-3 inline-flex min-h-11 items-center gap-2 rounded-full px-3 text-[0.9375rem] font-bold text-tinta underline underline-offset-3">
+            <ShieldCheck className="size-[1.125rem] text-senal-oscura" aria-hidden />
+            ¿Te pidieron algo de más en ventanilla?
+          </Link>
+        </motion.div>
+      </div>
+
+      {/* Sagui se para en el cerro; el contorno blanco y la sombra lo separan del naranja. */}
       <motion.button
         type="button"
         aria-label="Saludar a Sagui"
@@ -40,32 +83,11 @@ function Bienvenida({ alPreguntar, atento }: { alPreguntar: (texto: string) => v
         }}
         whileTap={{ scale: 0.92 }}
         transition={{ duration: 0.15 }}
-        className="rounded-full"
+        className="sagui-inicio fixed z-10 rounded-full drop-shadow-[0_8px_10px_rgb(21_18_14/0.38)]"
       >
-        <Sagui estado={contento ? "feliz" : "saluda"} vez={vez} atento={atento && !contento} mirar className="size-32" />
+        <Sagui estado={contento ? "feliz" : "saluda"} vez={vez} atento={atento && !contento} mirar contorno className="block h-auto w-full" />
       </motion.button>
-      <motion.h1 initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.12, ease: salida }} className="mt-2 text-[1.75rem] leading-[1.1] font-bold tracking-[-0.02em] text-balance">
-        ¿Qué trámite resolvemos hoy?
-      </motion.h1>
-      <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.18, ease: salida }} className="mt-2 leading-snug text-pretty text-tinta-suave">
-        Soy Sagui. Pregúntame como en la ventanilla y te digo qué llevar, cuánto cuesta y a dónde ir.
-      </motion.p>
-      <ul className="mt-6 flex flex-wrap justify-center gap-2">
-        {sugerencias.map((s, i) => (
-          <motion.li key={s} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.36, delay: 0.24 + i * 0.05, ease: salida }}>
-            <button type="button" onClick={() => alPreguntar(s)} className="min-h-11 rounded-full bg-panel px-4 py-2 text-left text-[0.9375rem] leading-snug font-medium transition-[transform,background-color] duration-150 active:scale-[0.96] active:bg-senal">
-              {s}
-            </button>
-          </motion.li>
-        ))}
-      </ul>
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4, delay: 0.5, ease: salida }}>
-        <Link href="/vigila#verificar" className="mt-5 inline-flex min-h-11 items-center gap-2 rounded-full px-3 text-[0.9375rem] font-bold text-tinta underline">
-          <ShieldCheck className="size-[1.125rem] text-senal-oscura" aria-hidden />
-          ¿Te pidieron algo de más en ventanilla?
-        </Link>
-      </motion.div>
-    </div>
+    </>
   );
 }
 
@@ -90,7 +112,7 @@ export function Aplicacion({ indice }: { indice: EntradaIndice[] }) {
 
   return (
     <div
-      className="flex min-h-dvh flex-col"
+      className={enCharla ? "flex min-h-dvh flex-col" : "inicio-blanco flex min-h-dvh flex-col bg-panel"}
       onFocus={(e) => setEscribiendo(e.target instanceof HTMLTextAreaElement)}
       onBlur={(e) => {
         if (e.target instanceof HTMLTextAreaElement) setEscribiendo(false);
@@ -99,7 +121,7 @@ export function Aplicacion({ indice }: { indice: EntradaIndice[] }) {
       {enCharla ? (
         <Encabezado mensaje={senal} accion={accion} />
       ) : (
-        <header className="mx-auto flex w-full max-w-5xl px-4 pt-[max(env(safe-area-inset-top),0.75rem)]">
+        <header className="relative z-10 mx-auto flex w-full max-w-5xl px-4 pt-[max(env(safe-area-inset-top),0.75rem)]">
           <div className="flex h-11 w-full items-center justify-between">
             <Marca />
             <BotonPreferencias />

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 
 // Sagui: saguaro y guía. Tres trazos gruesos y la misma cara en todas sus versiones.
@@ -103,6 +103,7 @@ export function Sagui({
   mirar = false,
   className = "",
   etiqueta,
+  contorno = false,
 }: {
   estado?: EstadoSagui;
   /** Cambia para repetir el saltito, por ejemplo al tocarlo. */
@@ -113,8 +114,11 @@ export function Sagui({
   mirar?: boolean;
   className?: string;
   etiqueta?: string;
+  /** Borde blanco alrededor de la silueta, para fondos de color. */
+  contorno?: boolean;
 }) {
   const reducir = useReducedMotion();
+  const idContorno = `contorno-${useId().replace(/:/g, "")}`;
   const lienzo = useRef<SVGSVGElement>(null);
   const [mira, setMira] = useState<{ x: number; y: number } | null>(null);
   const [fase, setFase] = useState<Fase>(() => (estado === "saluda" ? "intro" : "espera"));
@@ -226,7 +230,27 @@ export function Sagui({
 
   return (
     <svg ref={lienzo} viewBox="16 12 172 164" className={`sagui ${className}`} role={etiqueta ? "img" : undefined} aria-label={etiqueta} aria-hidden={etiqueta ? undefined : true}>
-      <motion.g style={base} variants={reducir ? undefined : variantes} initial={intro ? { scale: 0 } : false} animate={reducir ? undefined : `v${vez}`}>
+      {contorno ? (
+        // Un borde blanco que sigue la silueta y sus animaciones, para que destaque sobre el naranja del cerro.
+        <defs>
+          <filter id={idContorno} filterUnits="userSpaceOnUse" x="-20" y="-20" width="244" height="236">
+            <feMorphology in="SourceAlpha" operator="dilate" radius="6" result="silueta" />
+            <feFlood floodColor="#fff" />
+            <feComposite in2="silueta" operator="in" />
+            <feMerge>
+              <feMergeNode />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+      ) : null}
+      <motion.g
+        style={base}
+        filter={contorno ? `url(#${idContorno})` : undefined}
+        variants={reducir ? undefined : variantes}
+        initial={intro ? { scale: 0 } : false}
+        animate={reducir ? undefined : `v${vez}`}
+      >
         <motion.g style={base} {...mueve(vaiven)}>
           <g className="sagui-cuerpo">
             <motion.path {...BRAZO} initial={{ d: intro ? INTRO_KF.izq[0] : IZQ.reposo }} {...mueve(izq)} />

@@ -19,3 +19,9 @@ El cerro en el naranja de la marca, la sierra en grises cálidos y la Catedral a
 El cerro hecho de una trama de puntos naranjas que se desvanece hacia arriba, con antenas punteadas y luces que brillan. Es un guiño al pixel art, pero limpio sobre blanco.
 
 ![Propuesta 3: Puntos](3-puntos.png)
+
+## Elegida: 2 con ajustes
+
+La propuesta 2 sin el texto de presentación. Sagui queda parado en el cerro con contorno blanco y sombra para que destaque sobre el naranja, y la barra del chat lleva borde de tinta, sombra más marcada y la invitación "Pregúntale a Sagui". Es la que está en la app.
+
+![Propuesta elegida: 2 con ajustes](2b-elegida.png)

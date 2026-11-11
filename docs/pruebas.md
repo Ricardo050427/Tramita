@@ -8,7 +8,7 @@ Guía para probar desde el celular en https://tramita-blond.vercel.app, en orden
 
 ### 1. El diferenciador desde el inicio
 
-- **Pasos:** en la pantalla de inicio toca la sugerencia "Me pidieron $500 para agilizar mi licencia de negocio".
+- **Pasos:** en la pantalla de inicio toca la sugerencia "Me pidieron $500 para agilizar". Sagui recibe la pregunta completa sobre la licencia de negocio.
 - **Qué debe pasar:** la banda naranja dice "1 cosa no cuadra con la ficha oficial". Abajo aparece el punto marcado como cobro distinto, con "Qué dice la ley" y "Qué puedes hacer".
 - **Nota:** si sale "Esta vez se comparó por palabras, sin IA", es el respaldo funcionando mientras Gemini gratuito está lento.
 

@@ -14,6 +14,8 @@
   --bien-fondo: #e2f2e9;
   --aviso-fondo: #fdf0d5;
   --error-fondo: #fbe5e3;
+  --calido: #f6f4f0;
+  --calido-linea: #e4e1db;
   --base-dock: max(env(safe-area-inset-bottom), 0.75rem);
   --alto-dock: calc(var(--base-dock) + 4.125rem);
 }
@@ -32,6 +34,8 @@
   --color-bien-fondo: var(--bien-fondo);
   --color-aviso-fondo: var(--aviso-fondo);
   --color-error-fondo: var(--error-fondo);
+  --color-calido: var(--calido);
+  --color-calido-linea: var(--calido-linea);
   --font-sans: var(--fuente-senal);
   --ease-salida: cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -130,6 +134,45 @@ a {
 
 html[data-teclado] {
   --alto-dock: var(--base-dock);
+}
+
+/* Inicio: el Cerro de la Campana al fondo y Sagui parado en él, junto a la barra del chat. */
+.inicio-blanco .dock-pregunta {
+  background-image: none;
+}
+
+.inicio-blanco .dock-pregunta::after {
+  background: transparent;
+}
+
+/* En teléfono la escena termina detrás de la barra y se encoge en pantallas bajas para no tapar las sugerencias. */
+.escena-inicio {
+  bottom: calc(var(--alto-dock) + 2rem);
+  height: max(0px, min(380px, calc((100dvh - 31rem) * 1.3)));
+}
+
+.sagui-inicio {
+  right: max(1rem, 7%);
+  bottom: calc(var(--alto-dock) + 3.5rem);
+  width: clamp(5.5rem, calc((100dvh - 31rem) * 0.42), 7.75rem);
+}
+
+html[data-teclado] .escena-inicio,
+html[data-teclado] .sagui-inicio {
+  visibility: hidden;
+}
+
+@media (min-width: 70rem) {
+  .escena-inicio {
+    bottom: 0;
+    height: min(62vh, 36vw);
+  }
+
+  .sagui-inicio {
+    right: max(1.5rem, calc(50% - 36rem));
+    bottom: 6.5rem;
+    width: 9.75rem;
+  }
 }
 
 html[data-teclado] .nav-flotante {

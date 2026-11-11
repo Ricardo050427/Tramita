@@ -33,7 +33,7 @@ export async function comprimirImagen(archivo: File): Promise<Blob> {
   }
 }
 
-function usarDictado(alTexto: (t: string) => void, alError: (m: string) => void) {
+function useDictado(alTexto: (t: string) => void, alError: (m: string) => void) {
   const [estado, setEstado] = useState<"libre" | "grabando" | "transcribiendo">("libre");
   const [segundos, setSegundos] = useState(0);
   const barras = useRef<(HTMLSpanElement | null)[]>([]);
@@ -145,7 +145,7 @@ export function BarraPregunta({
   const campo = useRef<HTMLTextAreaElement>(null);
   const selector = useRef<HTMLInputElement>(null);
 
-  const dictado = usarDictado((t) => alEnviar(t, []), setError);
+  const dictado = useDictado((t) => alEnviar(t, []), setError);
 
   const consulta = useDeferredValue(texto);
   const coincidencias = useMemo(() => (consulta.trim().length >= 2 ? buscar(consulta, indice, 4) : []), [consulta, indice]);
@@ -227,7 +227,13 @@ export function BarraPregunta({
           </p>
         ) : null}
 
-        <div className="rounded-[16px] bg-panel shadow-[0_6px_20px_-10px_rgb(21_18_14/0.3)] transition-shadow duration-150 focus-within:shadow-[inset_0_0_0_1.5px_var(--tinta),0_6px_20px_-10px_rgb(21_18_14/0.3)]">
+        <div
+          className={
+            embebida
+              ? "rounded-[16px] bg-panel shadow-[0_6px_20px_-10px_rgb(21_18_14/0.3)] transition-shadow duration-150 focus-within:shadow-[inset_0_0_0_1.5px_var(--tinta),0_6px_20px_-10px_rgb(21_18_14/0.3)]"
+              : "rounded-[18px] border-2 border-tinta bg-panel shadow-[0_18px_34px_-14px_rgb(21_18_14/0.55)] transition-shadow duration-150 focus-within:shadow-[0_0_0_4px_rgb(233_96_0/0.3),0_18px_34px_-14px_rgb(21_18_14/0.55)]"
+          }
+        >
           {adjuntos.length ? (
             <>
               <ul className="flex flex-wrap gap-2 px-3 pt-3">
@@ -271,7 +277,7 @@ export function BarraPregunta({
                 ref={campo}
                 rows={1}
                 value={texto}
-                placeholder="Escribe o dicta tu pregunta"
+                placeholder="Pregúntale a Sagui"
                 aria-label="Tu pregunta"
                 onChange={(e) => setTexto(e.target.value)}
                 onFocus={() => setEnfocada(true)}
@@ -289,7 +295,7 @@ export function BarraPregunta({
                     enviar();
                   }
                 }}
-                className="min-h-11 flex-1 resize-none bg-transparent py-2.5 text-[1.0625rem] leading-6 outline-none placeholder:text-tinta-suave"
+                className="min-h-11 flex-1 resize-none bg-transparent py-2.5 text-[1.0625rem] leading-6 outline-none placeholder:font-medium placeholder:text-tinta"
               />
               <AnimatePresence mode="popLayout" initial={false}>
                 {texto.trim() || adjuntos.length ? (
