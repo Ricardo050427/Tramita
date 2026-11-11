@@ -20,6 +20,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { Encabezado } from "./senal";
+import { PrepararDenuncia } from "./denuncia";
 import { Reportar } from "./reportar";
 import { Sagui } from "./sagui";
 import { aBase64, comprimirImagen } from "./barra-pregunta";
@@ -84,11 +85,14 @@ function Ley({ fundamentos }: { fundamentos: Fundamento[] }) {
 
 export function Resultado({
   tramite,
+  ficha,
   resultado,
   alEditar,
   alReiniciar,
 }: {
   tramite: Pick<Tramite, "clave" | "nombre">;
+  /** La ficha completa permite armar la denuncia con sus requisitos y costo publicados. */
+  ficha?: Tramite;
   resultado: ResultadoVerificacion;
   alEditar?: () => void;
   alReiniciar?: () => void;
@@ -96,6 +100,7 @@ export function Resultado({
   const reducir = useReducedMotion();
   const [copiado, setCopiado] = useState(false);
   const { hallazgos, faltantes } = resultado;
+  const denunciables = hallazgos.filter((h) => TONO[h.veredicto].grupo === "mal");
   const hayProblema = hallazgos.some((h) => TONO[h.veredicto].grupo !== "bien");
   const sugeridos = [...new Set(hallazgos.flatMap((h) => (h.reporte ? [h.reporte] : [])))];
   const frase = `¿Me podría indicar en qué norma se basa este requisito? No aparece en la ficha oficial del trámite ${tramite.clave}, «${tramite.nombre}».`;
@@ -206,10 +211,11 @@ export function Resultado({
               </li>
             ) : null}
             <li>
-              <p className="font-bold">Si te condicionan el trámite o te piden dinero sin recibo, denúncialo</p>
+              <p className="font-bold">{denunciables.length && ficha ? "Denúncialo con un escrito formal, listo en un minuto" : "Si te condicionan el trámite o te piden dinero sin recibo, denúncialo"}</p>
               <p className="mt-0.5 leading-snug text-tinta-suave">
                 La Contraloría Municipal recibe denuncias contra servidores públicos. Por ley, ninguna oficina puede negarse a recibir tu queja.
               </p>
+              {denunciables.length && ficha ? <PrepararDenuncia tramite={ficha} hallazgos={denunciables} /> : null}
               <div className="mt-1 flex flex-wrap gap-x-5">
                 <Link href={`/tramite/${DENUNCIA.clave}`} className="flex min-h-11 items-center gap-1.5 font-bold underline">
                   Cómo presentar la denuncia
@@ -344,7 +350,7 @@ export function Verificador({ tramite }: { tramite: Tramite }) {
       <Encabezado mensaje={mensaje} volver={`/tramite/${tramite.clave}`} />
       <main className="mx-auto max-w-2xl px-3 py-4 pb-16">
         {estado === "listo" && resultado ? (
-          <Resultado tramite={tramite} resultado={resultado} alEditar={() => setEstado("libre")} alReiniciar={reiniciar} />
+          <Resultado tramite={tramite} ficha={tramite} resultado={resultado} alEditar={() => setEstado("libre")} alReiniciar={reiniciar} />
         ) : (
           <form onSubmit={revisar} className="rounded-[14px] border border-linea bg-panel p-4">
             <h2 className="text-[1.375rem] leading-tight font-bold tracking-[-0.01em] text-balance">Cuéntame qué te pidieron en la ventanilla</h2>

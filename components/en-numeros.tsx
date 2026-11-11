@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { fechaLegible } from "@/lib/ley";
 
-type Numeros = { preguntas: number; verificaciones: number; noCuadran: number; pases: number; reportes: number; desde: string | null };
+type Numeros = { preguntas: number; verificaciones: number; noCuadran: number; pases: number; denuncias: number; reportes: number; desde: string | null };
 
 const n = (x: number) => x.toLocaleString("es-MX");
 const plural = (x: number, uno: string, varios: string) => (x === 1 ? uno : varios);
@@ -44,7 +44,8 @@ export function EnNumeros() {
         <span className={cifra}>{n(datos.verificaciones)}</span> {plural(datos.verificaciones, "lista de ventanilla", "listas de ventanilla")} y encontró{" "}
         <span className={`${cifra} text-error`}>{n(datos.noCuadran)}</span> {plural(datos.noCuadran, "cosa que no cuadraba", "cosas que no cuadraban")} con la ficha
         oficial. Se {plural(datos.pases, "abrió", "abrieron")} <span className={cifra}>{n(datos.pases)}</span> {plural(datos.pases, "pase", "pases")} en ventanilla y{" "}
-        {plural(datos.reportes, "llegó", "llegaron")} <span className={cifra}>{n(datos.reportes)}</span> {plural(datos.reportes, "reporte anónimo", "reportes anónimos")}.
+        {plural(datos.reportes, "llegó", "llegaron")} <span className={cifra}>{n(datos.reportes)}</span> {plural(datos.reportes, "reporte anónimo", "reportes anónimos")}. Además, se {plural(datos.denuncias, "preparó", "prepararon")}{" "}
+        <span className={cifra}>{n(datos.denuncias)}</span> {plural(datos.denuncias, "denuncia formal", "denuncias formales")} para la Contraloría.
       </p>
       <p className="mt-2 text-sm text-tinta-suave">Se cuenta cuántas veces pasó cada cosa, nunca quién la hizo ni qué escribió.</p>
     </>

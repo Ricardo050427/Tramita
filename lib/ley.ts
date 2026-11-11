@@ -48,7 +48,30 @@ export const FRACCIONES_54 = [
 export type IdFraccion = (typeof FRACCIONES_54)[number]["id"];
 
 // La denuncia oficial ante la Contraloría Municipal (ficha HMO-00025 del catálogo).
-export const DENUNCIA = { clave: "HMO-00025", telefono: "662 289 3025" };
+export const DENUNCIA = {
+  clave: "HMO-00025",
+  telefono: "662 289 3025",
+  domicilio: "1o. de Mayo 82, Country Club, Hermosillo",
+  horario: "Lunes a viernes de 8:00 a 15:00",
+  enLinea:
+    "https://soporte_hermosillo_7e887937.urbem.digital/recepcion_de_denuncias_en_contra_de_servidores_publicos_municipales_y_actos_de_particulares_vinculados_con_faltas_administrativas_39250016-5dca-4f14-a",
+};
+
+// Citas del escrito de denuncia. Las de la Ley General de Responsabilidades Administrativas son literales (DOF, última reforma 15-12-2025).
+export const LGRA = "Ley General de Responsabilidades Administrativas";
+export const CITAS_DENUNCIA = {
+  requisitos: [
+    `${LEY}, artículo 6, fracción II: establece «que únicamente se exijan trámites y requisitos que se encuentren expresamente establecidos en ordenamientos vigentes y que estén registrados» en el Portal Ciudadano Único de Trámites y Servicios.`,
+    `${LEY}, artículo 51: el registro de trámites existe «para que ninguna autoridad solicite trámites, requisitos o cualquier otra condición que no esté expresamente establecida».`,
+  ],
+  cohecho: [
+    `${LGRA}, artículo 52: «Incurrirá en cohecho el servidor público que exija, acepte, obtenga o pretenda obtener, por sí o a través de terceros, con motivo de sus funciones, cualquier beneficio no comprendido en su remuneración como servidor público».`,
+  ],
+  denuncia: [
+    `${LGRA}, artículos 91 a 93: la investigación puede iniciar por denuncia, «las denuncias podrán ser anónimas» y deben contener «los datos o indicios que permitan advertir la presunta responsabilidad administrativa».`,
+    "Ley General de Responsabilidades Administrativas, artículos 90 a 92, y Ley Estatal de Responsabilidades del Estado de Sonora, artículos 130 a 132, señalados como fundamento del trámite de denuncia en la ficha oficial HMO-00025.",
+  ],
+};
 export const FECHA_CATALOGO = "2026-11-09";
 export const SITIO = "https://tramita-blond.vercel.app";
 

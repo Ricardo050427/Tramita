@@ -12,6 +12,8 @@ Proyecto independiente para el Hackathon de Innovación por la Transparencia y A
 | --- | --- |
 | **Preguntar** | Chat con Sagui, por texto, voz o foto. Elige el trámite, dice qué llevar, cuánto cuesta y a dónde ir, y cita la fuente oficial. |
 | **Verificador** | La persona escribe o fotografía lo que le pidieron o cobraron. Cada punto se compara con la ficha oficial y con la Ley Nacional para Eliminar Trámites Burocráticos: requisito publicado, no publicado, copia simple, documento que ya emite el Ayuntamiento, cobro distinto o plazo excedido. |
+| **Denuncia lista** | Cuando algo no cuadra, arma en el teléfono el escrito que pide la Contraloría (ficha HMO-00025): hechos, contraste con la ficha oficial, fundamento y anexos, con sello de tiempo verificable en OpenTimestamps. Puede ser anónima (LGRA, art. 91). |
+| **Hermosillo simplificado** | Simula la Agenda de Simplificación que la ley exige cada enero y julio (arts. 19, 21 y 22): interruptores de la ley, contadores del catálogo, rutas antes y después, prioridades del art. 21, consulta ciudadana y la propuesta en PDF. |
 | **Pase para ventanilla** | Tarjeta con los requisitos, costo y plazo publicados y un código QR a la fuente. |
 | **Reportes anónimos** | "Algo no cuadra" en un toque. Se publica solo el conteo por trámite y tipo, como datos abiertos. |
 | **Observatorio** | Qué tanto cumple cada trámite el artículo 54 de la ley, qué dato falta más y qué pide simplificar el artículo 19. |
@@ -33,6 +35,8 @@ Proyecto independiente para el Hackathon de Innovación por la Transparencia y A
 - `GET /api/reportes?formato=csv`: todos los reportes, sin el texto que escribió cada persona.
 - `data/bitacora.json`: cambios detectados en el catálogo oficial.
 - `data/examen.json`: resultado del examen de 50 preguntas.
+- `GET /api/votos`: votos de la consulta ciudadana de simplificación.
+- `GET /api/agenda`: propuesta de Agenda de Simplificación en PDF.
 
 ## Cómo responde la IA
 

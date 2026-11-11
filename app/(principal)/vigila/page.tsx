@@ -9,6 +9,8 @@ import { Encabezado } from "@/components/senal";
 import { indice, tramites } from "@/lib/datos";
 import { FECHA_CATALOGO, LEY, LIGA_LEY, fechaLegible } from "@/lib/ley";
 import { resumir } from "@/lib/observatorio";
+import { totalesAgenda } from "@/lib/agenda-pdf";
+import { fichasSimples } from "@/lib/simplificacion";
 
 export const metadata = { title: "Vigila · Tramita" };
 
@@ -16,6 +18,7 @@ const REPO = "https://github.com/Ricardo050427/Tramita/blob/main/lib/observatori
 
 export default function PaginaVigila() {
   const r = resumir(tramites);
+  const resumen = totalesAgenda(fichasSimples());
   const incompletos = r.total - r.completos;
   const simplificar = [
     { cifra: r.copias, texto: "trámites piden copias simples", cita: "Artículo 19, fracción IV: «No solicitar copias simples para la gestión de trámites o servicios»." },
@@ -43,6 +46,19 @@ export default function PaginaVigila() {
           </p>
           <BuscadorVerificar indice={indice} />
         </section>
+
+        <Link
+          href="/simplifica"
+          className="mt-4 flex items-center gap-4 rounded-[14px] bg-tinta p-4 text-panel transition-transform duration-150 active:scale-[0.98]"
+        >
+          <span className="min-w-0 flex-1">
+            <span className="block text-lg leading-snug font-bold">Así quedaría Hermosillo con la ley</span>
+            <span className="mt-1 block leading-snug text-panel/80">
+              {resumen.constanciaExigida} trámites te piden una constancia que el Ayuntamiento ya tiene. Simula la Agenda de Simplificación y vota qué cambiar primero.
+            </span>
+          </span>
+          <ArrowRight className="size-6 shrink-0 text-senal" aria-hidden />
+        </Link>
 
         <section aria-labelledby="numeros" className="mt-10 px-1">
           <h2 id="numeros" className="text-[1.625rem] leading-[1.1] font-bold tracking-[-0.015em] text-balance">

@@ -266,7 +266,13 @@ export function Mensajes({
 
             {m.fuentes?.length ? <FuentesCitadas fuentes={m.fuentes} /> : null}
 
-            {m.verificacion ? <Resultado tramite={{ clave: m.verificacion.clave, nombre: m.verificacion.nombre }} resultado={m.verificacion.resultado} /> : null}
+            {m.verificacion ? (
+              <Resultado
+                tramite={{ clave: m.verificacion.clave, nombre: m.verificacion.nombre }}
+                ficha={m.fichas?.find((t) => t.clave === m.verificacion!.clave)}
+                resultado={m.verificacion.resultado}
+              />
+            ) : null}
 
             {m.error && m.id === ultima?.id ? (
               <button type="button" onClick={alReintentar} className="flex min-h-11 items-center gap-2 rounded-[10px] border border-tinta bg-panel px-3.5 font-bold">

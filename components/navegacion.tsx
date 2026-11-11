@@ -62,7 +62,7 @@ export function Navegacion() {
   const seccion =
     ruta === "/" || ruta === "/mis-tramites"
       ? ruta
-      : ruta === "/vigila" || ruta === "/como-funciona" || ruta.endsWith("/verificar")
+      : ruta === "/vigila" || ruta === "/como-funciona" || ruta === "/simplifica" || ruta.endsWith("/verificar")
         ? "/vigila"
         : "/tramites";
   const enCurso = Object.values(useMisTramites()).filter((s) => !s.terminado).length;

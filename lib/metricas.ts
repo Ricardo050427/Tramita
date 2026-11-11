@@ -3,13 +3,13 @@ import { waitUntil } from "@vercel/functions";
 
 // Indicadores de uso, anónimos y sin contenido: solo cuántas veces pasó cada cosa.
 // Cada servidor junta sus conteos y los guarda juntos unos segundos después, en un archivo
-// cuyo nombre lleva los números (metricas/<fecha>/p3-v1-n2-x0.json). Así contar cuesta muy poco.
-export type Metricas = { preguntas: number; verificaciones: number; noCuadran: number; pases: number };
+// cuyo nombre lleva los números (metricas/<fecha>/p3-v1-n2-x0-d0.json). Así contar cuesta muy poco.
+export type Metricas = { preguntas: number; verificaciones: number; noCuadran: number; pases: number; denuncias: number };
 
 const PREFIJO = "metricas/";
 const ESPERA_MS = 8_000;
 const VIGENCIA_MS = 60_000;
-const vacio = (): Metricas => ({ preguntas: 0, verificaciones: 0, noCuadran: 0, pases: 0 });
+const vacio = (): Metricas => ({ preguntas: 0, verificaciones: 0, noCuadran: 0, pases: 0, denuncias: 0 });
 const hayAlmacen = () => Boolean(process.env.BLOB_READ_WRITE_TOKEN);
 const hoy = () => new Intl.DateTimeFormat("en-CA", { timeZone: "America/Hermosillo" }).format(new Date());
 
@@ -26,8 +26,8 @@ async function volcar() {
   const c = pendiente;
   pendiente = vacio();
   programado = false;
-  if (!c.preguntas && !c.verificaciones && !c.noCuadran && !c.pases) return;
-  await put(`${PREFIJO}${hoy()}/p${c.preguntas}-v${c.verificaciones}-n${c.noCuadran}-x${c.pases}.json`, "1", {
+  if (!c.preguntas && !c.verificaciones && !c.noCuadran && !c.pases && !c.denuncias) return;
+  await put(`${PREFIJO}${hoy()}/p${c.preguntas}-v${c.verificaciones}-n${c.noCuadran}-x${c.pases}-d${c.denuncias}.json`, "1", {
     access: "private",
     contentType: "application/json",
     addRandomSuffix: true,
@@ -55,9 +55,9 @@ export async function leerMetricas(): Promise<Metricas & { desde: string | null 
     const r = await list({ prefix: PREFIJO, limit: 1000, cursor });
     for (const b of r.blobs) {
       const [, fecha, archivo] = b.pathname.split("/");
-      const m = /^p(\d+)-v(\d+)-n(\d+)-x(\d+)/.exec(archivo ?? "");
+      const m = /^p(\d+)-v(\d+)-n(\d+)-x(\d+)(?:-d(\d+))?/.exec(archivo ?? "");
       if (!m) continue;
-      sumar(total, { preguntas: +m[1], verificaciones: +m[2], noCuadran: +m[3], pases: +m[4] });
+      sumar(total, { preguntas: +m[1], verificaciones: +m[2], noCuadran: +m[3], pases: +m[4], denuncias: +(m[5] ?? 0) });
       if (!total.desde || fecha < total.desde) total.desde = fecha;
     }
     if (!r.hasMore || !r.cursor) break;
