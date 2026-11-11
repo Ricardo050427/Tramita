@@ -132,7 +132,7 @@ export function Aplicacion({ indice }: { indice: EntradaIndice[] }) {
       {enCharla ? (
         <Encabezado mensaje={senal} accion={accion} />
       ) : (
-        <header className="relative z-10 mx-auto flex w-full max-w-5xl px-4 pt-[max(env(safe-area-inset-top),0.75rem)]">
+        <header className="mx-auto flex w-full max-w-5xl px-4 pt-[max(env(safe-area-inset-top),0.75rem)]">
           <div className="flex h-11 w-full items-center justify-between">
             <Marca />
             <BotonPreferencias />
