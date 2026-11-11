@@ -58,7 +58,18 @@ function escuchar(texto: string) {
  * Estado y envío de una conversación.
  * `almacen` la guarda en el dispositivo; `claveFija` amarra las preguntas a un trámite abierto.
  */
-export function useConversacion({ almacen, claveFija, alSenal }: { almacen?: string; claveFija?: string; alSenal?: (senal: string) => void }) {
+export function useConversacion({
+  almacen,
+  claveFija,
+  sobre,
+  alSenal,
+}: {
+  almacen?: string;
+  claveFija?: string;
+  /** Contexto que viaja con cada pregunta sin mostrarse en la conversación, como el formato que se está viendo. */
+  sobre?: string;
+  alSenal?: (senal: string) => void;
+}) {
   const [mensajes, setMensajes] = useState<Mensaje[]>([]);
   const [ocupado, setOcupado] = useState(false);
 
@@ -117,7 +128,7 @@ export function useConversacion({ almacen, claveFija, alSenal }: { almacen?: str
         const res = await fetch("/api/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ pregunta: texto, adjuntos, historial, contexto, caso: resumenCaso(mensajes), preferencias: leerPreferencias() }),
+          body: JSON.stringify({ pregunta: sobre && texto ? `${sobre} ${texto}` : texto, adjuntos, historial, contexto, caso: resumenCaso(mensajes), preferencias: leerPreferencias() }),
         });
         if (!res.ok || !res.body) {
           const json = await res.json().catch(() => null);
@@ -171,7 +182,7 @@ export function useConversacion({ almacen, claveFija, alSenal }: { almacen?: str
       }
       setOcupado(false);
     },
-    [mensajes, actualizar, alSenal, claveFija],
+    [mensajes, actualizar, alSenal, claveFija, sobre],
   );
 
   function reintentar() {
@@ -200,6 +211,7 @@ export function Mensajes({
   alReintentar,
   alSenal,
   ocultarFicha,
+  sinDocumentos,
 }: {
   mensajes: Mensaje[];
   ocupado: boolean;
@@ -208,6 +220,8 @@ export function Mensajes({
   alSenal?: (senal: string) => void;
   /** Trámite que ya está a la vista detrás del panel: su ficha no se repite. */
   ocultarFicha?: string;
+  /** Dentro del visor de un formato no se vuelve a ofrecer el documento. */
+  sinDocumentos?: boolean;
 }) {
   const ultima = mensajes.at(-1);
   const claveVigente = ultima?.fichas?.[0]?.clave;
@@ -253,7 +267,7 @@ export function Mensajes({
               </p>
             ) : null}
 
-            {m.documentos?.length ? <TarjetaDocumentos documentos={m.documentos} /> : null}
+            {m.documentos?.length && !sinDocumentos ? <TarjetaDocumentos documentos={m.documentos} /> : null}
 
             {m.plan && primerPlan.get(m.plan.clave) === m.id ? <TarjetaPlan plan={m.plan} alCambiar={m.id === ultima?.id ? alSenal : undefined} /> : null}
 

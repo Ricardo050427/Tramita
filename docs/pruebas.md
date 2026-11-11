@@ -82,3 +82,12 @@ Guía para probar desde el celular en https://tramita-blond.vercel.app, en orden
 
 - **Pasos:** al final de cualquier ficha toca "Fuente oficial: ver esta ficha en el catálogo municipal".
 - **Qué debe pasar:** se abre la ficha de ese trámite en tramites.hermosillo.gob.mx, no la portada del catálogo.
+
+### 13. Vista previa de los formatos
+
+- **Pasos:**
+  1. Abre la ficha de Licencia de construcción y, en "Documentos para descargar", toca "Vista previa".
+  2. Toca "Ver completo".
+  3. En el visor toca "¿Qué datos me piden en este formato?".
+- **Qué debe pasar:** se ve la primera hoja del PDF dentro de la ficha. El visor muestra las 4 páginas, con "Llenar conmigo" y "Descargar", y Sagui responde sobre ese formato. En la computadora el PDF queda a la izquierda y el chat a la derecha.
+- **Variante:** en el chat pregunta "¿Me das el formato de la licencia de construcción?". La vista previa del primer formato ya viene abierta.

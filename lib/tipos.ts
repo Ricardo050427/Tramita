@@ -9,6 +9,8 @@ export type Documento = {
   paginas?: number;
   revision?: string;
   verificado: string;
+  /** Trámites que lo usan. */
+  claves?: string[];
 };
 
 export type Requisito = {

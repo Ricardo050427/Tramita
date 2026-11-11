@@ -381,7 +381,7 @@ export function Ficha({
       {tramite.documentos?.length ? (
         <section className="border-t border-tinta px-4 py-4">
           <h3 className="text-lg font-bold">Documentos para descargar</h3>
-          <ListaDocumentos documentos={tramite.documentos} />
+          <ListaDocumentos documentos={tramite.documentos} clave={tramite.clave} />
         </section>
       ) : null}
 
