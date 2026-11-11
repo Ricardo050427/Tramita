@@ -64,28 +64,50 @@ El token del paso 3 caduca. Para que Sagui funcione sin interrupciones se usa un
 | Messaging account ID | Por chat, no es secreto |
 | Tu número de prueba con `+52` | Por chat |
 | Token permanente del usuario del sistema | **Nunca por chat.** Guárdalo tú en Vercel como variable sensible `WHATSAPP_TOKEN` |
+| App Secret (**App settings → Basic → App secret → Show**) | **Nunca por chat.** Guárdalo en Vercel como variable sensible `WHATSAPP_APP_SECRET` |
 
-La dirección del webhook y su token de verificación los define quien programa la integración.
+La dirección del webhook es `https://tramita-blond.vercel.app/api/whatsapp`. El token de verificación es una palabra que inventa el equipo.
+
+### Variables en Vercel
+
+| Variable | Valor | ¿Sensible? |
+| --- | --- | --- |
+| `WHATSAPP_TOKEN` | Token permanente (o el temporal del paso 3 para una prueba rápida) | Sí |
+| `WHATSAPP_APP_SECRET` | App Secret de la app | Sí |
+| `WHATSAPP_PHONE_NUMBER_ID` | Phone number ID del número de prueba | No |
+| `WHATSAPP_VERIFY_TOKEN` | La palabra inventada; la misma se pega en el panel de Meta | Sí |
+| `WHATSAPP_API_VERSION` | Opcional, por defecto `v25.0` (la que muestra el panel de Meta) | No |
 
 ### Cómo guardar el token en Vercel
 
 1. Entra al proyecto `tramita` en [vercel.com](https://vercel.com) y abre **Settings → Environment Variables**.
-2. Agrega `WHATSAPP_TOKEN` con el token, marca **Sensitive** y elige **Production**.
-3. Guarda. El siguiente despliegue ya lo usará.
+2. Agrega cada variable de la tabla anterior, marca **Sensitive** cuando aplique y elige **Production**.
+3. Guarda y vuelve a desplegar: las variables nuevas solo se leen en un despliegue nuevo.
 
 ## 7. Webhook (lo hace el programador)
 
-1. Tramita publica una dirección HTTPS que:
+1. El código está en `app/api/whatsapp/route.ts` y `lib/whatsapp.ts`:
    - responde la verificación de Meta (si el token coincide, devuelve el `hub.challenge`);
-   - recibe los mensajes y responde con código 200.
+   - revisa la firma `X-Hub-Signature-256` con el App Secret, responde 200 de inmediato y contesta el mensaje después;
+   - le hace a `/api/chat` la misma pregunta que haría la página y convierte la respuesta en texto;
+   - recuerda los últimos 6 mensajes de cada número por 24 horas, guardando solo una huella del número.
 2. En el panel de la app: **WhatsApp → Webhooks → Configuration**.
 3. Se pegan la **Callback URL** y el **Verify token**, y se pulsa **Verify and save**.
 4. Se suscribe al campo **messages**. El botón **Test** manda un evento de prueba.
+5. Suscribe la app a la cuenta de WhatsApp Business. Sin este paso, Meta manda los mensajes solo a su visor de pruebas ("WA DevX Webhook Events") y el webhook nunca recibe nada:
+   ```bash
+   curl -X POST "https://graph.facebook.com/v25.0/MESSAGING_ACCOUNT_ID/subscribed_apps" -H "Authorization: Bearer $WHATSAPP_TOKEN"
+   ```
+   Debe responder `{"success":true}`. Se hace una sola vez por cuenta.
+6. Desde tu WhatsApp escríbele "hola" al número de prueba (puedes abrir el chat con `https://wa.me/` y el número sin `+`).
+
+Si no contesta, revisa los logs de la función en Vercel (filtra por `[whatsapp]`). La protección de despliegues de Vercel bloquea a Meta en las previews: usa la dirección de Production.
 
 ## Límites a tener en cuenta
 
 - Los mensajes libres solo se pueden enviar dentro de las 24 horas posteriores a que la persona escribe. Para Sagui no es problema: el ciudadano siempre escribe primero.
 - El primer mensaje de prueba con el token temporal es la plantilla `hello_world`.
+- Los números de México llegan al webhook como `521` + 10 dígitos, pero Meta solo acepta responder a `52` + 10 dígitos. El código ya hace ese cambio.
 - Un portafolio nuevo puede registrar dos números de negocio; el límite sube al verificar el negocio.
 - Enviar mensajes que inicia el negocio requiere agregar un método de pago en el administrador comercial.
 - Los ejemplos oficiales usan la versión `v23.0` de la API, aunque otras páginas de Meta muestran versiones más nuevas. Revisa la que indique el panel.
