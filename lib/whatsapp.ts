@@ -5,6 +5,8 @@ import type { EventoChat } from "@/lib/tipos";
 const VERSION_API = process.env.WHATSAPP_API_VERSION ?? "v25.0";
 const APP = "https://tramita-blond.vercel.app";
 const MAX_MENSAJE = 4000; // WhatsApp acepta hasta 4096 caracteres por mensaje de texto
+// Phone number ID del número de prueba de Meta (+1 555 192 0052). No es secreto; la variable de Vercel, si existe, manda.
+const NUMERO = process.env.WHATSAPP_PHONE_NUMBER_ID || "1492125683977049";
 
 // Meta firma cada aviso con el App Secret; sin firma válida el aviso se descarta.
 export function firmaValida(cuerpo: string, firma: string | null) {
@@ -23,7 +25,7 @@ export const destino = (numero: string) => (/^521\d{10}$/.test(numero) ? `52${nu
 
 export async function enviarTexto(para: string, texto: string) {
   const token = process.env.WHATSAPP_TOKEN;
-  const numero = process.env.WHATSAPP_PHONE_NUMBER_ID;
+  const numero = NUMERO;
   if (!token || !numero) {
     // Sin cuenta de Meta (por ejemplo en local) el mensaje solo se muestra en la consola.
     console.log(`[whatsapp] faltan WHATSAPP_TOKEN o WHATSAPP_PHONE_NUMBER_ID; mensaje para ${para}:\n${texto}`);
@@ -45,7 +47,7 @@ export async function enviarTexto(para: string, texto: string) {
 // Marca el mensaje como leído y muestra "escribiendo…" mientras Sagui responde.
 export async function marcarLeido(idMensaje: string) {
   const token = process.env.WHATSAPP_TOKEN;
-  const numero = process.env.WHATSAPP_PHONE_NUMBER_ID;
+  const numero = NUMERO;
   if (!token || !numero) return;
   await fetch(`https://graph.facebook.com/${VERSION_API}/${numero}/messages`, {
     method: "POST",
