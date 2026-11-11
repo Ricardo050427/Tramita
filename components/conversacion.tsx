@@ -9,6 +9,7 @@ import { TarjetaDocumentos } from "./documentos";
 import { diasRestantes, leerCaso, mensajePlan, TarjetaPlan } from "./plan";
 import { Ficha, FichaPlegada, leerMarcados, mensajeProgreso } from "./ficha";
 import { Resultado, veredictoGeneral } from "./verificador";
+import { unir } from "@/lib/charlas";
 import { leerPreferencias } from "@/lib/preferencias";
 import type { ResultadoVerificacion } from "@/lib/veredictos";
 import type { Adjunto, Bloque, Documento, EventoChat, FuenteCitada, Plan, Tramite } from "@/lib/tipos";
@@ -17,6 +18,8 @@ export type Mensaje = {
   id: string;
   rol: "usuario" | "tramita";
   texto: string;
+  /** Cuándo se preguntó, para decir en Mis trámites desde cuándo espera la conversación. */
+  fecha?: string;
   bloques?: Bloque[];
   documentos?: Documento[];
   fuentes?: FuenteCitada[];
@@ -64,14 +67,15 @@ export function useConversacion({ almacen, claveFija, alSenal }: { almacen?: str
     try {
       const guardado = JSON.parse(localStorage.getItem(almacen) ?? "[]") as Mensaje[];
       if (guardado.length) {
-        setMensajes(guardado);
+        // Si ya había preguntas en pantalla (se guardó el trámite a media charla), se suman a lo guardado.
+        setMensajes((actuales) => (actuales.length ? unir(guardado, actuales) : guardado));
         alSenal?.("Sigue donde te quedaste");
       }
     } catch {}
   }, [almacen, alSenal]);
 
   useEffect(() => {
-    if (ocupado || !almacen) return;
+    if (ocupado || !almacen || !mensajes.length) return;
     try {
       localStorage.setItem(almacen, JSON.stringify(mensajes.slice(-20)));
     } catch {}
@@ -103,7 +107,7 @@ export function useConversacion({ almacen, claveFija, alSenal }: { almacen?: str
 
       setMensajes((l) => [
         ...l,
-        { id: nuevoId(), rol: "usuario", texto: texto || "Revisa mi archivo", archivos: adjuntos.map((a) => a.nombre) },
+        { id: nuevoId(), rol: "usuario", texto: texto || "Revisa mi archivo", fecha: new Date().toISOString(), archivos: adjuntos.map((a) => a.nombre) },
         { id: idRespuesta, rol: "tramita", texto: "" },
       ]);
       setOcupado(true);

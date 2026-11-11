@@ -69,3 +69,16 @@ Guía para probar desde el celular en https://tramita-blond.vercel.app, en orden
 
 - **Pasos:** en Vigila revisa "Tramita en números", el observatorio y la bitácora. En el observatorio, toca un dato para ver qué trámites no lo publican.
 - **Qué debe pasar:** al final de Vigila, "Cómo responde Sagui" muestra el examen de 50 de 50.
+
+### 11. La conversación se queda en Mis trámites
+
+- **Pasos:**
+  1. En el inicio pregunta "Se fundió una lámpara de mi calle" y luego "¿Puedo reportarla por teléfono?".
+  2. En la ficha de la respuesta toca "Guardar en Mis trámites".
+  3. Toca "Nueva pregunta" para limpiar el chat y entra a Mis trámites.
+- **Qué debe pasar:** la tarjeta muestra "Seguir la conversación con Sagui" con tu última pregunta. Al tocarla se abre el panel del trámite con toda la charla, y si preguntas "¿Y cuánto tarda?", Sagui responde sabiendo de qué hablaban.
+
+### 12. Fuente oficial de cada ficha
+
+- **Pasos:** al final de cualquier ficha toca "Fuente oficial: ver esta ficha en el catálogo municipal".
+- **Qué debe pasar:** se abre la ficha de ese trámite en tramites.hermosillo.gob.mx, no la portada del catálogo.

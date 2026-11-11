@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { motion } from "motion/react";
 import { ShieldCheck } from "lucide-react";
@@ -10,6 +10,8 @@ import { EscenaCerro } from "./escena-cerro";
 import { BotonPreferencias } from "./preferencias";
 import { Sagui } from "./sagui";
 import { Encabezado, Marca } from "./senal";
+import { clavesDe, copiarACharlas } from "@/lib/charlas";
+import { useMisTramites } from "@/lib/mis-tramites";
 import { PERFILES, usePreferencias } from "@/lib/preferencias";
 import type { EntradaIndice } from "@/lib/tipos";
 
@@ -35,7 +37,7 @@ function Bienvenida({ alPreguntar, atento }: { alPreguntar: (texto: string) => v
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.05, ease: salida }}
-        className="escena-inicio pointer-events-none fixed inset-x-0 z-0"
+        className="escena-inicio pointer-events-none fixed inset-x-0 z-0 will-change-transform"
         aria-hidden
       >
         <EscenaCerro className="block size-full" />
@@ -83,7 +85,7 @@ function Bienvenida({ alPreguntar, atento }: { alPreguntar: (texto: string) => v
         }}
         whileTap={{ scale: 0.92 }}
         transition={{ duration: 0.15 }}
-        className="sagui-inicio fixed z-10 rounded-full drop-shadow-[0_8px_10px_rgb(21_18_14/0.38)]"
+        className="sagui-inicio fixed z-10 rounded-full will-change-transform"
       >
         <Sagui estado={contento ? "feliz" : "saluda"} vez={vez} atento={atento && !contento} mirar contorno className="block h-auto w-full" />
       </motion.button>
@@ -96,6 +98,14 @@ export function Aplicacion({ indice }: { indice: EntradaIndice[] }) {
   const [escribiendo, setEscribiendo] = useState(false);
   const { mensajes, ocupado, preguntar, reintentar, reiniciar } = useConversacion({ almacen: "tramita:historial", alSenal: setSenal });
   const enCharla = mensajes.length > 0;
+  const mis = useMisTramites();
+
+  // Si en la charla aparece un trámite guardado en Mis trámites, la conversación se queda con él para retomarla otro día.
+  useEffect(() => {
+    if (ocupado || !mensajes.length) return;
+    const guardados = clavesDe(mensajes).filter((clave) => mis[clave]);
+    if (guardados.length) copiarACharlas(mensajes, guardados);
+  }, [mensajes, ocupado, mis]);
 
   const accion = enCharla ? (
     <button

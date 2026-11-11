@@ -6,6 +6,8 @@ import { ChevronRight, MessageCircleQuestionMark, X } from "lucide-react";
 import { BarraPregunta } from "./barra-pregunta";
 import { Mensajes, useConversacion } from "./conversacion";
 import { Sagui } from "./sagui";
+import { llaveCharla } from "@/lib/charlas";
+import { useMisTramites } from "@/lib/mis-tramites";
 import type { EntradaIndice, Tramite } from "@/lib/tipos";
 
 const SIN_INDICE: EntradaIndice[] = [];
@@ -23,11 +25,31 @@ function preguntasDe(tramite: Tramite) {
 
 export function PreguntarTramite({ tramite }: { tramite: Tramite }) {
   const [abierto, setAbierto] = useState(false);
-  const { mensajes, ocupado, preguntar, reintentar } = useConversacion({ claveFija: tramite.clave });
+  // Con el trámite en Mis trámites, la conversación se guarda en el dispositivo y se retoma desde ahí.
+  const guardado = Boolean(useMisTramites()[tramite.clave]);
+  const { mensajes, ocupado, preguntar, reintentar } = useConversacion({ claveFija: tramite.clave, almacen: guardado ? llaveCharla(tramite.clave) : undefined });
+  const idUltima = mensajes.findLast((m) => m.rol === "usuario")?.id;
   const controles = useDragControls();
   const reducir = useReducedMotion();
   const disparador = useRef<HTMLButtonElement>(null);
   const hoja = useRef<HTMLElement>(null);
+
+  // Desde Mis trámites («Seguir la conversación») el panel llega abierto.
+  useEffect(() => {
+    if (!new URLSearchParams(window.location.search).has("charla")) return;
+    const espera = setTimeout(() => {
+      window.history.replaceState(null, "", window.location.pathname);
+      setAbierto(true);
+    }, 250);
+    return () => clearTimeout(espera);
+  }, []);
+
+  // Al abrir con una conversación guardada se muestra la última pregunta, no el principio.
+  useEffect(() => {
+    if (!abierto || !idUltima) return;
+    const espera = setTimeout(() => hoja.current?.querySelector(`[id="m-${idUltima}"]`)?.scrollIntoView({ block: "start" }), 380);
+    return () => clearTimeout(espera);
+  }, [abierto, idUltima]);
 
   useEffect(() => {
     if (!abierto) return;
@@ -60,7 +82,7 @@ export function PreguntarTramite({ tramite }: { tramite: Tramite }) {
         className="disparador-chat fixed inset-x-0 z-30 mx-auto flex h-12 w-fit items-center gap-2 rounded-full bg-tinta pr-5 pl-4 font-bold text-panel shadow-[0_10px_24px_-10px_rgb(21_18_14/0.6)] transition-transform duration-150 active:scale-[0.96]"
       >
         <MessageCircleQuestionMark className="size-5 text-senal" strokeWidth={2.25} aria-hidden />
-        Preguntar sobre este trámite
+        {guardado && mensajes.length ? "Seguir la conversación" : "Preguntar sobre este trámite"}
       </button>
 
       <AnimatePresence>
@@ -104,7 +126,7 @@ export function PreguntarTramite({ tramite }: { tramite: Tramite }) {
                     <h2 id="titulo-hoja" className="text-lg leading-tight font-bold">
                       Pregunta sobre este trámite
                     </h2>
-                    <p className="truncate text-sm text-tinta-suave">{tramite.nombre}</p>
+                    <p className="truncate text-sm text-tinta-suave">{guardado && mensajes.length ? "Se guarda en Mis trámites" : tramite.nombre}</p>
                   </div>
                   <button type="button" aria-label="Cerrar" onPointerDown={(e) => e.stopPropagation()} onClick={() => setAbierto(false)} className="-mr-2 grid size-11 shrink-0 place-items-center rounded-full">
                     <X className="size-6" aria-hidden />

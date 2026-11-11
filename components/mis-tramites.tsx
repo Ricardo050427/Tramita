@@ -3,12 +3,13 @@
 import { useEffect, useState, useSyncExternalStore, type CSSProperties } from "react";
 import Link from "next/link";
 import { motion } from "motion/react";
-import { CalendarCheck, CalendarPlus, Check, ChevronRight, RotateCcw, Trash2 } from "lucide-react";
+import { CalendarCheck, CalendarPlus, Check, ChevronRight, MessageCircle, RotateCcw, Trash2 } from "lucide-react";
 import { leerMarcados } from "./ficha";
 import { avisoVigencia, diasRestantes } from "./plan";
 import { Sagui } from "./sagui";
 import { Encabezado } from "./senal";
 import { archivoCalendario, fechaCorta, fechaLimite, habilesEntre, hoyIso, leerPlazo } from "@/lib/habiles";
+import { leerCharla } from "@/lib/charlas";
 import { SITIO } from "@/lib/ley";
 import { dejarDeSeguir, marcarEntregado, reabrir, restaurar, terminar, useMisTramites, type Seguimiento } from "@/lib/mis-tramites";
 
@@ -53,6 +54,24 @@ function Avance({ s }: { s: Seguimiento }) {
         )}
       </p>
     </div>
+  );
+}
+
+// La conversación con Sagui sobre este trámite, guardada al seguirlo: se retoma con todo su contexto.
+function Conversacion({ clave }: { clave: string }) {
+  const ultima = leerCharla(clave).findLast((m) => m.rol === "usuario");
+  if (!ultima) return null;
+  return (
+    <Link href={`/tramite/${clave}?charla`} className="fila-senal flex min-h-14 items-center gap-3 border-t border-linea/70 px-4 py-2.5">
+      <MessageCircle className="size-5 shrink-0 text-senal-oscura" aria-hidden />
+      <span className="min-w-0 flex-1 leading-snug">
+        <span className="block font-bold">Seguir la conversación con Sagui</span>
+        <span className="block truncate text-sm text-tinta-suave">
+          {ultima.fecha ? `${haceCuanto(ultima.fecha).replace(/^h/, "H")} · ` : ""}«{ultima.texto}»
+        </span>
+      </span>
+      <ChevronRight className="flecha size-5 shrink-0 text-tinta-suave" aria-hidden />
+    </Link>
   );
 }
 
@@ -192,6 +211,7 @@ function Tarjeta({ s, plazo, indice, alQuitar }: { s: Seguimiento; plazo?: strin
         )}
       </Link>
       {s.terminado ? null : <CuentaPlazo s={s} texto={plazo} />}
+      <Conversacion clave={s.clave} />
       <div className="flex divide-x divide-linea/70 border-t border-linea/70">
         {s.terminado ? (
           <button type="button" onClick={() => reabrir(s.clave)} className={accion}>
@@ -290,7 +310,7 @@ function Lista({ plazos }: { plazos: Plazos }) {
         ) : (
           <Vacio />
         )}
-        <p className="mt-5 px-1 text-[0.8125rem] leading-snug text-tinta-suave">Esta lista se guarda solo en este dispositivo.</p>
+        <p className="mt-5 px-1 text-[0.8125rem] leading-snug text-tinta-suave">Esta lista y tus conversaciones se guardan solo en este dispositivo.</p>
       </main>
 
       {quitado ? (

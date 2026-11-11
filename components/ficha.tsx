@@ -346,6 +346,7 @@ export function Ficha({
           </motion.span>
           {guardado ? "En Mis trámites" : "Guardar en Mis trámites"}
         </button>
+        {guardado && compacta ? <p className="mt-1.5 text-sm leading-snug text-tinta-suave">Esta conversación también queda ahí para seguirla otro día.</p> : null}
       </div>
 
       <dl className="px-4">
@@ -450,8 +451,8 @@ export function Ficha({
           <ArrowRight className="size-4 shrink-0" aria-hidden />
         </Link>
         <ReportesDelTramite clave={tramite.clave} />
-        <a href="https://tramites.hermosillo.gob.mx/" target="_blank" rel="noreferrer" className="mt-2 flex items-center justify-between gap-3">
-          <span>Fuente oficial: catálogo municipal, clave {tramite.clave}</span>
+        <a href={`/fuente/${tramite.clave}`} target="_blank" rel="noreferrer" className="mt-2 flex min-h-11 items-center justify-between gap-3">
+          <span>Fuente oficial: ver esta ficha en el catálogo municipal (clave {tramite.clave})</span>
           <ArrowRight className="size-4 shrink-0" aria-hidden />
         </a>
       </div>

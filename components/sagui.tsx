@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 
 // Sagui: saguaro y guía. Tres trazos gruesos y la misma cara en todas sus versiones.
@@ -29,6 +29,8 @@ const DER = {
 };
 const TINTA = "var(--tinta)";
 const BRAZO = { fill: "none", stroke: "var(--senal)", strokeWidth: 25, strokeLinecap: "round" as const };
+const BORDE = 6.5;
+const SILUETA = { ...BRAZO, stroke: "#fff", strokeWidth: 25 + BORDE * 2 };
 const rebote = [0.34, 1.56, 0.64, 1] as const;
 const suaveFinal = [0.22, 1, 0.36, 1] as const;
 const sinFin = (duration: number, times: number[]) => ({ duration, times, repeat: Infinity, ease: "easeInOut" as const });
@@ -118,7 +120,6 @@ export function Sagui({
   contorno?: boolean;
 }) {
   const reducir = useReducedMotion();
-  const idContorno = `contorno-${useId().replace(/:/g, "")}`;
   const lienzo = useRef<SVGSVGElement>(null);
   const [mira, setMira] = useState<{ x: number; y: number } | null>(null);
   const [fase, setFase] = useState<Fase>(() => (estado === "saluda" ? "intro" : "espera"));
@@ -149,7 +150,10 @@ export function Sagui({
         const dy = e.clientY - (caja.top + caja.height * 0.38);
         const d = Math.max(1, Math.hypot(dx, dy));
         const fuerza = Math.min(1, d / 160);
-        setMira({ x: (dx / d) * 4.5 * fuerza, y: (dy / d) * 3.5 * fuerza });
+        // En cuartos de unidad: con mouse o trackpad llegan movimientos en cada cuadro y casi nunca cambian la mirada.
+        const x = Math.round((dx / d) * 4.5 * fuerza * 4) / 4;
+        const y = Math.round((dy / d) * 3.5 * fuerza * 4) / 4;
+        setMira((m) => (m?.x === x && m.y === y ? m : { x, y }));
       });
       clearTimeout(olvido);
       olvido = setTimeout(() => setMira(null), 1600);
@@ -230,28 +234,27 @@ export function Sagui({
 
   return (
     <svg ref={lienzo} viewBox="16 12 172 164" className={`sagui ${className}`} role={etiqueta ? "img" : undefined} aria-label={etiqueta} aria-hidden={etiqueta ? undefined : true}>
-      {contorno ? (
-        // Un borde blanco que sigue la silueta y sus animaciones, para que destaque sobre el naranja del cerro.
-        <defs>
-          <filter id={idContorno} filterUnits="userSpaceOnUse" x="-20" y="-20" width="244" height="236">
-            <feMorphology in="SourceAlpha" operator="dilate" radius="6" result="silueta" />
-            <feFlood floodColor="#fff" />
-            <feComposite in2="silueta" operator="in" />
-            <feMerge>
-              <feMergeNode />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-        </defs>
-      ) : null}
       <motion.g
         style={base}
-        filter={contorno ? `url(#${idContorno})` : undefined}
         variants={reducir ? undefined : variantes}
         initial={intro ? { scale: 0 } : false}
         animate={reducir ? undefined : `v${vez}`}
       >
         <motion.g style={base} {...mueve(vaiven)}>
+          {contorno ? (
+            // Sombra plana y borde blanco hechos con la misma silueta más gruesa: siguen sus movimientos sin filtros,
+            // que en pantallas de alta densidad se recalculan en cada cuadro y traban la animación.
+            <>
+              <g transform="translate(0 7)" opacity={0.2}>
+                <motion.path {...SILUETA} stroke={TINTA} initial={{ d: intro ? INTRO_KF.izq[0] : IZQ.reposo }} {...mueve(izq)} />
+                <motion.path {...SILUETA} stroke={TINTA} initial={{ d: intro ? INTRO_KF.der[0] : DER.reposo }} {...mueve(der)} />
+                <path d="M100 142 L100 60" stroke={TINTA} strokeWidth={60 + BORDE * 2} strokeLinecap="round" />
+              </g>
+              <motion.path {...SILUETA} initial={{ d: intro ? INTRO_KF.izq[0] : IZQ.reposo }} {...mueve(izq)} />
+              <motion.path {...SILUETA} initial={{ d: intro ? INTRO_KF.der[0] : DER.reposo }} {...mueve(der)} />
+              <path d="M100 142 L100 60" stroke="#fff" strokeWidth={60 + BORDE * 2} strokeLinecap="round" />
+            </>
+          ) : null}
           <g className="sagui-cuerpo">
             <motion.path {...BRAZO} initial={{ d: intro ? INTRO_KF.izq[0] : IZQ.reposo }} {...mueve(izq)} />
             <motion.path {...BRAZO} initial={{ d: intro ? INTRO_KF.der[0] : DER.reposo }} {...mueve(der)} />
