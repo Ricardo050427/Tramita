@@ -200,7 +200,10 @@ function respuestaLocal(pregunta: string, enviar: (e: EventoChat) => void, hayAd
 }
 
 export async function POST(req: Request) {
-  const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "local";
+  // WhatsApp pregunta desde el servidor: cada número cuenta aparte en lugar de compartir la IP.
+  const secretoInterno = process.env.WHATSAPP_APP_SECRET;
+  const usuarioInterno = secretoInterno && req.headers.get("x-tramita-interno") === secretoInterno ? req.headers.get("x-tramita-usuario") : null;
+  const ip = usuarioInterno ?? req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "local";
   if (excedeLimite(ip)) {
     return Response.json({ error: "Son muchas preguntas seguidas. Espera un minuto e inténtalo de nuevo." }, { status: 429 });
   }
