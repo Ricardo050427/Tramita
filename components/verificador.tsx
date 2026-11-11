@@ -50,7 +50,7 @@ const CLASES: Record<Grupo, { texto: string; fondo: string; barra: string }> = {
   mal: { texto: "text-error", fondo: "bg-error-fondo", barra: "bg-error" },
 };
 
-function veredictoGeneral(hallazgos: Hallazgo[]) {
+export function veredictoGeneral(hallazgos: Hallazgo[]) {
   const mal = hallazgos.filter((h) => TONO[h.veredicto].grupo === "mal").length;
   const aviso = hallazgos.filter((h) => TONO[h.veredicto].grupo === "aviso").length;
   if (mal) return `${mal} ${mal === 1 ? "cosa no cuadra" : "cosas no cuadran"} con la ficha oficial`;
@@ -82,7 +82,17 @@ function Ley({ fundamentos }: { fundamentos: Fundamento[] }) {
   );
 }
 
-function Resultado({ tramite, resultado, alEditar, alReiniciar }: { tramite: Tramite; resultado: ResultadoVerificacion; alEditar: () => void; alReiniciar: () => void }) {
+export function Resultado({
+  tramite,
+  resultado,
+  alEditar,
+  alReiniciar,
+}: {
+  tramite: Pick<Tramite, "clave" | "nombre">;
+  resultado: ResultadoVerificacion;
+  alEditar?: () => void;
+  alReiniciar?: () => void;
+}) {
   const reducir = useReducedMotion();
   const [copiado, setCopiado] = useState(false);
   const { hallazgos, faltantes } = resultado;
@@ -240,13 +250,22 @@ function Resultado({ tramite, resultado, alEditar, alReiniciar }: { tramite: Tra
           <Share2 className="size-[1.125rem]" aria-hidden />
           Compartir resultado
         </button>
-        <button type="button" onClick={alEditar} className="flex min-h-12 items-center gap-2 rounded-[10px] border-2 border-tinta px-4 font-bold transition-transform duration-150 active:scale-[0.97]">
-          Corregir lo que escribí
-        </button>
-        <button type="button" onClick={alReiniciar} className="flex min-h-12 items-center gap-2 px-2 font-bold underline">
-          <RotateCcw className="size-4" aria-hidden />
-          Revisar otra cosa
-        </button>
+        {alEditar ? (
+          <button type="button" onClick={alEditar} className="flex min-h-12 items-center gap-2 rounded-[10px] border-2 border-tinta px-4 font-bold transition-transform duration-150 active:scale-[0.97]">
+            Corregir lo que escribí
+          </button>
+        ) : null}
+        {alReiniciar ? (
+          <button type="button" onClick={alReiniciar} className="flex min-h-12 items-center gap-2 px-2 font-bold underline">
+            <RotateCcw className="size-4" aria-hidden />
+            Revisar otra cosa
+          </button>
+        ) : (
+          <Link href={`/tramite/${tramite.clave}/verificar`} className="flex min-h-12 items-center gap-2 px-2 font-bold underline">
+            Revisar otra lista
+            <ArrowRight className="size-4" aria-hidden />
+          </Link>
+        )}
       </div>
 
       <p className="px-1 text-sm leading-snug text-tinta-suave">

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Bitacora } from "@/components/bitacora";
 import { BuscadorVerificar } from "@/components/buscador-verificar";
+import { EnNumeros } from "@/components/en-numeros";
 import { ReportesCiudadanos } from "@/components/reportes-ciudadanos";
 import { Encabezado } from "@/components/senal";
 import { indice, tramites } from "@/lib/datos";
@@ -41,6 +42,13 @@ export default function PaginaVigila() {
             Elige tu trámite, escribe o toma foto de lo que te pidieron, y Sagui lo compara con la ficha oficial y con la ley.
           </p>
           <BuscadorVerificar indice={indice} />
+        </section>
+
+        <section aria-labelledby="numeros" className="mt-10 px-1">
+          <h2 id="numeros" className="text-[1.625rem] leading-[1.1] font-bold tracking-[-0.015em] text-balance">
+            Tramita en números
+          </h2>
+          <EnNumeros />
         </section>
 
         <section id="reportes" aria-labelledby="reportes-titulo" className="mt-10 scroll-mt-36 px-1">

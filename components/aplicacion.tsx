@@ -16,7 +16,7 @@ const POPULARES = [
   "¿Cómo pido la tarifa social del agua?",
   "Se fundió una lámpara de mi calle",
   "Necesito mi constancia de no adeudo",
-  "Quiero cambiar de nombre mi recibo de agua",
+  "Me pidieron $500 para agilizar mi licencia de negocio",
 ];
 const SENAL_INICIAL = "¿Qué necesitas resolver?";
 const salida = [0.16, 1, 0.3, 1] as const;

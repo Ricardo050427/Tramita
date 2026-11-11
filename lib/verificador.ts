@@ -161,6 +161,8 @@ const EQUIVALENCIAS: Record<string, string> = {
   foto: "fotografia",
   fotos: "fotografia",
 };
+// Palabras que aparecen en muchos requisitos: solas no bastan para decir que es el mismo documento.
+const GENERICAS = new Set(["constancia", "carta", "documento", "oficio", "formato", "solicitud", "licencia", "comprobante", "certificado", "acta"]);
 const VACIAS = new Set("con del las los por una unos para que copia copias original simple pidieron piden pide piden".split(" "));
 const palabras = (t: string) =>
   normalizar(t)
@@ -184,10 +186,12 @@ export function separarSinIA(t: Tramite, texto: string, cobro?: number): Element
     const propias = palabras(p);
     requisitos.forEach((r, i) => {
       // Coincidir con el título pesa más que coincidir con la descripción.
-      const comunes = propias.reduce((s, x) => s + (r.titulo.has(x) ? 2 : r.detalle.has(x) ? 1 : 0), 0);
+      // Si el título es solo "Constancia" o "Formato", su descripción hace de título.
+      const tituloGenerico = r.titulo.size === 1 && [...r.titulo].every((x) => GENERICAS.has(x));
+      const comunes = propias.reduce((s, x) => s + (r.titulo.has(x) ? (GENERICAS.has(x) ? 1 : 2) : r.detalle.has(x) && (tituloGenerico || !GENERICAS.has(x)) ? 1 : 0), 0);
       if (comunes > puntos) [mejor, puntos] = [i, comunes];
     });
-    return { dicho: p.slice(0, 120), tipo, requisito: puntos >= 1 ? mejor : -1, copia: /\bcopia/.test(n) && !/certificad/.test(n), monto, informal: INFORMAL.test(n) };
+    return { dicho: p.slice(0, 120), tipo, requisito: puntos >= 2 ? mejor : -1, copia: /\bcopia/.test(n) && !/certificad/.test(n), monto, informal: INFORMAL.test(n) };
   });
   if (cobro && !elementos.some((e) => e.tipo === "pago")) {
     elementos.push({ dicho: `Me cobraron ${pesos(cobro)}`, tipo: "pago", requisito: -1, copia: false, monto: cobro, informal: false });

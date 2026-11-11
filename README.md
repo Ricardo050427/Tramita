@@ -56,6 +56,10 @@ Scripts:
 - `node scripts/vigia.mjs`: revisa el catálogo oficial y actualiza la bitácora (también corre cada día en GitHub Actions).
 - `BASE=https://tramita-blond.vercel.app node scripts/examen.mjs`: examen de 50 preguntas.
 
+## WhatsApp
+
+Pasos para preparar la cuenta de desarrollador de Meta: [docs/whatsapp-meta.md](docs/whatsapp-meta.md).
+
 ## Tecnología
 
 Next.js 16, React 19, Tailwind 4, Motion, Gemini, Vercel (funciones, caché y Blob), GitHub Actions.

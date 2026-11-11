@@ -63,7 +63,7 @@ const PREGUNTAS = [
 
 async function preguntar(pregunta) {
   const inicio = Date.now();
-  const res = await fetch(`${BASE}/api/chat`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pregunta }) });
+  const res = await fetch(`${BASE}/api/chat`, { method: "POST", headers: { "Content-Type": "application/json", "x-tramita-examen": "1" }, body: JSON.stringify({ pregunta }) });
   if (!res.ok || !res.body) return { error: `HTTP ${res.status}`, ms: Date.now() - inicio, claves: [], primeraMs: null };
   const lector = res.body.getReader();
   const decodificador = new TextDecoder();

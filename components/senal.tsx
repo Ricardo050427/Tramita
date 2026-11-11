@@ -8,7 +8,8 @@ import { ArrowLeft, ArrowUpRight } from "lucide-react";
 // La Señal: el mensaje de la banda cambia palabra por palabra, como un tablero de terminal.
 export function Senal({ texto, grande }: { texto: string; grande?: boolean }) {
   const reducir = useReducedMotion();
-  const Etiqueta = grande ? "h1" : "p";
+  // El mensaje de la banda es el título de cada pantalla, también para lectores de pantalla.
+  const Etiqueta = "h1";
   return (
     <Etiqueta
       aria-live="polite"

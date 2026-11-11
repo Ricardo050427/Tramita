@@ -93,6 +93,8 @@ export type EntradaIndice = {
 
 export type Adjunto = { nombre: string; mime: string; datos: string };
 
+import type { ResultadoVerificacion } from "./veredictos";
+
 export type EventoChat =
   | { t: "fichas"; items: Tramite[] }
   | { t: "texto"; d: string }
@@ -102,4 +104,5 @@ export type EventoChat =
   | { t: "plan"; plan: Plan }
   | { t: "sugerencias"; items: string[] }
   | { t: "aviso"; d: string }
+  | { t: "verificacion"; clave: string; nombre: string; resultado: ResultadoVerificacion }
   | { t: "fin" };

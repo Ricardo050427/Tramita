@@ -8,7 +8,9 @@ import { Bloques, FuentesCitadas } from "./bloques";
 import { TarjetaDocumentos } from "./documentos";
 import { diasRestantes, leerCaso, mensajePlan, TarjetaPlan } from "./plan";
 import { Ficha, FichaPlegada, leerMarcados, mensajeProgreso } from "./ficha";
+import { Resultado, veredictoGeneral } from "./verificador";
 import { leerPreferencias } from "@/lib/preferencias";
+import type { ResultadoVerificacion } from "@/lib/veredictos";
 import type { Adjunto, Bloque, Documento, EventoChat, FuenteCitada, Plan, Tramite } from "@/lib/tipos";
 
 export type Mensaje = {
@@ -24,6 +26,7 @@ export type Mensaje = {
   sugerencias?: string[];
   aviso?: string;
   error?: boolean;
+  verificacion?: { clave: string; nombre: string; resultado: ResultadoVerificacion };
 };
 
 const nuevoId = () => Math.random().toString(36).slice(2);
@@ -145,6 +148,9 @@ export function useConversacion({ almacen, claveFija, alSenal }: { almacen?: str
               actualizar(idRespuesta, (m) => ({ ...m, bloques: [...(m.bloques ?? []), e.bloque], texto: `${m.texto}${e.bloque.d} ` }));
             } else if (e.t === "sugerencias") {
               actualizar(idRespuesta, (m) => ({ ...m, sugerencias: e.items }));
+            } else if (e.t === "verificacion") {
+              actualizar(idRespuesta, (m) => ({ ...m, verificacion: { clave: e.clave, nombre: e.nombre, resultado: e.resultado } }));
+              alSenal?.(veredictoGeneral(e.resultado.hallazgos));
             } else if (e.t === "aviso") {
               actualizar(idRespuesta, (m) => ({ ...m, aviso: e.d }));
             }
@@ -260,6 +266,8 @@ export function Mensajes({
 
             {m.fuentes?.length ? <FuentesCitadas fuentes={m.fuentes} /> : null}
 
+            {m.verificacion ? <Resultado tramite={{ clave: m.verificacion.clave, nombre: m.verificacion.nombre }} resultado={m.verificacion.resultado} /> : null}
+
             {m.error && m.id === ultima?.id ? (
               <button type="button" onClick={alReintentar} className="flex min-h-11 items-center gap-2 rounded-[10px] border border-tinta bg-panel px-3.5 font-bold">
                 <RotateCcw className="size-4" aria-hidden />
@@ -291,7 +299,7 @@ export function Mensajes({
                       Ver la ficha y tu checklist de este trámite
                     </button>
                   ) : i === 0 ? (
-                    <Ficha tramite={t} compacta alProgreso={t.clave === claveVigente && alSenal ? (faltan) => alSenal(mensajeProgreso(t, faltan)) : undefined} />
+                    <Ficha tramite={t} compacta alProgreso={t.clave === claveVigente && alSenal && !m.verificacion ? (faltan) => alSenal(mensajeProgreso(t, faltan)) : undefined} />
                   ) : (
                     <FichaPlegada tramite={t} />
                   )}

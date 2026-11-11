@@ -350,7 +350,7 @@ export function Ficha({
 
       <dl className="px-4">
         <Dato etiqueta="Costo" valor={tramite.costo} />
-        <Dato etiqueta="Respuesta" valor={tramite.plazo} />
+        <Dato etiqueta="Respuesta" valor={/^indefinido/i.test(tramite.plazo.trim()) ? "Sin plazo publicado" : tramite.plazo} />
         <Dato etiqueta="Obtienes" valor={tramite.obtienes === "Ninguno" ? "" : tramite.obtienes} />
       </dl>
 

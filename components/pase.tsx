@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useSyncExternalStore } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { Check, Printer, Share2 } from "lucide-react";
 import { nombreRequisito } from "@/lib/observatorio";
 import type { Requisito } from "@/lib/tipos";
@@ -62,6 +62,13 @@ export function RequisitosPase({ clave, requisitos }: { clave: string; requisito
 
 export function AccionesPase({ titulo, url }: { titulo: string; url: string }) {
   const [copiado, setCopiado] = useState(false);
+
+  // Cuenta, sin datos de nadie, que se abrió un pase.
+  useEffect(() => {
+    try {
+      navigator.sendBeacon?.("/api/metricas", new Blob([JSON.stringify({ evento: "pase" })], { type: "application/json" }));
+    } catch {}
+  }, []);
 
   async function compartir() {
     try {
