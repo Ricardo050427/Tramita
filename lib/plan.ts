@@ -18,7 +18,7 @@ export function estimarCosto(t: Tramite, metros?: number): Rango | null {
   const fijo = base ? numero(base[1]) : 0;
 
   // Tablas por superficie: "De 60 m2 hasta 100 m2: 0.30 VUMAV por m2".
-  const tramos = [...texto.matchAll(/([\d,.]+)\s*m2\s*hasta\s*([\d,.]+)\s*m2\s*:?\s*([\d.]+)\s*vumav\s*por\s*m2/gi)].map((m) => ({
+  const tramos = [...texto.matchAll(/([\d,.]+)\s*m2\s*hasta\s*([\d,.]+)\s*m2\s*:?\s*([\d.]+)\s*vuma[vs]?\s*por\s*m2/gi)].map((m) => ({
     desde: numero(m[1]),
     hasta: numero(m[2]),
     tasa: Number(m[3]),
@@ -31,7 +31,7 @@ export function estimarCosto(t: Tramite, metros?: number): Rango | null {
     return { min: total, max: total };
   }
 
-  const porMetro = /^([\d.]+)(?:\s*a\s*([\d.]+))?\s*vumav\s*por\s*m2/i.exec(texto);
+  const porMetro = /^([\d.]+)(?:\s*a\s*([\d.]+))?\s*vuma[vs]?\s*por\s*m2/i.exec(texto);
   if (porMetro) {
     if (!metros) return null;
     const a = Number(porMetro[1]);
@@ -39,10 +39,10 @@ export function estimarCosto(t: Tramite, metros?: number): Rango | null {
     return { min: redondear(metros * a * VUMAV), max: redondear(metros * b * VUMAV) };
   }
 
-  const rango = /^(?:var[ií]an\s+)?(?:de\s+)?([\d,.]+)\s*(?:vumav\s*)?a\s*([\d,.]+)\s*vumav/i.exec(texto);
+  const rango = /^(?:var[ií]an\s+)?(?:de\s+)?([\d,.]+)\s*(?:vuma[vs]?\s*)?a\s*([\d,.]+)\s*vuma[vs]?/i.exec(texto);
   if (rango) return { min: redondear(numero(rango[1]) * VUMAV), max: redondear(numero(rango[2]) * VUMAV) };
 
-  const unico = /^([\d,.]+)\s*vumav/i.exec(texto);
+  const unico = /^([\d,.]+)\s*vuma[vs]?/i.exec(texto);
   if (unico) {
     const total = redondear(numero(unico[1]) * VUMAV);
     return { min: total, max: total };

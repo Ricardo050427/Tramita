@@ -1,11 +1,15 @@
 "use client";
 
 import { useRef, useState } from "react";
+import Link from "next/link";
 import { motion } from "motion/react";
+import { ShieldCheck } from "lucide-react";
 import { BarraPregunta } from "./barra-pregunta";
 import { Mensajes, useConversacion } from "./conversacion";
+import { BotonPreferencias } from "./preferencias";
 import { Sagui } from "./sagui";
 import { Encabezado, Marca } from "./senal";
+import { PERFILES, usePreferencias } from "@/lib/preferencias";
 import type { EntradaIndice } from "@/lib/tipos";
 
 const POPULARES = [
@@ -21,6 +25,8 @@ function Bienvenida({ alPreguntar, atento }: { alPreguntar: (texto: string) => v
   const [vez, setVez] = useState(0);
   const [contento, setContento] = useState(false);
   const espera = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const { perfil } = usePreferencias();
+  const sugerencias = PERFILES.find((p) => p.id === perfil)?.sugerencias ?? POPULARES;
   return (
     <div className="mx-auto flex h-full max-w-md flex-col items-center justify-center px-5 py-6 text-center">
       <motion.button
@@ -45,7 +51,7 @@ function Bienvenida({ alPreguntar, atento }: { alPreguntar: (texto: string) => v
         Soy Sagui. Pregúntame como en la ventanilla y te digo qué llevar, cuánto cuesta y a dónde ir.
       </motion.p>
       <ul className="mt-6 flex flex-wrap justify-center gap-2">
-        {POPULARES.map((s, i) => (
+        {sugerencias.map((s, i) => (
           <motion.li key={s} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.36, delay: 0.24 + i * 0.05, ease: salida }}>
             <button type="button" onClick={() => alPreguntar(s)} className="min-h-11 rounded-full bg-panel px-4 py-2 text-left text-[0.9375rem] leading-snug font-medium transition-[transform,background-color] duration-150 active:scale-[0.96] active:bg-senal">
               {s}
@@ -53,6 +59,12 @@ function Bienvenida({ alPreguntar, atento }: { alPreguntar: (texto: string) => v
           </motion.li>
         ))}
       </ul>
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4, delay: 0.5, ease: salida }}>
+        <Link href="/vigila#verificar" className="mt-5 inline-flex min-h-11 items-center gap-2 rounded-full px-3 text-[0.9375rem] font-bold text-tinta underline">
+          <ShieldCheck className="size-[1.125rem] text-senal-oscura" aria-hidden />
+          ¿Te pidieron algo de más en ventanilla?
+        </Link>
+      </motion.div>
     </div>
   );
 }
@@ -88,8 +100,9 @@ export function Aplicacion({ indice }: { indice: EntradaIndice[] }) {
         <Encabezado mensaje={senal} accion={accion} />
       ) : (
         <header className="mx-auto flex w-full max-w-5xl px-4 pt-[max(env(safe-area-inset-top),0.75rem)]">
-          <div className="flex h-11 items-center">
+          <div className="flex h-11 w-full items-center justify-between">
             <Marca />
+            <BotonPreferencias />
           </div>
         </header>
       )}

@@ -10,6 +10,8 @@ export type Seguimiento = {
   creado: string;
   actualizado: string;
   terminado?: string;
+  /** Día en que entregó la solicitud (AAAA-MM-DD): desde ahí corre el plazo de respuesta. */
+  entregado?: string;
   vigencia?: PasoPlan["vigencia"];
   /** Entró al marcar un paso de la ruta: si se desmarca, deja de seguirse. */
   deRuta?: boolean;
@@ -92,6 +94,15 @@ function sinTerminar(seguimiento: Seguimiento): Seguimiento {
   const copia = { ...seguimiento, actualizado: new Date().toISOString() };
   delete copia.terminado;
   return copia;
+}
+
+export function marcarEntregado(clave: string, fecha: string | null) {
+  const registro = leer();
+  if (!registro[clave]) return;
+  const copia = { ...registro[clave], actualizado: new Date().toISOString() };
+  if (fecha) copia.entregado = fecha;
+  else delete copia.entregado;
+  escribir({ ...registro, [clave]: copia });
 }
 
 export function terminar(clave: string) {

@@ -10,7 +10,7 @@ import type { Adjunto, EntradaIndice } from "@/lib/tipos";
 const MAX_BYTES = 3 * 1024 * 1024;
 const salida = [0.16, 1, 0.3, 1] as const;
 
-function aBase64(blob: Blob) {
+export function aBase64(blob: Blob) {
   return new Promise<string>((resolver, rechazar) => {
     const lector = new FileReader();
     lector.onload = () => resolver(String(lector.result).split(",")[1]);
@@ -19,7 +19,7 @@ function aBase64(blob: Blob) {
   });
 }
 
-async function comprimirImagen(archivo: File): Promise<Blob> {
+export async function comprimirImagen(archivo: File): Promise<Blob> {
   try {
     const mapa = await createImageBitmap(archivo);
     const escala = Math.min(1, 1600 / Math.max(mapa.width, mapa.height));

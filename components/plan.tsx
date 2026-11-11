@@ -3,11 +3,16 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion } from "motion/react";
-import { Check } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import { alternarPaso } from "@/lib/mis-tramites";
 import type { PasoPlan, Plan } from "@/lib/tipos";
 
 const CASO = "tramita:caso";
+// Metas con una ruta armada a mano que incluye lo que no aparece en los requisitos (anuncio, alcohol, SAT).
+const RUTA_COMPLETA: Record<string, { slug: string; texto: string }> = {
+  "HMO-00420": { slug: "negocio-de-comida", texto: "¿Es un negocio de comida? Ve la ruta completa" },
+  "HMO-00186": { slug: "construir-o-ampliar", texto: "Ve la ruta completa, hasta terminar la obra" },
+};
 const DIA_MS = 86_400_000;
 
 export function leerCaso(): Record<string, string> {
@@ -82,7 +87,7 @@ export function TarjetaPlan({ plan, alCambiar }: { plan: Plan; alCambiar?: (mens
       transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
       className="rounded-[14px] border-2 border-tinta bg-panel px-4 pt-3.5 pb-3"
     >
-      <h2 className="text-lg leading-snug font-bold text-balance">Tu ruta para {(plan.meta.charAt(0).toLowerCase() + plan.meta.slice(1)).replace(/s*(.*)s*$/, "")}</h2>
+      <h2 className="text-lg leading-snug font-bold text-balance">Tu ruta para {(plan.meta.charAt(0).toLowerCase() + plan.meta.slice(1)).replace(/\s*\(.*\)\s*$/, "")}</h2>
       <p className="mt-0.5 text-[0.9375rem] text-tinta-suave">
         {hechos} de {plan.pasos.length} pasos listos
       </p>
@@ -135,6 +140,12 @@ export function TarjetaPlan({ plan, alCambiar }: { plan: Plan; alCambiar?: (mens
           </p>
         ) : null}
         <p className="mt-1 text-sm text-tinta-suave">Cálculo orientativo con las tarifas publicadas. Confírmalo en la dependencia.</p>
+        {RUTA_COMPLETA[plan.clave] ? (
+          <Link href={`/ruta/${RUTA_COMPLETA[plan.clave].slug}`} className="mt-1 flex min-h-11 items-center gap-1.5 font-bold underline">
+            {RUTA_COMPLETA[plan.clave].texto}
+            <ArrowRight className="size-4" aria-hidden />
+          </Link>
+        ) : null}
       </div>
     </motion.section>
   );

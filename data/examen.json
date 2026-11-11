@@ -1,0 +1,727 @@
+{
+ "fecha": "2026-11-11T04:13:48.474Z",
+ "base": "http://localhost:3000",
+ "total": 50,
+ "primero": 49,
+ "enLista": 50,
+ "medianaMs": 2388,
+ "p90Ms": 5817,
+ "avisos": 0,
+ "resultados": [
+  {
+   "pregunta": "¿Cómo pago el predial?",
+   "esperadas": [
+    "HMO-00494"
+   ],
+   "obtenidas": [
+    "HMO-00494"
+   ],
+   "primero": true,
+   "enLista": true,
+   "ms": 8794,
+   "primeraMs": 8793,
+   "aviso": false
+  },
+  {
+   "pregunta": "Quiero un descuento en el predial porque soy jubilado",
+   "esperadas": [
+    "HMO-00479"
+   ],
+   "obtenidas": [
+    "HMO-00479",
+    "HMO-00318"
+   ],
+   "primero": true,
+   "enLista": true,
+   "ms": 4784,
+   "primeraMs": 4308,
+   "aviso": false
+  },
+  {
+   "pregunta": "Debo varios años de predial, ¿puedo pagar en partes?",
+   "esperadas": [
+    "HMO-00318"
+   ],
+   "obtenidas": [
+    "HMO-00035",
+    "HMO-00318"
+   ],
+   "primero": false,
+   "enLista": true,
+   "ms": 6498,
+   "primeraMs": 6133,
+   "aviso": false
+  },
+  {
+   "pregunta": "Necesito la constancia de no adeudo municipal",
+   "esperadas": [
+    "HMO-00033"
+   ],
+   "obtenidas": [
+    "HMO-00033"
+   ],
+   "primero": true,
+   "enLista": true,
+   "ms": 2360,
+   "primeraMs": 1963,
+   "aviso": false
+  },
+  {
+   "pregunta": "¿Cuánto cuesta el certificado de no adeudo del predial?",
+   "esperadas": [
+    "HMO-00035"
+   ],
+   "obtenidas": [
+    "HMO-00035"
+   ],
+   "primero": true,
+   "enLista": true,
+   "ms": 22,
+   "primeraMs": 22,
+   "aviso": false
+  },
+  {
+   "pregunta": "Se fundió la lámpara de mi calle",
+   "esperadas": [
+    "HMO-00443"
+   ],
+   "obtenidas": [
+    "HMO-00443"
+   ],
+   "primero": true,
+   "enLista": true,
+   "ms": 2153,
+   "primeraMs": 1953,
+   "aviso": false
+  },
+  {
+   "pregunta": "Me llegó muy caro el recibo del agua",
+   "esperadas": [
+    "HMO-00446",
+    "HMO-00034",
+    "HMO-00052"
+   ],
+   "obtenidas": [
+    "HMO-00446",
+    "HMO-00034"
+   ],
+   "primero": true,
+   "enLista": true,
+   "ms": 2251,
+   "primeraMs": 1826,
+   "aviso": false
+  },
+  {
+   "pregunta": "Quiero la tarifa social del agua",
+   "esperadas": [
+    "HMO-00061"
+   ],
+   "obtenidas": [
+    "HMO-00061"
+   ],
+   "primero": true,
+   "enLista": true,
+   "ms": 2772,
+   "primeraMs": 2289,
+   "aviso": false
+  },
+  {
+   "pregunta": "¿Cómo contrato el agua para mi casa nueva?",
+   "esperadas": [
+    "HMO-00059"
+   ],
+   "obtenidas": [
+    "HMO-00059",
+    "HMO-00444"
+   ],
+   "primero": true,
+   "enLista": true,
+   "ms": 2558,
+   "primeraMs": 2151,
+   "aviso": false
+  },
+  {
+   "pregunta": "Quiero poner el recibo del agua a mi nombre",
+   "esperadas": [
+    "HMO-00058"
+   ],
+   "obtenidas": [
+    "HMO-00058"
+   ],
+   "primero": true,
+   "enLista": true,
+   "ms": 7947,
+   "primeraMs": 7612,
+   "aviso": false
+  },
+  {
+   "pregunta": "No puedo pagar el agua, ¿me dan un convenio?",
+   "esperadas": [
+    "HMO-00060"
+   ],
+   "obtenidas": [
+    "HMO-00060",
+    "HMO-00450"
+   ],
+   "primero": true,
+   "enLista": true,
+   "ms": 6186,
+   "primeraMs": 5817,
+   "aviso": false
+  },
+  {
+   "pregunta": "Quiero abrir una taquería",
+   "esperadas": [
+    "HMO-00420"
+   ],
+   "obtenidas": [
+    "HMO-00420",
+    "HMO-00227"
+   ],
+   "primero": true,
+   "enLista": true,
+   "ms": 4149,
+   "primeraMs": 3772,
+   "aviso": false
+  },
+  {
+   "pregunta": "¿Cuánto cuesta la licencia de funcionamiento?",
+   "esperadas": [
+    "HMO-00420"
+   ],
+   "obtenidas": [
+    "HMO-00420"
+   ],
+   "primero": true,
+   "enLista": true,
+   "ms": 18,
+   "primeraMs": 18,
+   "aviso": false
+  },
+  {
+   "pregunta": "Necesito renovar la licencia de mi negocio",
+   "esperadas": [
+    "HMO-00535"
+   ],
+   "obtenidas": [
+    "HMO-00535",
+    "HMO-00420"
+   ],
+   "primero": true,
+   "enLista": true,
+   "ms": 4773,
+   "primeraMs": 4252,
+   "aviso": false
+  },
+  {
+   "pregunta": "Quiero vender cerveza en mi tienda",
+   "esperadas": [
+    "HMO-00195"
+   ],
+   "obtenidas": [
+    "HMO-00195"
+   ],
+   "primero": true,
+   "enLista": true,
+   "ms": 2074,
+   "primeraMs": 1486,
+   "aviso": false
+  },
+  {
+   "pregunta": "Quiero poner un letrero pintado en mi local",
+   "esperadas": [
+    "HMO-00495",
+    "HMO-00230"
+   ],
+   "obtenidas": [
+    "HMO-00495"
+   ],
+   "primero": true,
+   "enLista": true,
+   "ms": 2036,
+   "primeraMs": 1746,
+   "aviso": false
+  },
+  {
+   "pregunta": "Quiero vender elotes en la calle",
+   "esperadas": [
+    "HMO-00522",
+    "HMO-00518"
+   ],
+   "obtenidas": [
+    "HMO-00518",
+    "HMO-00522"
+   ],
+   "primero": true,
+   "enLista": true,
+   "ms": 2250,
+   "primeraMs": 1861,
+   "aviso": false
+  },
+  {
+   "pregunta": "Quiero ampliar mi casa, hacer un cuarto",
+   "esperadas": [
+    "HMO-00186"
+   ],
+   "obtenidas": [
+    "HMO-00186"
+   ],
+   "primero": true,
+   "enLista": true,
+   "ms": 2171,
+   "primeraMs": 1984,
+   "aviso": false
+  },
+  {
+   "pregunta": "Voy a levantar una barda de 2 metros",
+   "esperadas": [
+    "HMO-00220",
+    "HMO-00533"
+   ],
+   "obtenidas": [
+    "HMO-00220"
+   ],
+   "primero": true,
+   "enLista": true,
+   "ms": 2520,
+   "primeraMs": 2088,
+   "aviso": false
+  },
+  {
+   "pregunta": "Necesito el número oficial de mi terreno",
+   "esperadas": [
+    "HMO-00211"
+   ],
+   "obtenidas": [
+    "HMO-00211"
+   ],
+   "primero": true,
+   "enLista": true,
+   "ms": 2155,
+   "primeraMs": 1645,
+   "aviso": false
+  },
+  {
+   "pregunta": "Ya terminé de construir, ¿qué trámite sigue?",
+   "esperadas": [
+    "HMO-00214"
+   ],
+   "obtenidas": [
+    "HMO-00214"
+   ],
+   "primero": true,
+   "enLista": true,
+   "ms": 2296,
+   "primeraMs": 1915,
+   "aviso": false
+  },
+  {
+   "pregunta": "Quiero tumbar una casa vieja",
+   "esperadas": [
+    "HMO-00204"
+   ],
+   "obtenidas": [
+    "HMO-00204"
+   ],
+   "primero": true,
+   "enLista": true,
+   "ms": 13,
+   "primeraMs": 13,
+   "aviso": false
+  },
+  {
+   "pregunta": "Hay un árbol en mi banqueta que quiero quitar",
+   "esperadas": [
+    "HMO-00525"
+   ],
+   "obtenidas": [
+    "HMO-00525"
+   ],
+   "primero": true,
+   "enLista": true,
+   "ms": 4546,
+   "primeraMs": 3898,
+   "aviso": false
+  },
+  {
+   "pregunta": "Construí sin permiso un cuarto chico, ¿cómo lo regularizo?",
+   "esperadas": [
+    "HMO-00210",
+    "HMO-00180"
+   ],
+   "obtenidas": [
+    "HMO-00210"
+   ],
+   "primero": true,
+   "enLista": true,
+   "ms": 4546,
+   "primeraMs": 3909,
+   "aviso": false
+  },
+  {
+   "pregunta": "Quiero saber qué uso de suelo tiene un terreno",
+   "esperadas": [
+    "HMO-00529",
+    "HMO-00227"
+   ],
+   "obtenidas": [
+    "HMO-00529"
+   ],
+   "primero": true,
+   "enLista": true,
+   "ms": 4131,
+   "primeraMs": 3830,
+   "aviso": false
+  },
+  {
+   "pregunta": "Voy a comprar una casa, ¿cómo hago el traslado de dominio?",
+   "esperadas": [
+    "HMO-00512"
+   ],
+   "obtenidas": [
+    "HMO-00512",
+    "HMO-00513"
+   ],
+   "primero": true,
+   "enLista": true,
+   "ms": 5526,
+   "primeraMs": 5026,
+   "aviso": false
+  },
+  {
+   "pregunta": "Necesito el valor catastral de mi casa",
+   "esperadas": [
+    "HMO-00006",
+    "HMO-00511"
+   ],
+   "obtenidas": [
+    "HMO-00006"
+   ],
+   "primero": true,
+   "enLista": true,
+   "ms": 4491,
+   "primeraMs": 3971,
+   "aviso": false
+  },
+  {
+   "pregunta": "Quiero dividir mi terreno en dos",
+   "esperadas": [
+    "HMO-00484",
+    "HMO-00358"
+   ],
+   "obtenidas": [
+    "HMO-00484",
+    "HMO-00133"
+   ],
+   "primero": true,
+   "enLista": true,
+   "ms": 3671,
+   "primeraMs": 3349,
+   "aviso": false
+  },
+  {
+   "pregunta": "Se llevaron mi carro al corralón",
+   "esperadas": [
+    "HMO-00286"
+   ],
+   "obtenidas": [
+    "HMO-00286"
+   ],
+   "primero": true,
+   "enLista": true,
+   "ms": 4702,
+   "primeraMs": 4227,
+   "aviso": false
+  },
+  {
+   "pregunta": "Choqué y tránsito se llevó mi carro, ¿cómo hago convenio?",
+   "esperadas": [
+    "HMO-00267",
+    "HMO-00286"
+   ],
+   "obtenidas": [
+    "HMO-00267",
+    "HMO-00286"
+   ],
+   "primero": true,
+   "enLista": true,
+   "ms": 7499,
+   "primeraMs": 6571,
+   "aviso": false
+  },
+  {
+   "pregunta": "Perdí las placas de mi carro",
+   "esperadas": [
+    "HMO-00128"
+   ],
+   "obtenidas": [],
+   "primero": true,
+   "enLista": true,
+   "ms": 15,
+   "primeraMs": 15,
+   "aviso": false
+  },
+  {
+   "pregunta": "Quiero vacunar a mi perro contra la rabia",
+   "esperadas": [
+    "HMO-00412"
+   ],
+   "obtenidas": [
+    "HMO-00412"
+   ],
+   "primero": true,
+   "enLista": true,
+   "ms": 3079,
+   "primeraMs": 2927,
+   "aviso": false
+  },
+  {
+   "pregunta": "¿Dónde esterilizan gatos?",
+   "esperadas": [
+    "HMO-00413"
+   ],
+   "obtenidas": [
+    "HMO-00413"
+   ],
+   "primero": true,
+   "enLista": true,
+   "ms": 4120,
+   "primeraMs": 3794,
+   "aviso": false
+  },
+  {
+   "pregunta": "Necesito el tarjetón de discapacidad para estacionarme",
+   "esperadas": [
+    "HMO-00464"
+   ],
+   "obtenidas": [
+    "HMO-00464"
+   ],
+   "primero": true,
+   "enLista": true,
+   "ms": 6257,
+   "primeraMs": 5765,
+   "aviso": false
+  },
+  {
+   "pregunta": "Mi mamá necesita una silla de ruedas",
+   "esperadas": [
+    "HMO-00026"
+   ],
+   "obtenidas": [
+    "HMO-00026"
+   ],
+   "primero": true,
+   "enLista": true,
+   "ms": 2317,
+   "primeraMs": 1604,
+   "aviso": false
+  },
+  {
+   "pregunta": "Busco guardería para mi hijo",
+   "esperadas": [
+    "HMO-00403",
+    "HMO-00271"
+   ],
+   "obtenidas": [
+    "HMO-00403",
+    "HMO-00271"
+   ],
+   "primero": true,
+   "enLista": true,
+   "ms": 2441,
+   "primeraMs": 1934,
+   "aviso": false
+  },
+  {
+   "pregunta": "Mi hijo necesita una beca",
+   "esperadas": [
+    "HMO-00136"
+   ],
+   "obtenidas": [
+    "HMO-00136"
+   ],
+   "primero": true,
+   "enLista": true,
+   "ms": 2749,
+   "primeraMs": 2388,
+   "aviso": false
+  },
+  {
+   "pregunta": "Quiero denunciar a un funcionario que me pidió dinero",
+   "esperadas": [
+    "HMO-00025",
+    "HMO-00493"
+   ],
+   "obtenidas": [
+    "HMO-00025",
+    "HMO-00493"
+   ],
+   "primero": true,
+   "enLista": true,
+   "ms": 2953,
+   "primeraMs": 2398,
+   "aviso": false
+  },
+  {
+   "pregunta": "Un policía me trató mal, ¿dónde me quejo?",
+   "esperadas": [
+    "HMO-00232"
+   ],
+   "obtenidas": [
+    "HMO-00232"
+   ],
+   "primero": true,
+   "enLista": true,
+   "ms": 2227,
+   "primeraMs": 1520,
+   "aviso": false
+  },
+  {
+   "pregunta": "Quiero pedir información pública del Ayuntamiento",
+   "esperadas": [
+    "HMO-00167"
+   ],
+   "obtenidas": [
+    "HMO-00167"
+   ],
+   "primero": true,
+   "enLista": true,
+   "ms": 6271,
+   "primeraMs": 5724,
+   "aviso": false
+  },
+  {
+   "pregunta": "Se murió un familiar y no tenemos para el funeral",
+   "esperadas": [
+    "HMO-00275"
+   ],
+   "obtenidas": [
+    "HMO-00275"
+   ],
+   "primero": true,
+   "enLista": true,
+   "ms": 1989,
+   "primeraMs": 1623,
+   "aviso": false
+  },
+  {
+   "pregunta": "Se me inundó la casa con la lluvia, ¿hay apoyo?",
+   "esperadas": [
+    "HMO-00276"
+   ],
+   "obtenidas": [
+    "HMO-00276"
+   ],
+   "primero": true,
+   "enLista": true,
+   "ms": 5937,
+   "primeraMs": 5616,
+   "aviso": false
+  },
+  {
+   "pregunta": "Quiero hacer una fiesta en la calle de mi colonia",
+   "esperadas": [
+    "HMO-00519"
+   ],
+   "obtenidas": [
+    "HMO-00519",
+    "HMO-00521"
+   ],
+   "primero": true,
+   "enLista": true,
+   "ms": 3033,
+   "primeraMs": 1842,
+   "aviso": false
+  },
+  {
+   "pregunta": "Quiero rentar una cancha para un torneo",
+   "esperadas": [
+    "HMO-00481"
+   ],
+   "obtenidas": [
+    "HMO-00481"
+   ],
+   "primero": true,
+   "enLista": true,
+   "ms": 2216,
+   "primeraMs": 1877,
+   "aviso": false
+  },
+  {
+   "pregunta": "Quiero ser proveedor del Ayuntamiento",
+   "esperadas": [
+    "HMO-00283"
+   ],
+   "obtenidas": [
+    "HMO-00283"
+   ],
+   "primero": true,
+   "enLista": true,
+   "ms": 3712,
+   "primeraMs": 3346,
+   "aviso": false
+  },
+  {
+   "pregunta": "Necesito copia certificada de mi recibo de predial",
+   "esperadas": [
+    "HMO-00039"
+   ],
+   "obtenidas": [
+    "HMO-00039"
+   ],
+   "primero": true,
+   "enLista": true,
+   "ms": 4980,
+   "primeraMs": 4731,
+   "aviso": false
+  },
+  {
+   "pregunta": "¿Cómo veo cuánto le debo al municipio?",
+   "esperadas": [
+    "HMO-00007"
+   ],
+   "obtenidas": [
+    "HMO-00007",
+    "HMO-00494"
+   ],
+   "primero": true,
+   "enLista": true,
+   "ms": 3144,
+   "primeraMs": 2043,
+   "aviso": false
+  },
+  {
+   "pregunta": "¿Cómo saco mi licencia de manejo?",
+   "esperadas": [
+    "HMO-00137"
+   ],
+   "obtenidas": [],
+   "primero": true,
+   "enLista": true,
+   "ms": 15,
+   "primeraMs": 15,
+   "aviso": false
+  },
+  {
+   "pregunta": "Quiero sacar mi pasaporte",
+   "esperadas": [],
+   "obtenidas": [],
+   "primero": true,
+   "enLista": true,
+   "ms": 20,
+   "primeraMs": 20,
+   "aviso": false
+  },
+  {
+   "pregunta": "Quiero registrar a mi perro",
+   "esperadas": [],
+   "obtenidas": [],
+   "primero": true,
+   "enLista": true,
+   "ms": 3459,
+   "primeraMs": 3360,
+   "aviso": false
+  }
+ ]
+}

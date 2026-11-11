@@ -10,6 +10,10 @@
   --linea: #c9cdd3;
   --bien: #0f6a45;
   --error: #a8201a;
+  --aviso: #7a4b00;
+  --bien-fondo: #e2f2e9;
+  --aviso-fondo: #fdf0d5;
+  --error-fondo: #fbe5e3;
   --base-dock: max(env(safe-area-inset-bottom), 0.75rem);
   --alto-dock: calc(var(--base-dock) + 4.125rem);
 }
@@ -24,6 +28,10 @@
   --color-linea: var(--linea);
   --color-bien: var(--bien);
   --color-error: var(--error);
+  --color-aviso: var(--aviso);
+  --color-bien-fondo: var(--bien-fondo);
+  --color-aviso-fondo: var(--aviso-fondo);
+  --color-error-fondo: var(--error-fondo);
   --font-sans: var(--fuente-senal);
   --ease-salida: cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -31,6 +39,11 @@
 html {
   -webkit-text-size-adjust: 100%;
   scrollbar-color: var(--tinta-suave) var(--piso);
+}
+
+/* Preferencia de letra más grande: todo está en rem, así que crece la app completa. */
+html[data-letra-grande] {
+  font-size: 112.5%;
 }
 
 body {
@@ -352,5 +365,70 @@ html[data-teclado] .nav-flotante {
   *::after {
     transition-duration: 1ms !important;
     animation-duration: 1ms !important;
+  }
+}
+
+/* Pase: línea perforada con muescas a los lados, como un boleto. */
+.perforacion {
+  position: relative;
+  height: 1.5rem;
+  background:
+    radial-gradient(circle at 0 50%, var(--piso) 0.75rem, transparent 0.78rem) left / 50% 100% no-repeat,
+    radial-gradient(circle at 100% 50%, var(--piso) 0.75rem, transparent 0.78rem) right / 50% 100% no-repeat;
+}
+
+.perforacion::after {
+  content: "";
+  position: absolute;
+  inset: 50% 1.25rem auto;
+  border-top: 2px dashed var(--linea);
+}
+
+@media print {
+  .no-imprimir {
+    display: none !important;
+  }
+
+  body,
+  .pase {
+    background: #fff !important;
+  }
+
+  .boleto {
+    box-shadow: none !important;
+    border: 1px solid var(--linea);
+  }
+
+  .boleto header,
+  .perforacion {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+}
+
+/* Observatorio: un cuadro por trámite, que se llena en ola. */
+.panal {
+  display: grid;
+  grid-template-columns: repeat(14, minmax(0, 1fr));
+  gap: 3px;
+}
+
+.panal > span {
+  aspect-ratio: 1;
+  border-radius: 2px;
+  animation: panal-entra 420ms var(--ease-salida) both;
+  animation-delay: calc(var(--i) * 5ms);
+}
+
+@keyframes panal-entra {
+  from {
+    opacity: 0;
+    transform: scale(0.2);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panal > span {
+    animation: none;
   }
 }

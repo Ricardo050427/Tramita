@@ -8,6 +8,7 @@ import { Bloques, FuentesCitadas } from "./bloques";
 import { TarjetaDocumentos } from "./documentos";
 import { diasRestantes, leerCaso, mensajePlan, TarjetaPlan } from "./plan";
 import { Ficha, FichaPlegada, leerMarcados, mensajeProgreso } from "./ficha";
+import { leerPreferencias } from "@/lib/preferencias";
 import type { Adjunto, Bloque, Documento, EventoChat, FuenteCitada, Plan, Tramite } from "@/lib/tipos";
 
 export type Mensaje = {
@@ -109,7 +110,7 @@ export function useConversacion({ almacen, claveFija, alSenal }: { almacen?: str
         const res = await fetch("/api/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ pregunta: texto, adjuntos, historial, contexto, caso: resumenCaso(mensajes) }),
+          body: JSON.stringify({ pregunta: texto, adjuntos, historial, contexto, caso: resumenCaso(mensajes), preferencias: leerPreferencias() }),
         });
         if (!res.ok || !res.body) {
           const json = await res.json().catch(() => null);

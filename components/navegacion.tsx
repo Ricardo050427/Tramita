@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FolderOpen, LayoutGrid, MessageCircleQuestionMark, type LucideIcon } from "lucide-react";
+import { FolderOpen, LayoutGrid, MessageCircleQuestionMark, ShieldCheck, type LucideIcon } from "lucide-react";
 import { useMisTramites } from "@/lib/mis-tramites";
 
 const ALTO_MINIMO_TECLADO = 120;
@@ -11,6 +11,7 @@ const ALTO_MINIMO_TECLADO = 120;
 const SECCIONES: { ruta: string; nombre: string; Icono: LucideIcon }[] = [
   { ruta: "/", nombre: "Preguntar", Icono: MessageCircleQuestionMark },
   { ruta: "/tramites", nombre: "Trámites", Icono: LayoutGrid },
+  { ruta: "/vigila", nombre: "Vigila", Icono: ShieldCheck },
   { ruta: "/mis-tramites", nombre: "Mis trámites", Icono: FolderOpen },
 ];
 
@@ -58,11 +59,16 @@ function Activa({ Icono, nombre }: { Icono: LucideIcon; nombre: string }) {
 export function Navegacion() {
   const ruta = usePathname();
   useTeclado();
-  const seccion = ruta === "/" || ruta === "/mis-tramites" ? ruta : "/tramites";
+  const seccion =
+    ruta === "/" || ruta === "/mis-tramites"
+      ? ruta
+      : ruta === "/vigila" || ruta === "/como-funciona" || ruta.endsWith("/verificar")
+        ? "/vigila"
+        : "/tramites";
   const enCurso = Object.values(useMisTramites()).filter((s) => !s.terminado).length;
 
   return (
-    <nav aria-label="Secciones" className="nav-flotante fixed inset-x-0 z-40 mx-auto h-14 w-[min(20rem,calc(100%-2rem))] rounded-full bg-panel shadow-[0_8px_24px_-8px_rgb(21_18_14/0.32)]">
+    <nav aria-label="Secciones" className="nav-flotante fixed inset-x-0 z-40 mx-auto h-14 w-[min(23rem,calc(100%-2rem))] rounded-full bg-panel shadow-[0_8px_24px_-8px_rgb(21_18_14/0.32)]">
       <ul className="flex h-full items-center px-1.5">
         {SECCIONES.map(({ ruta: destino, nombre, Icono }) => {
           const activa = seccion === destino;

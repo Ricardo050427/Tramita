@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Tramita
 
-## Getting Started
+Asistente ciudadano para los trámites del Ayuntamiento de Hermosillo. Responde con el catálogo oficial y, además, respalda a la persona frente a la ventanilla: compara lo que le pidieron con lo que la ley permite pedir.
 
-First, run the development server:
+App: https://tramita-blond.vercel.app
+
+Proyecto independiente para el Hackathon de Innovación por la Transparencia y Anticorrupción (Reto 3), Hermosillo, noviembre de 2026. No es un sitio oficial del Ayuntamiento.
+
+## Qué hace
+
+| Pieza | Para qué sirve |
+| --- | --- |
+| **Preguntar** | Chat con Sagui, por texto, voz o foto. Elige el trámite, dice qué llevar, cuánto cuesta y a dónde ir, y cita la fuente oficial. |
+| **Verificador** | La persona escribe o fotografía lo que le pidieron o cobraron. Cada punto se compara con la ficha oficial y con la Ley Nacional para Eliminar Trámites Burocráticos: requisito publicado, no publicado, copia simple, documento que ya emite el Ayuntamiento, cobro distinto o plazo excedido. |
+| **Pase para ventanilla** | Tarjeta con los requisitos, costo y plazo publicados y un código QR a la fuente. |
+| **Reportes anónimos** | "Algo no cuadra" en un toque. Se publica solo el conteo por trámite y tipo, como datos abiertos. |
+| **Observatorio** | Qué tanto cumple cada trámite el artículo 54 de la ley, qué dato falta más y qué pide simplificar el artículo 19. |
+| **Bitácora** | Un vigía revisa el catálogo oficial cada mañana y registra cambios de costo, plazo, vigencia, horario y requisitos. |
+| **Rutas completas** | Abrir un negocio de comida, construir, comprar casa o vender en la calle: todos los trámites en orden, incluso los externos. |
+| **Mis trámites** | Avance de requisitos, conteo de días hábiles desde la entrega, aviso de plazo vencido y recordatorio en el calendario. |
+| **Inclusión** | Letra grande, respuestas en palabras sencillas, lectura en voz alta y perfiles opcionales sin datos personales. |
+
+## Datos
+
+- **Catálogo municipal**: 196 trámites de [tramites.hermosillo.gob.mx](https://tramites.hermosillo.gob.mx), consultado el 9 de noviembre de 2026 (`data/tramites.json`).
+- **Formatos y guías**: 59 PDF oficiales, algunos se llenan desde la app.
+- **Leyes y reglamentos**: 9 ordenamientos municipales y estatales, divididos en 2,322 fragmentos para citarlos (`data/conocimiento.json`).
+- **Ley Nacional para Eliminar Trámites Burocráticos** (DOF 16/07/2025): citas literales en `lib/ley.ts`.
+
+## Datos abiertos
+
+- `GET /api/reportes`: resumen de reportes por tipo y trámite (JSON).
+- `GET /api/reportes?formato=csv`: todos los reportes, sin el texto que escribió cada persona.
+- `data/bitacora.json`: cambios detectados en el catálogo oficial.
+- `data/examen.json`: resultado del examen de 50 preguntas.
+
+## Cómo responde la IA
+
+1. Si el dato está en la ficha (costo, horario, teléfono, requisitos, plazo), responde directo, sin IA.
+2. Si no, Gemini elige los trámites que aplican entre los 196 del catálogo.
+3. Redacta solo con esas fichas y los artículos de ley recuperados.
+4. Cada cifra de la respuesta se compara con las fuentes; la línea que trae un número sin respaldo se descarta.
+5. En el verificador la IA solo separa lo que se escribió; el veredicto sale de reglas fijas (`lib/verificador.ts`).
+
+## Correr en local
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Variables de entorno: `GEMINI_API_KEY` para la IA y `BLOB_READ_WRITE_TOKEN` para guardar reportes (sin ella se guardan en memoria).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Scripts:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `node scripts/vigia.mjs`: revisa el catálogo oficial y actualiza la bitácora (también corre cada día en GitHub Actions).
+- `BASE=https://tramita-blond.vercel.app node scripts/examen.mjs`: examen de 50 preguntas.
 
-## Learn More
+## Tecnología
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Next.js 16, React 19, Tailwind 4, Motion, Gemini, Vercel (funciones, caché y Blob), GitHub Actions.

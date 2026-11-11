@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Fira_Sans } from "next/font/google";
+import { AplicarPreferencias } from "@/components/preferencias";
 import "./globals.css";
 
 const fira = Fira_Sans({
@@ -26,7 +27,10 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="es-MX" className={fira.variable}>
-      <body>{children}</body>
+      <body>
+        <AplicarPreferencias />
+        {children}
+      </body>
     </html>
   );
 }

@@ -3,11 +3,13 @@
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowRight, Bookmark, ChevronDown, Download, Clock, ExternalLink, LocateFixed, MapPin, Phone } from "lucide-react";
+import { ArrowRight, Bookmark, ChevronDown, Download, Clock, ExternalLink, LocateFixed, MapPin, Phone, QrCode, ShieldCheck } from "lucide-react";
 import { ListaDocumentos, rutaDocumento } from "./documentos";
 import { Encabezado } from "./senal";
 import { estadoHorario } from "@/lib/horario";
 import { datosDe, dejarDeSeguir, seguir, useMisTramites } from "@/lib/mis-tramites";
+import { faltantesArt54 } from "@/lib/observatorio";
+import type { ResumenReportes } from "@/lib/tipos-reporte";
 import type { Documento, Oficina, Requisito, Tramite } from "@/lib/tipos";
 
 const ALMACEN = "tramita:lista:";
@@ -223,6 +225,49 @@ export function FichaPlegada({ tramite }: { tramite: Tramite }) {
   );
 }
 
+function Transparencia({ tramite }: { tramite: Tramite }) {
+  const faltan = faltantesArt54(tramite);
+  return (
+    <p>
+      {faltan.length
+        ? `Esta ficha no publica ${faltan.map((f) => f.corto.toLowerCase()).join(", ").replace(/, ([^,]*)$/, " ni $1")}, aunque la ley pide registrarlo. `
+        : "Esta ficha publica los 8 datos que pide la ley y se pueden comprobar. "}
+      <Link href="/vigila" className="font-bold text-tinta underline">
+        Ver el observatorio
+      </Link>
+    </p>
+  );
+}
+
+// Una sola consulta por visita: todas las fichas abiertas comparten el mismo resumen.
+let resumenReportes: Promise<ResumenReportes | null> | null = null;
+const pedirResumen = () =>
+  (resumenReportes ??= fetch("/api/reportes")
+    .then((r) => (r.ok ? (r.json() as Promise<ResumenReportes>) : null))
+    .catch(() => null));
+
+function ReportesDelTramite({ clave }: { clave: string }) {
+  const [total, setTotal] = useState(0);
+  useEffect(() => {
+    let vigente = true;
+    void pedirResumen().then((r) => {
+      if (vigente) setTotal(r?.porTramite.find((t) => t.clave === clave)?.total ?? 0);
+    });
+    return () => {
+      vigente = false;
+    };
+  }, [clave]);
+  if (!total) return null;
+  return (
+    <p className="font-medium text-error">
+      {total === 1 ? "1 persona reportó" : `${total} personas reportaron`} algo que no cuadra en este trámite.{" "}
+      <Link href="/vigila#reportes" className="underline">
+        Ver reportes
+      </Link>
+    </p>
+  );
+}
+
 export function mensajeProgreso(tramite: Tramite, faltan: number) {
   const total = tramite.requisitos.length;
   if (!total) return "Confirma los requisitos por teléfono";
@@ -309,6 +354,29 @@ export function Ficha({
         <Dato etiqueta="Obtienes" valor={tramite.obtienes === "Ninguno" ? "" : tramite.obtienes} />
       </dl>
 
+      <div className="grid grid-cols-2 gap-2 border-t border-linea px-4 py-3">
+        <Link
+          href={`/pase/${tramite.clave}`}
+          className="flex min-h-16 flex-col justify-center rounded-[10px] bg-piso px-3 py-2.5 transition-transform duration-150 active:scale-[0.97]"
+        >
+          <span className="flex items-center gap-1.5 leading-tight font-bold">
+            <QrCode className="size-[1.125rem] shrink-0" aria-hidden />
+            Pase para ventanilla
+          </span>
+          <span className="mt-0.5 text-sm leading-snug text-tinta-suave">Muéstralo al llegar</span>
+        </Link>
+        <Link
+          href={`/tramite/${tramite.clave}/verificar`}
+          className="flex min-h-16 flex-col justify-center rounded-[10px] bg-piso px-3 py-2.5 transition-transform duration-150 active:scale-[0.97]"
+        >
+          <span className="flex items-center gap-1.5 leading-tight font-bold">
+            <ShieldCheck className="size-[1.125rem] shrink-0" aria-hidden />
+            ¿Te pidieron algo más?
+          </span>
+          <span className="mt-0.5 text-sm leading-snug text-tinta-suave">Compáralo con esta ficha</span>
+        </Link>
+      </div>
+
       {tramite.documentos?.length ? (
         <section className="border-t border-tinta px-4 py-4">
           <h3 className="text-lg font-bold">Documentos para descargar</h3>
@@ -375,15 +443,18 @@ export function Ficha({
         </div>
       ) : null}
 
-      <a
-        href="https://tramites.hermosillo.gob.mx/"
-        target="_blank"
-        rel="noreferrer"
-        className="flex items-center justify-between gap-3 border-t border-linea bg-piso/60 px-4 py-3 text-sm text-tinta-suave"
-      >
-        <span>Fuente oficial: catálogo municipal, clave {tramite.clave}</span>
-        <ArrowRight className="size-4 shrink-0" aria-hidden />
-      </a>
+      <div className="border-t border-linea bg-piso/60 px-4 py-3 text-sm leading-snug text-tinta-suave">
+        <Transparencia tramite={tramite} />
+        <Link href={`/tramite/${tramite.clave}/reportar`} className="mt-2 flex min-h-11 items-center gap-1.5 font-bold text-tinta underline">
+          ¿Algo no cuadra en este trámite? Repórtalo
+          <ArrowRight className="size-4 shrink-0" aria-hidden />
+        </Link>
+        <ReportesDelTramite clave={tramite.clave} />
+        <a href="https://tramites.hermosillo.gob.mx/" target="_blank" rel="noreferrer" className="mt-2 flex items-center justify-between gap-3">
+          <span>Fuente oficial: catálogo municipal, clave {tramite.clave}</span>
+          <ArrowRight className="size-4 shrink-0" aria-hidden />
+        </a>
+      </div>
     </article>
   );
 }

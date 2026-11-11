@@ -3,12 +3,16 @@
 import { useEffect, useState, useSyncExternalStore, type CSSProperties } from "react";
 import Link from "next/link";
 import { motion } from "motion/react";
-import { Check, ChevronRight, RotateCcw, Trash2 } from "lucide-react";
+import { CalendarCheck, CalendarPlus, Check, ChevronRight, RotateCcw, Trash2 } from "lucide-react";
 import { leerMarcados } from "./ficha";
 import { avisoVigencia, diasRestantes } from "./plan";
 import { Sagui } from "./sagui";
 import { Encabezado } from "./senal";
-import { dejarDeSeguir, reabrir, restaurar, terminar, useMisTramites, type Seguimiento } from "@/lib/mis-tramites";
+import { archivoCalendario, fechaCorta, fechaLimite, habilesEntre, hoyIso, leerPlazo } from "@/lib/habiles";
+import { SITIO } from "@/lib/ley";
+import { dejarDeSeguir, marcarEntregado, reabrir, restaurar, terminar, useMisTramites, type Seguimiento } from "@/lib/mis-tramites";
+
+type Plazos = Record<string, string>;
 
 const DIA_MS = 86_400_000;
 const sinSuscripcion = () => () => undefined;
@@ -52,7 +56,118 @@ function Avance({ s }: { s: Seguimiento }) {
   );
 }
 
-function Tarjeta({ s, indice, alQuitar }: { s: Seguimiento; indice: number; alQuitar: () => void }) {
+function estadoPlazo(s: Seguimiento, texto?: string) {
+  const plazo = texto ? leerPlazo(texto) : null;
+  if (!s.entregado || !plazo) return null;
+  const limite = fechaLimite(s.entregado, plazo);
+  const hoy = hoyIso();
+  const faltan = plazo.habiles ? habilesEntre(hoy, limite) : Math.round((new Date(limite).getTime() - new Date(hoy).getTime()) / DIA_MS);
+  return { plazo, limite, faltan, vencido: faltan < 0 };
+}
+
+function CuentaPlazo({ s, texto }: { s: Seguimiento; texto?: string }) {
+  const [cambiando, setCambiando] = useState(false);
+  const plazo = texto ? leerPlazo(texto) : null;
+  const estado = estadoPlazo(s, texto);
+  const corto = plazo ? `${plazo.dias} ${plazo.dias === 1 ? "día" : "días"}${plazo.habiles ? " hábiles" : " naturales"}` : "";
+
+  if (!s.entregado) {
+    return (
+      <div className="border-t border-linea/70 px-4 py-2">
+        <button type="button" onClick={() => marcarEntregado(s.clave, hoyIso())} className="flex min-h-11 items-center gap-2 font-bold">
+          <CalendarCheck className="size-[1.125rem]" aria-hidden />
+          Ya entregué la solicitud
+        </button>
+        <p className="pb-1 text-sm leading-snug text-tinta-suave">
+          {plazo ? `Contaré los ${plazo.dias} días ${plazo.habiles ? "hábiles " : ""}que tienen para responderte.` : "Llevaré la cuenta de los días que esperas respuesta."}
+        </p>
+      </div>
+    );
+  }
+
+  function agendar() {
+    if (!estado) return;
+    const archivo = new Blob([archivoCalendario({ clave: s.clave, nombre: s.nombre, limite: estado.limite, plazo: corto, sitio: SITIO })], {
+      type: "text/calendar;charset=utf-8",
+    });
+    const url = URL.createObjectURL(archivo);
+    const enlace = document.createElement("a");
+    enlace.href = url;
+    enlace.download = `plazo-${s.clave}.ics`;
+    enlace.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  const esperando = habilesEntre(s.entregado, hoyIso());
+  const parte = estado ? Math.min(1, Math.max(0, (estado.plazo.dias - estado.faltan) / estado.plazo.dias)) : 0;
+  const color = !estado ? "" : estado.vencido ? "text-error" : estado.faltan <= 2 ? "text-aviso" : "text-tinta";
+  const habiles = estado?.plazo.habiles ? " hábiles" : "";
+
+  return (
+    <div className="border-t border-linea/70 px-4 py-3 text-[0.9375rem] leading-snug">
+      <p className="text-tinta-suave">Entregaste la solicitud el {fechaCorta(s.entregado)}.</p>
+      {estado ? (
+        <>
+          <p className={`mt-1 font-bold ${color}`}>
+            {estado.vencido
+              ? `El plazo venció el ${fechaCorta(estado.limite)}`
+              : estado.faltan === 0
+                ? "Hoy vence el plazo para responderte"
+                : `Te deben responder a más tardar el ${fechaCorta(estado.limite)}`}
+          </p>
+          <p className="mt-0.5 text-tinta-suave">
+            {estado.vencido
+              ? `Van ${-estado.faltan} ${-estado.faltan === 1 ? "día" : "días"}${habiles} de retraso. Plazo publicado: ${corto}.`
+              : estado.faltan > 0
+                ? `${estado.faltan === 1 ? "Falta 1 día" : `Faltan ${estado.faltan} días`}${habiles} de ${estado.plazo.dias}.`
+                : `Plazo publicado: ${corto}.`}
+          </p>
+          <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-piso" aria-hidden>
+            <div className={`h-full rounded-full ${estado.vencido ? "bg-error" : "bg-tinta"}`} style={{ width: `${parte * 100}%` }} />
+          </div>
+        </>
+      ) : (
+        <p className="mt-1">
+          <span className="font-bold">Esta ficha no publica un plazo de respuesta.</span> Llevas {esperando} {esperando === 1 ? "día hábil" : "días hábiles"} esperando.
+        </p>
+      )}
+      <div className="mt-1 flex flex-wrap items-center gap-x-5">
+        {estado?.vencido ? (
+          <Link href={`/tramite/${s.clave}/reportar?tipo=plazo`} className="flex min-h-11 items-center gap-1.5 font-bold text-error underline">
+            Reportar el plazo vencido
+            <ChevronRight className="size-4" aria-hidden />
+          </Link>
+        ) : estado ? (
+          <button type="button" onClick={agendar} className="flex min-h-11 items-center gap-1.5 font-bold underline">
+            <CalendarPlus className="size-4" aria-hidden />
+            Agregar al calendario
+          </button>
+        ) : null}
+        {cambiando ? (
+          <label className="flex min-h-11 items-center gap-2">
+            <span className="sr-only">Fecha en que entregaste la solicitud</span>
+            <input
+              type="date"
+              value={s.entregado}
+              max={hoyIso()}
+              onChange={(e) => {
+                if (e.target.value) marcarEntregado(s.clave, e.target.value);
+                setCambiando(false);
+              }}
+              className="rounded-[8px] border-2 border-linea bg-panel px-2 py-1 text-base"
+            />
+          </label>
+        ) : (
+          <button type="button" onClick={() => setCambiando(true)} className="flex min-h-11 items-center underline">
+            Cambiar fecha
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function Tarjeta({ s, plazo, indice, alQuitar }: { s: Seguimiento; plazo?: string; indice: number; alQuitar: () => void }) {
   const aviso = s.terminado ? avisoVigencia(diasRestantes({ vigencia: s.vigencia ?? null }, s.terminado)) : null;
   const accion = "flex min-h-12 flex-1 items-center justify-center gap-1.5 text-[0.9375rem] font-medium transition-colors duration-150 active:bg-piso";
 
@@ -76,6 +191,7 @@ function Tarjeta({ s, indice, alQuitar }: { s: Seguimiento; indice: number; alQu
           <Avance s={s} />
         )}
       </Link>
+      {s.terminado ? null : <CuentaPlazo s={s} texto={plazo} />}
       <div className="flex divide-x divide-linea/70 border-t border-linea/70">
         {s.terminado ? (
           <button type="button" onClick={() => reabrir(s.clave)} className={accion}>
@@ -111,7 +227,7 @@ function Vacio() {
   );
 }
 
-function Lista() {
+function Lista({ plazos }: { plazos: Plazos }) {
   const mis = useMisTramites();
   const [vista, setVista] = useState<"curso" | "listos">("curso");
   const [quitado, setQuitado] = useState<Seguimiento | null>(null);
@@ -126,7 +242,16 @@ function Lista() {
   const enCurso = todos.filter((s) => !s.terminado);
   const listos = todos.filter((s) => s.terminado);
   const visibles = vista === "curso" ? enCurso : listos;
-  const senal = !todos.length ? "Mis trámites" : enCurso.length ? `Llevas ${enCurso.length} en curso` : "Todo terminado";
+  const vencidos = enCurso.filter((s) => estadoPlazo(s, plazos[s.clave])?.vencido).length;
+  const senal = !todos.length
+    ? "Mis trámites"
+    : vencidos
+      ? vencidos === 1
+        ? "Tienes 1 plazo vencido"
+        : `Tienes ${vencidos} plazos vencidos`
+      : enCurso.length
+        ? `Llevas ${enCurso.length} en curso`
+        : "Todo terminado";
   const pestanas = [
     { id: "curso" as const, nombre: "En curso", total: enCurso.length },
     { id: "listos" as const, nombre: "Terminados", total: listos.length },
@@ -155,7 +280,7 @@ function Lista() {
             {visibles.length ? (
               <ul key={vista} className="mt-4 space-y-3">
                 {visibles.map((s, i) => (
-                  <Tarjeta key={s.clave} s={s} indice={i} alQuitar={() => quitar(s)} />
+                  <Tarjeta key={s.clave} s={s} plazo={plazos[s.clave]} indice={i} alQuitar={() => quitar(s)} />
                 ))}
               </ul>
             ) : (
@@ -187,10 +312,10 @@ function Lista() {
   );
 }
 
-export function MisTramites() {
+export function MisTramites({ plazos }: { plazos: Plazos }) {
   // La lista vive en el dispositivo: se dibuja ya en el navegador para no parpadear como vacía.
   const enNavegador = useSyncExternalStore(sinSuscripcion, () => true, () => false);
-  if (enNavegador) return <Lista />;
+  if (enNavegador) return <Lista plazos={plazos} />;
   return (
     <div className="min-h-dvh">
       <Encabezado mensaje="Mis trámites" />
