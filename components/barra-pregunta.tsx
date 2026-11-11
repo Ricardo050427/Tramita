@@ -231,7 +231,7 @@ export function BarraPregunta({
           className={
             embebida
               ? "rounded-[16px] bg-panel shadow-[0_6px_20px_-10px_rgb(21_18_14/0.3)] transition-shadow duration-150 focus-within:shadow-[inset_0_0_0_1.5px_var(--tinta),0_6px_20px_-10px_rgb(21_18_14/0.3)]"
-              : "rounded-[18px] border-2 border-tinta bg-panel shadow-[0_18px_34px_-14px_rgb(21_18_14/0.55)] transition-shadow duration-150 focus-within:shadow-[0_0_0_4px_rgb(233_96_0/0.3),0_18px_34px_-14px_rgb(21_18_14/0.55)]"
+              : "caja-pregunta relative rounded-[18px] border-2 border-tinta bg-panel shadow-[0_18px_34px_-14px_rgb(21_18_14/0.55)] transition-shadow duration-150 focus-within:shadow-[0_0_0_4px_rgb(233_96_0/0.3),0_18px_34px_-14px_rgb(21_18_14/0.55)]"
           }
         >
           {adjuntos.length ? (

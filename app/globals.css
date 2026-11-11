@@ -145,6 +145,45 @@ html[data-teclado] {
   background: transparent;
 }
 
+/* Un halo naranja respira detrás de la barra para invitar a preguntar. La sombra se pinta una vez y solo cambia
+   su opacidad, que anima la GPU sin volver a pintar; se apaga mientras la persona escribe. */
+.inicio-blanco .caja-pregunta::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  z-index: -1;
+  border-radius: 20px;
+  box-shadow:
+    0 0 0 3px rgb(233 96 0 / 0.24),
+    0 0 30px 6px rgb(233 96 0 / 0.5);
+  opacity: 0;
+  pointer-events: none;
+  will-change: opacity;
+  animation: halo-pregunta 3.6s ease-in-out 1.6s infinite;
+}
+
+.inicio-blanco .caja-pregunta:focus-within::before {
+  animation: none;
+  opacity: 0;
+}
+
+@keyframes halo-pregunta {
+  0%,
+  100% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .inicio-blanco .caja-pregunta::before {
+    animation: none;
+    opacity: 0.55;
+  }
+}
+
 /* En teléfono la escena termina detrás de la barra y se encoge en pantallas bajas para no tapar las sugerencias. */
 .escena-inicio {
   bottom: calc(var(--alto-dock) + 2rem);

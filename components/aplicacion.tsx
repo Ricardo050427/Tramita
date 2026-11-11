@@ -35,7 +35,8 @@ function Bienvenida({ alPreguntar, atento }: { alPreguntar: (texto: string) => v
     <>
       <motion.div
         initial={{ opacity: 0, y: 24 }}
-        animate={{ opacity: 1, y: 0 }}
+        // Al 90 %: el cerro se asienta como fondo y deja el protagonismo a Sagui y a la barra.
+        animate={{ opacity: 0.9, y: 0 }}
         transition={{ duration: 0.6, delay: 0.05, ease: salida }}
         className="escena-inicio pointer-events-none fixed inset-x-0 z-0 will-change-transform"
         aria-hidden
